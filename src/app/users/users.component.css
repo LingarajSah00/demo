@@ -1,0 +1,15 @@
+.create-button {
+    margin-bottom: 20px;  /* Space between button and table */
+    margin-right: 10px;   /* Space on the right */
+  }
+  .mat-elevation-z8 {
+    position: relative; /* Ensures the button is positioned relative to this container */
+  }
+  
+  .create-button {
+    position: absolute;
+    top: 10px;    /* Distance from the top of the container */
+    right: 10px;  /* Distance from the right of the container */
+    z-index: 10;  /* Ensure it stays above other elements */
+  }
+  

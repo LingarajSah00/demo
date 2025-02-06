@@ -1,0 +1,47 @@
+table {
+    width: 100%;
+  }
+  
+  th.mat-header-cell {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .mat-cell, .mat-header-cell {
+    padding: 10px;
+  }
+  
+  .mat-elevation-z8 {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+
+  /* Style the buttons in the action column */
+table td button {
+    margin-right: 5px; /* Add space between buttons */
+    padding: 5px 10px; /* Add some padding to the buttons */
+  }
+/* Adjust for small screens */
+@media screen and (max-width: 768px) {
+    table td button {
+      font-size: 12px; /* Make the buttons smaller on small screens */
+      padding: 5px 8px; /* Adjust padding on mobile */
+    }
+  }  
+
+
+  .create-button {
+    margin-bottom: 20px;  /* Space between button and table */
+    margin-right: 10px;   /* Space on the right */
+  }
+  .mat-elevation-z8 {
+    position: relative; /* Ensures the button is positioned relative to this container */
+  }
+  
+  .create-button {
+    position: absolute;
+    top: 10px;    /* Distance from the top of the container */
+    right: 10px;  /* Distance from the right of the container */
+    z-index: 10;  /* Ensure it stays above other elements */
+  }
+  

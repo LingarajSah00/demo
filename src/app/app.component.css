@@ -1,0 +1,174 @@
+/* Sidebar container */
+.sidenav-container {
+    display: flex;
+    height: 100vh;  /* Full screen height */
+  }
+  
+  /* Sidebar style (mat-sidenav) */
+  mat-sidenav {
+    background-color: #f44336; /* Red background for the sidenav */
+    color: white;  /* White text color */
+    padding: 20px;
+    transition: all 0.3s ease;  /* Smooth transition for expanding/collapsing */
+  }
+  
+  /* Sidebar header (mat-toolbar) */
+  .sidenav-header {
+    background-color: #d32f2f; /* Dark red background for toolbar */
+    color: white;  /* White text */
+    font-weight: bold;
+    font-size: 14px;  /* Adjust size if needed */
+    padding: 10px 16px;  /* Add padding to avoid text touching edges */
+    text-overflow: ellipsis;  /* Add ellipsis if text overflows */
+    white-space: nowrap;  /* Prevent text from wrapping */
+    overflow: hidden;  /* Hide overflow */
+    display: flex;
+    align-items: center;
+  }
+  
+ /* Sidebar links (mat-nav-list items) */
+.sidenav a {
+  color: white;  /* White text for the links */
+  text-decoration: none;
+  display: flex;
+  align-items: center;  /* Align icon and text horizontally */
+  padding: 10px;
+  flex-direction: row-reverse;  /* Align icons to the left */
+  transition: background-color 0.3s ease, color 0.3s ease;  /* Smooth transition for hover and color change */
+  border-radius: 4px;  /* Rounded corners for uniform look */
+}
+
+/* Sidebar link icon styling */
+.sidenav a mat-icon {
+  margin-left: 10px;  /* Space between icon and text */
+  color: white;  /* White icon color */
+  order: -1;  /* Moves the icon to the left */
+  font-size: 24px;  /* Set the size of the icon (default size) */
+}
+
+/* Adjust font size of text to match icon size */
+.sidenav a {
+  font-size: 16px;  /* Set the font size for text */
+}
+
+/* Active link style */
+a.active {
+  font-weight: bold;
+  color: #ffffff;  /* Keep text color white for active link */
+  background-color: #d32f2f;  /* Red background for active link */
+}
+
+/* Hover effect for sidebar links */
+.sidenav a:hover {
+  background-color: rgba(255, 255, 255, 0.15); /* Uniform subtle light red for hover */
+  color: #ffffff;  /* Keep the color white for text */
+}
+/* Sidebar links (mat-nav-list items) */
+.sidenav a {
+    color: white;  /* White text for the links */
+    text-decoration: none;
+    display: flex;
+    align-items: center;  /* Align icon and text horizontally */
+    padding: 10px;
+    flex-direction: row-reverse;  /* Align icons to the left */
+    transition: background-color 0.3s ease, color 0.3s ease;  /* Smooth transition for hover and color change */
+    border-radius: 4px;  /* Rounded corners for uniform look */
+  }
+  
+  /* Sidebar link icon styling */
+  .sidenav a mat-icon {
+    margin-left: 10px;  /* Space between icon and text */
+    color: white;  /* White icon color */
+    order: -1;  /* Moves the icon to the left */
+    font-size: 24px;  /* Set the size of the icon (default size) */
+  }
+  
+  /* Adjust font size of text to match icon size */
+  .sidenav a {
+    font-size: 16px;  /* Set the font size for text */
+  }
+  
+  /* Active link style */
+  a.active {
+    font-weight: bold;
+    color: #ffffff;  /* Keep text color white for active link */
+    background-color: #d32f2f;  /* Red background for active link */
+  }
+  
+  /* Hover effect for sidebar links */
+  .sidenav a:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Uniform subtle light red for hover */
+    color: #ffffff;  /* Keep the color white for text */
+  }
+  
+  
+  /* Hover effect for active links to prevent color change */
+  .sidenav a.active:hover {
+    background-color: #d32f2f; /* Keep active color when hovered */
+  }
+  
+ 
+  
+  /* Content area */
+  mat-sidenav-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #faf9fd;  /* Light red background for content area */
+    transition: padding 0.3s ease;  /* Smooth transition on mobile collapse */
+  }
+  
+  /* Sidebar mobile responsiveness */
+  @media (max-width: 768px) {
+    mat-sidenav {
+      display: none;  /* Hide sidebar on small screens */
+    }
+  
+    mat-sidenav.opened {
+      display: block;  /* Show sidebar if opened */
+    }
+  
+    /* Adjust content area padding for mobile */
+    mat-sidenav-content {
+      padding-left: 10px;  /* Less padding for mobile */
+      padding-right: 10px;  /* Ensure content fits nicely on mobile */
+      background-color: white;  /* Changed background to white */
+    }
+  }
+  
+
+  .sidenav a {
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* Sidebar link icon styling */
+  .sidenav a mat-icon {
+    margin-right: 10px;  /* Space between icon and text */
+    color: white;
+    font-size: 24px;
+  }
+
+  /* Ensure the expansion panel's icon is on the left */
+mat-expansion-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #c62828; 
+}
+
+/* Override the default flex layout of mat-expansion-panel-header */
+mat-expansion-panel-header mat-icon {
+  margin-right: 10px; /* Space between icon and title */
+  order: -1; /* Move the icon to the left */
+}
+
+/* Adjust the dropdown arrow (the expand/collapse icon) position */
+mat-expansion-panel-header .mat-expansion-indicator {
+  order: 1; /* Ensure dropdown arrow stays on the right */
+}

@@ -1,0 +1,72 @@
+/* Default table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Ensure consistent column width */
+  }
+  
+  th.mat-header-cell, td.mat-cell {
+    font-weight: bold;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .mat-elevation-z8 {
+    position: relative; /* Make this container a reference for absolute positioning */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+    overflow: hidden; /* To avoid any overflow issues */
+  }
+  
+  /* Responsive Design */
+  .download-btn {
+    position: absolute;
+    top: 10px; /* Adjust distance from top */
+    right: 10px; /* Adjust distance from right */
+    z-index: 10; /* Ensure it stays above other elements */
+  }
+  
+  /* Making table scrollable horizontally on smaller screens */
+  @media screen and (max-width: 768px) {
+    table {
+      display: block;
+      overflow-x: auto; /* Allow horizontal scrolling */
+      -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    }
+  
+    th.mat-header-cell, td.mat-cell {
+      text-align: left; /* Align text to left for readability on small screens */
+      white-space: nowrap; /* Prevent wrapping of long text */
+    }
+  
+    /* Adjust download button on small screens */
+    .download-btn {
+      top: 15px;  /* Increase top margin if needed */
+      right: 15px; /* Keep it away from the edge */
+    }
+  }
+  
+  /* Further adjustments for mobile */
+  @media screen and (max-width: 480px) {
+    .download-btn {
+      top: 10px; /* Slightly more space on very small screens */
+      right: 5px;
+    }
+    
+    .mat-elevation-z8 {
+      padding: 15px; /* Add some padding on smaller screens for better spacing */
+    }
+  }
+  .create-button {
+    margin-bottom: 155px;  /* Space between button and table */
+    margin-right: 145px;   /* Space on the right */
+  }
+  .mat-elevation-z8 {
+    position: relative; /* Ensures the button is positioned relative to this container */
+  }
+  
+  .create-button {
+    position: absolute;
+    top: 10px;    /* Distance from the top of the container */
+    right: 10px;  /* Distance from the right of the container */
+    z-index: 10;  /* Ensure it stays above other elements */
+  }

@@ -1,0 +1,22 @@
+table {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  th.mat-header-cell {
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .mat-cell, .mat-header-cell {
+    padding: 10px;
+  }
+  
+  .mat-elevation-z8 {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+  .mat-form-field {
+    margin-bottom: 10px;
+  }
+  

@@ -1,0 +1,103 @@
+<!-- dashboard.component.html -->
+
+<mat-sidenav-container class="sidenav-container">
+    <!-- Side Navigation Menu -->
+    <mat-sidenav
+    #sidenav
+    mode="side"
+    [(opened)]="isSidebarOpened"
+    class="sidenav"
+    [fixedInViewport]="true"
+    [disableClose]="true">
+    
+      <mat-toolbar class="sidenav-header">
+        <mat-icon>notifications</mat-icon>
+        Compliance Notification
+      </mat-toolbar>
+  
+      <mat-nav-list>
+        <a mat-list-item routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon>pie_chart</mat-icon>Dashboard
+        </a>
+  
+        <a mat-list-item routerLink="/dashboard/users" routerLinkActive="active">
+            <mat-icon>perm_identity</mat-icon>Users
+          </a>
+
+        <a mat-list-item routerLink="/dashboard/campaigns" routerLinkActive="active">
+          <mat-icon>campaign</mat-icon>Campaigns
+        </a>
+        
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-icon mat-expansion-panel-header>edit</mat-icon>
+            <mat-panel-title>Templates</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <a mat-list-item routerLink="/dashboard/template">Notification Templates</a>
+            <a mat-list-item routerLink="/development">Annual Course/Certification Memos</a>
+            <a mat-list-item routerLink="/seo">Notification Helper Text Snippets</a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-icon mat-expansion-panel-header>grid_on</mat-icon>
+            <mat-panel-title>Compliance Courses</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <a mat-list-item routerLink="/web-design">Shut Off</a>
+            <a mat-list-item routerLink="/development">New Hire</a>
+            <a mat-list-item routerLink="/seo">Annual</a>
+            <a mat-list-item routerLink="/seo">All</a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+  
+        <a mat-list-item routerLink="/memo" routerLinkActive="active">
+          <mat-icon>description</mat-icon>Memos
+        </a>
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-icon mat-expansion-panel-header>insert_chart</mat-icon>
+            <mat-panel-title>Reporting</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <a mat-list-item routerLink="/web-design">Employee Compliance</a>
+            <a mat-list-item routerLink="/dashboard/pastdueescalation">Employee Past Due Escalations</a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+  
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-icon mat-expansion-panel-header>report</mat-icon>
+            <mat-panel-title>Logs</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <a mat-list-item routerLink="/web-design">Logs</a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <!-- Main Content Area -->
+
+<!-- Main Content Area -->
+<mat-sidenav-content>
+    <mat-toolbar color="primary">
+        <button mat-icon-button (click)="sidenav.toggle()" class="mobile-menu-button">
+            <mat-icon>menu</mat-icon>
+          </button>
+      <span class="title">Compliance Training Dashboard</span>
+      <span class="spacer"></span>
+      <button mat-button class="right-button">Profile</button>
+      <button mat-button class="right-button" (click)="logout()">Logout</button>
+    </mat-toolbar>
+
+    <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+  </mat-sidenav-content>
+  </mat-sidenav-container>
+  

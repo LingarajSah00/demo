@@ -1,0 +1,29 @@
+/* Confirmation Dialog Header */
+.confirmation-dialog-title {
+    background-color: #d32f2f; /* Red background */
+    color: white; /* White text */
+    padding: 16px; /* Adjust padding for a nicer look */
+    font-weight: bold; /* Bold text */
+    text-align: center; /* Center align text */
+  }
+  
+  /* Image styling */
+  .confirmation-icon {
+    display: block;
+    margin: 0 auto 10px auto; /* Center the image and add some space below it */
+    width: 50px; /* Adjust the image width */
+    height: 50px; /* Adjust the image height */
+  }
+  
+  /* Styling for Yes/No buttons */
+  .dialog-button {
+    color: #d32f2f; /* Red color for the text */
+    border: 1px solid #d32f2f; /* Border color to match red */
+    transition: background-color 0.3s ease; /* Smooth transition on hover */
+  }
+  
+  .dialog-button:hover {
+    background-color: #d32f2f; /* Red background on hover */
+    color: white; /* White text on hover */
+  }
+  
