@@ -2,3 +2,20 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-form-field .mat-input-element {
+    color: red !important; /* Set the text color to red */
+    border-bottom: 2px solid red !important; /* Set the underline color to red */
+  }
+  
+  .mat-form-field .mat-label {
+    color: red !important; /* Red label */
+  }
+  
+  .mat-form-field.mat-focused .mat-label {
+    color: darkred !important; /* Dark red label when focused */
+  }
+  
+  .mat-form-field.mat-focused .mat-input-element {
+    border-bottom: 2px solid darkred !important; /* Dark red underline when focused */
+  }
+  

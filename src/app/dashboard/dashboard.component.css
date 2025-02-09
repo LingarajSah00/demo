@@ -180,4 +180,13 @@ mat-expansion-panel-header .mat-expansion-indicator {
   order: 1; /* Ensure dropdown arrow stays on the right */
 }
 
- 
+
+.right-button {
+  background-color: #cc0000; /* Red background */
+  color: white; /* Black text */
+}
+
+.right-button:hover {
+  background-color: darkred; /* Darker shade when hovering */
+  color: white; /* White text on hover */
+}

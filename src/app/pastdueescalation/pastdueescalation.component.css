@@ -71,8 +71,8 @@ table {
     z-index: 10;  /* Ensure it stays above other elements */
   }
   .create-button {
-    background-color: red; /* Red background */
-    color: black; /* Black text */
+    background-color: #cc0000; /* Red background */
+    color: white; /* Black text */
   }
   
   .create-button:hover {
@@ -81,8 +81,8 @@ table {
   }
 
   .download-btn  {
-    background-color: red; /* Red background */
-    color: black; /* Black text */
+    background-color: #cc0000; /* Red background */
+    color: white; /* Black text */
   }
   
   .download-btn :hover {
@@ -102,8 +102,8 @@ table td button {
 
 /* Specific red color for Edit button */
 table td button.edit-btn {
-  background-color: red; /* Red background for Edit */
-  color: black; /* White text */
+  background-color: #cc0000; /* Red background for Edit */
+  color: white; /* White text */
   border: none; /* Remove border */
 }
 
@@ -115,8 +115,8 @@ table td button.edit-btn:hover {
 
 /* Specific red color for Delete button */
 table td button.delete-btn {
-  background-color: red; /* Red background for Delete */
-  color: black; /* White text */
+  background-color: #cc0000; /* Red background for Delete */
+  color: white; /* White text */
   border: none; /* Remove border */
 }
 

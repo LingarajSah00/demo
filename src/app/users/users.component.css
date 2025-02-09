@@ -13,11 +13,39 @@
     z-index: 10;  /* Ensure it stays above other elements */
   }
   .create-button {
-    background-color: red; /* Red background */
-    color: black; /* Black text */
+    background-color: #cc0000; /* Red background */
+    color: white; /* Black text */
   }
   
   .create-button:hover {
     background-color: darkred; /* Darker shade when hovering */
     color: white; /* White text on hover */
   }
+
+  .edit-button {
+    background-color: #cc0000; /* Red background */
+    color: white; /* Black text */
+  }
+  
+  .edit-button:hover {
+    background-color: darkred; /* Darker shade when hovering */
+    color: white; /* White text on hover */
+  }
+
+  ::ng-deep .mat-form-field .mat-input-element {
+    color: red !important; /* Set the text color to red */
+    border-bottom: 2px solid red !important; /* Set the underline color to red */
+  }
+  
+  ::ng-deep .mat-form-field .mat-label {
+    color: red !important; /* Red label */
+  }
+  
+  ::ng-deep .mat-form-field.mat-focused .mat-label {
+    color: darkred !important; /* Dark red label when focused */
+  }
+  
+  ::ng-deep .mat-form-field.mat-focused .mat-input-element {
+    border-bottom: 2px solid darkred !important; /* Dark red underline when focused */
+  }
+  

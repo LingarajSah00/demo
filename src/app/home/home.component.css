@@ -119,10 +119,11 @@
 
 /* 50% Width for the second and third cards */
 .dashboard-card:nth-child(2), .dashboard-card:nth-child(3) {
-  width: 48% !important;  /* Force both cards to take 48% of the container width (allowing for gap) */
+  flex: 0 0 calc(50% - 10px);  /* Set both cards to 50% of the container width minus half of the gap */
   padding: 20px;
   margin-bottom: 0;  /* Remove bottom margin between the second and third card */
 }
+
 
 /* To handle responsive design and stack the second and third cards below the first on smaller screens */
 @media (max-width: 768px) {

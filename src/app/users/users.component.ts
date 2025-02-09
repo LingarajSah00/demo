@@ -14,6 +14,7 @@ import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dia
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 
 
 interface UserData {
@@ -39,7 +40,7 @@ interface UserData {
       MatSlideToggleModule,
       FormsModule],
   templateUrl: './users.component.html',
-  styleUrl: './users.component.css',
+  styleUrl: './users.component.css'
 
 })
 export class UsersComponent {
@@ -141,5 +142,23 @@ onSubmit(userData: any): void {
   // Add the new user to the table
   this.dataSource.data = [...this.dataSource.data, newUser];
   this._snackBar.open('User created successfully!', 'Close', { duration: 2000 });
+}
+
+
+// Open Edit Dialog for Status change
+openEditUserDialog(user: UserData): void {
+  const dialogRef = this.dialog.open(EdituserdialogComponent, {
+    width: '400px',
+    data: { status: user.status }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Update the status with the selected one from the dialog
+      user.status = result;
+      this.dataSource._updateChangeSubscription(); // Refresh the table to reflect the change
+      this._snackBar.open(`User status updated to ${user.status}`, 'Close', { duration: 2000 });
+    }
+  });
 }
 }
