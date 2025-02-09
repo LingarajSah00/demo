@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild,ViewEncapsulation } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -39,7 +39,8 @@ interface UserData {
       MatSlideToggleModule,
       FormsModule],
   templateUrl: './users.component.html',
-  styleUrl: './users.component.css'
+  styleUrl: './users.component.css',
+
 })
 export class UsersComponent {
 
@@ -74,16 +75,28 @@ export class UsersComponent {
   }
 
    // Called when the status toggle is changed
-   onStatusChange(user: UserData): void {
-    if (user.status === 'Active') {
-      user.status = 'Active';
-    } else {
-      user.status = 'Inactive';
-    }
+   // Called when the status toggle is changed
+  onStatusChange(user: UserData): void {
+    // Open a confirmation dialog before changing the status
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px',
+      data: {
+        message: `Are you sure you want to change the status of ${user.username}?`
+      }
+    });
 
-    this.dataSource._updateChangeSubscription();  // Refresh the table
-    // You can also update the status in the backend if needed
-    console.log(`User ${user.username} status changed to ${user.status}`);
+    // After the confirmation dialog is closed
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // If confirmed, change the status
+        user.status = user.status === 'Active' ? 'Active' : 'Inactive';
+        this.dataSource._updateChangeSubscription(); // Refresh the table
+        this._snackBar.open(`User status changed to ${user.status}`, 'Close', { duration: 2000 });
+      } else {
+        // If canceled, revert the change or do nothing
+        console.log(`Status change for ${user.username} was canceled.`);
+      }
+    });
   }
 
 // Open Create User Dialog

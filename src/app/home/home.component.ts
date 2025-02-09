@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { NavigationEnd, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 import { Chart, ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PieController, LineController, LineElement, PointElement, Filler, BarElement, BarController } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PieController, LineController, LineElement, PointElement, Filler, BarElement, BarController);
@@ -32,13 +33,28 @@ Chart.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, P
         RouterModule,
         MatSidenavModule,
         MatListModule,
-        MatExpansionModule
-  ],
+        MatExpansionModule  ],
+  providers: [DatePipe],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) {}
+export class HomeComponent  implements OnInit{
+  today: string = '';
+
+  ngOnInit(): void {
+    // Get the current date formatted using DatePipe
+    const currentDate = new Date();
+    this.today = this.datePipe.transform(currentDate, 'fullDate')!;
+  }
+
+  displayedColumns: string[] = ['campaign', 'status', 'progress'];
+  dataSource = [
+    { campaign: 'STATUS of NIGHTLY LOAD', status: 'loading', progress: '2025-01-23 11:07:28' },
+    { campaign: 'Compliance Training Due Notification', status: 'incomplete', progress: '2025-01-23 11:07:28' },
+    { campaign: 'Compliance Notification Process', status: 'Incomplete', progress: '2025-01-23 11:07:28' },
+  ];
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router,private datePipe: DatePipe) {}
 
   // Canvas references
   @ViewChild('completionRateCanvas') completionRateCanvas: ElementRef<HTMLCanvasElement> | undefined;

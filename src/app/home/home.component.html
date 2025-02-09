@@ -1,15 +1,54 @@
 <div class="dashboard-container">
-    <!-- Training Campaigns Overview Card with Pie Chart -->
+  
+  
+  <mat-card class="dashboard-card">
+    <mat-card-header>
+      <mat-card-title>Compliance Processes Status For:
+      </mat-card-title>
+      <p class="today-date"> {{ today | date:'fullDate' }}</p>
+  
+    </mat-card-header>
+    <mat-card-content>
+      <p class="overview-text">
+        When automated,the Compliance Notification Process Runs on the quarter hour AFTER a time period of 2 hours and 15 minutes has passed
+        since the Nightly Load process has completed. This delay is required due to database maintenance task occuring after the nightly load has
+        completed.
+       </p>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="campaign">
+          <th mat-header-cell *matHeaderCellDef> Process </th>
+          <td mat-cell *matCellDef="let element"> {{element.campaign}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef> Today's Status </th>
+          <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        </ng-container>
+  
+        <ng-container matColumnDef="progress">
+          <th mat-header-cell *matHeaderCellDef> Last Status Date </th>
+          <td mat-cell *matCellDef="let element"> {{element.progress}} </td>
+        </ng-container>
+  
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+  
+    </mat-card-content>
+  </mat-card>
+
+  <div class="dashboard-row">
+    <!-- Second mat-card (50% width) -->
     <mat-card class="dashboard-card">
       <mat-card-header>
-        <mat-card-title>Training Campaigns Overview</mat-card-title>
+        <mat-card-title>User Compliance Status</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <canvas #completionRateCanvas></canvas> <!-- Canvas for the completion rate pie chart -->
       </mat-card-content>
     </mat-card>
 
-    <!-- User Compliance Status Card with Pie Chart -->
+    <!-- Third mat-card (50% width) -->
     <mat-card class="dashboard-card">
       <mat-card-header>
         <mat-card-title>User Compliance Status</mat-card-title>
@@ -19,3 +58,4 @@
       </mat-card-content>
     </mat-card>
   </div>
+</div>

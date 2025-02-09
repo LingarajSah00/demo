@@ -95,17 +95,47 @@
     }
   
   
+/* Dashboard Container */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;  /* Stack the cards vertically */
+  margin-top: 20px;
+}
 
-  .dashboard-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-  
+/* Full-width mat-card (First card) */
+.dashboard-card:first-child {
+  width: 100%;  /* First card takes up full width */
+  padding: 20px;
+  margin-bottom: 20px;  /* Add some margin below it */
+}
+
+/* Container for the second and third cards side by side */
+.dashboard-row {
+  display: flex;  /* Display the cards side by side */
+  justify-content: flex-start;  /* Align the cards to the start of the container */
+  width: 100%;  /* Ensure the container takes up full width */
+  gap: 20px;  /* Space between the two cards */
+}
+
+/* 50% Width for the second and third cards */
+.dashboard-card:nth-child(2), .dashboard-card:nth-child(3) {
+  width: 48% !important;  /* Force both cards to take 48% of the container width (allowing for gap) */
+  padding: 20px;
+  margin-bottom: 0;  /* Remove bottom margin between the second and third card */
+}
+
+/* To handle responsive design and stack the second and third cards below the first on smaller screens */
+@media (max-width: 768px) {
   .dashboard-card {
-    width: 45%;  /* Each card will take 45% of the container's width */
-    padding: 20px;
+    width: 100%;  /* Stack all cards vertically on smaller screens */
   }
+
+  /* Make second and third cards stack on smaller screens */
+  .dashboard-row {
+    flex-direction: column;
+  }
+}
+
   
   canvas {
     width: 100% !important;  /* Ensure the canvas takes up the full width of the parent container */
@@ -180,4 +210,34 @@ mat-expansion-panel-header .mat-expansion-indicator {
   order: 1; /* Ensure dropdown arrow stays on the right */
 }
 
- 
+/* Custom table styles */
+table {
+  width: 100%; /* Ensure the table fills the container */
+  margin-bottom: 20px; /* Add space below the table */
+}
+
+.mat-header-cell, .mat-cell {
+  text-align: center;
+}
+
+.mat-header-row {
+  background-color: #f5f5f5; /* Light grey background for header */
+}
+
+ /* Style the text under the card title */
+.overview-text {
+  font-size: 16px;
+  color: #333;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  text-align: left;  /* Align the text to the left */
+}
+/* Style the date */
+.today-date {
+  font-size: 16px;
+  color: #666;
+  margin-top: 5px;
+  text-align: left;  /* Align the text to the left */
+  font-weight: normal;
+}

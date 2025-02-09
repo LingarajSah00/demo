@@ -20,6 +20,8 @@
     color: #d32f2f; /* Red color for the text */
     border: 1px solid #d32f2f; /* Border color to match red */
     transition: background-color 0.3s ease; /* Smooth transition on hover */
+    margin: 0 10px; /* Adds space between the buttons */
+
   }
   
   .dialog-button:hover {
