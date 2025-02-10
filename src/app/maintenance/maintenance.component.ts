@@ -14,6 +14,7 @@ import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dia
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { CreateMaintenanceDialogComponent } from '../create-maintenance-dialog/create-maintenance-dialog.component';
 
 
 interface UserData {
@@ -86,5 +87,16 @@ export class MaintenanceComponent {
 
 
 // Handle form submission
+openCreateMaintenanceDialog(): void {
+  const dialogRef = this.dialog.open(CreateMaintenanceDialogComponent);
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Add the new maintenance record to the data source
+      this.dataSource.data = [...this.dataSource.data, result];
+      this._snackBar.open('Maintenance record added successfully!', 'Close', { duration: 3000 });
+    }
+  });
+}
 
 }
