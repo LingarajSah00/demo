@@ -190,3 +190,34 @@ mat-expansion-panel-header .mat-expansion-indicator {
   background-color: darkred; /* Darker shade when hovering */
   color: white; /* White text on hover */
 }
+.right-button mat-button {
+  color: white !important;
+}
+.mdc-button__label {
+  color: white; /* Remove rounded corners */
+}
+
+/* Force text color to white inside mat-mdc-button */
+::ng-deep .mat-mdc-button .mdc-button__label {
+  color: white !important;
+}
+
+/* If there's a hover effect, ensure that the text color stays white */
+::ng-deep .mat-mdc-button:hover .mdc-button__label {
+  color: white !important;
+}
+
+/* Handle the active state as well */
+::ng-deep .mat-mdc-button:active .mdc-button__label {
+  color: white !important;
+}
+
+/* Handle the focus state */
+::ng-deep .mat-mdc-button:focus .mdc-button__label {
+  color: white !important;
+}
+
+/* Handle disabled state */
+::ng-deep .mat-mdc-button:disabled .mdc-button__label {
+  color: white !important;
+}

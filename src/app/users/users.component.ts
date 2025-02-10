@@ -145,7 +145,6 @@ onSubmit(userData: any): void {
 }
 
 
-// Open Edit Dialog for Status change
 openEditUserDialog(user: UserData): void {
   const dialogRef = this.dialog.open(EdituserdialogComponent, {
     width: '400px',
@@ -153,12 +152,28 @@ openEditUserDialog(user: UserData): void {
   });
 
   dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      // Update the status with the selected one from the dialog
-      user.status = result;
-      this.dataSource._updateChangeSubscription(); // Refresh the table to reflect the change
-      this._snackBar.open(`User status updated to ${user.status}`, 'Close', { duration: 2000 });
+    if (result !== undefined) { // Check if user has made a change
+      // Open the confirmation dialog before submitting
+      const confirmDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '300px',
+        data: {
+          message: `Are you sure you want to submit the changes for ${user.username}?`
+        }
+      });
+
+      confirmDialogRef.afterClosed().subscribe(confirmResult => {
+        if (confirmResult) {
+          // If confirmed, update the user status
+          user.status = result;
+          this.dataSource._updateChangeSubscription(); // Refresh the table
+          this._snackBar.open(`User status updated to ${user.status}`, 'Close', { duration: 3000 });
+        } else {
+          // If canceled, revert changes or do nothing
+          console.log(`Edit for ${user.username} was canceled.`);
+        }
+      });
     }
   });
 }
+
 }

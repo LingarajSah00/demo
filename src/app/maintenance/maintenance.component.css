@@ -27,7 +27,6 @@
 table td button {
     margin-right: 5px; /* Add space between buttons */
     padding: 5px 10px; /* Padding inside the buttons */
-    border-radius: 4px; /* Slight rounding of button corners */
     cursor: pointer; /* Add pointer cursor */
     transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition on hover */
     font-weight: bold; /* Optional: Make the button text bold */

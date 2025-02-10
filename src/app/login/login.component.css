@@ -92,7 +92,7 @@
 
 /* Color-coding for alert box */
 .alert-box.error {
-  background-color: #f44336;  /* Red */
+  background-color: #cc0000;  /* Red */
 }
 
 .alert-box.success {
