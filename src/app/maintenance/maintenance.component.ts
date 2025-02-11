@@ -15,6 +15,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
 import { CreateMaintenanceDialogComponent } from '../create-maintenance-dialog/create-maintenance-dialog.component';
+import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 
 
 interface UserData {
@@ -28,6 +29,8 @@ interface UserData {
   admin_id: string;
 
   receive: string;
+  status: string;
+
 
 }
 @Component({
@@ -59,11 +62,11 @@ export class MaintenanceComponent {
 
   displayedColumns: string[] = ['id', 'type', 'name', 'emp_id', 'title', 'admin', 'admin_id', 'receive', 'status', 'actions'];
   dataSource = new MatTableDataSource<UserData>([
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes'},
+    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
+    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
+    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
+    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
+    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
 
   ]);
 
@@ -86,7 +89,6 @@ export class MaintenanceComponent {
 
 
 
-// Handle form submission
 openCreateMaintenanceDialog(): void {
   const dialogRef = this.dialog.open(CreateMaintenanceDialogComponent);
 
@@ -95,8 +97,64 @@ openCreateMaintenanceDialog(): void {
       // Add the new maintenance record to the data source
       this.dataSource.data = [...this.dataSource.data, result];
       this._snackBar.open('Maintenance record added successfully!', 'Close', { duration: 3000 });
+    } else {
+      console.log('Form submission canceled'); // If canceled, do nothing
     }
   });
 }
 
+deleteRecord(element: UserData): void {
+  const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    data: {
+      title: 'Confirm Deletion',
+      message: `Are you sure you want to delete the record for ${element.name}?`
+    }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Proceed with deletion if confirmed
+      const index = this.dataSource.data.indexOf(element);
+      if (index > -1) {
+        this.dataSource.data.splice(index, 1);  // Remove the record from the dataSource
+        this.dataSource._updateChangeSubscription();  // Refresh table view
+        this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
+      }
+    } else {
+      console.log('Deletion canceled');
+    }
+  });
+}
+
+
+openEditUserDialog(user: UserData): void {
+  const dialogRef = this.dialog.open(EdituserdialogComponent, {
+    width: '400px',
+    data: { status: user.status }
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result !== undefined) { // Check if user has made a change
+      // Open the confirmation dialog before submitting
+      const confirmDialogRef = this.dialog.open(ConfirmationDialogComponent, {
+        width: '300px',
+        data: {
+          message: `Are you sure you want to submit the changes for ${user.name}?`
+        }
+      });
+
+      confirmDialogRef.afterClosed().subscribe(confirmResult => {
+        if (confirmResult) {
+          // If confirmed, update the user status
+          user.status = result;
+          this.dataSource._updateChangeSubscription(); // Refresh the table
+          this._snackBar.open(`User status updated to ${user.status}`, 'Close', { duration: 3000 });
+        } else {
+          // If canceled, revert changes or do nothing
+          console.log(`Edit for ${user.name} was canceled.`);
+        }
+      });
+    }
+  });
+}
 }

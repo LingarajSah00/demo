@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // <-- Ensure this is imported
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,57 +18,66 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
       MatSnackBarModule,
       FormsModule,
       MatSelectModule,
-    ReactiveFormsModule,
-  CommonModule],
+  CommonModule,
+  FormsModule],
   templateUrl: './create-maintenance-dialog.component.html',
   styleUrl: './create-maintenance-dialog.component.css'
 })
 export class CreateMaintenanceDialogComponent {
-  maintenanceForm: FormGroup;
+ // Define maintenance properties that will bind to the template
+ id: string = '';
+ type: string = '';
+ name: string = '';
+ emp_id: string = '';
+ title: string = '';
+ admin: string = '';
+ admin_id: string = '';
+ receive: string = '';
+ status: string = '';
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CreateMaintenanceDialogComponent>,
-    private dialog: MatDialog
-  ) {
-    this.maintenanceForm = this.fb.group({
-      id: [null, Validators.required],
-      type: ['', Validators.required],
-      name: ['', Validators.required],
-      emp_id: ['', Validators.required],
-      title: ['', Validators.required],
-      admin: ['', Validators.required],
-      admin_id: ['', Validators.required],
-      receive: ['', Validators.required],
-      status: ['', Validators.required]
-    });
-  }
-  getStatusControl() {
-    return this.maintenanceForm.get('status');
-  }
-  // Submit the form
-  submitForm(): void {
-    if (this.maintenanceForm.valid) {
-      const newMaintenance = this.maintenanceForm.value;
-      this.dialogRef.close(newMaintenance); // Send data back to the parent component
-    }
-  }
+ constructor(
+   private dialogRef: MatDialogRef<CreateMaintenanceDialogComponent>,
+   private dialog: MatDialog
+ ) {}
 
-  // Close the dialog without doing anything
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
+ // Submit the form
+ submitForm(): void {
+   // Simple check for required fields (you can add more validations here)
+   if (this.id && this.type && this.name && this.emp_id && this.title && this.admin && this.admin_id && this.receive && this.status) {
+     // Open confirmation dialog before submitting the form
+     this.openConfirmationDialog();
+   } else {
+     console.log("Form is invalid!");
+   }
+ }
 
-    // Open the confirmation dialog before submitting
-    openConfirmationDialog(): void {
-      const dialogRef = this.dialog.open(ConfirmationDialogComponent); // Open confirmation dialog
-  
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          this.submitForm(); // If confirmed, submit the form
-        } else {
-          console.log('Form submission canceled'); // If canceled, do nothing
-        }
-      });
-    }
+ // Close the dialog without any further action (cancel)
+ closeDialog(): void {
+   this.dialogRef.close(); // Just close the dialog on cancel
+ }
+
+ // Open confirmation dialog
+ openConfirmationDialog(): void {
+   const dialogRef = this.dialog.open(ConfirmationDialogComponent); // Open confirmation dialog
+   
+   dialogRef.afterClosed().subscribe((result) => {
+     if (result) {
+       // Only close with the form data if confirmed
+       const newMaintenance = {
+         id: this.id,
+         type: this.type,
+         name: this.name,
+         emp_id: this.emp_id,
+         title: this.title,
+         admin: this.admin,
+         admin_id: this.admin_id,
+         receive: this.receive,
+         status: this.status
+       };
+       this.dialogRef.close(newMaintenance); // Send data back to parent
+     } else {
+       console.log('Form submission canceled'); // Do nothing if canceled
+     }
+   });
+ }
 }

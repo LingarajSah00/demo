@@ -1,64 +1,58 @@
-<h2 mat-dialog-title>Add New Maintenance</h2>
-
-<form [formGroup]="maintenanceForm" (ngSubmit)="openConfirmationDialog()">
-  <mat-dialog-content>
-    <mat-form-field appearance="fill">
-      <mat-label>Maintenance ID</mat-label>
-      <input matInput formControlName="id" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">ID is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Type</mat-label>
-      <input matInput formControlName="type" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Type is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Name</mat-label>
-      <input matInput formControlName="name" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Name is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Employee ID</mat-label>
-      <input matInput formControlName="emp_id" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Employee ID is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Title is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Admin</mat-label>
-      <input matInput formControlName="admin" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Admin is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Admin Employee ID</mat-label>
-      <input matInput formControlName="admin_id" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Admin Employee ID is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Receive</mat-label>
-      <input matInput formControlName="receive" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Receive is required.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Status</mat-label>
-      <input matInput formControlName="status" required>
-      <mat-error *ngIf="getStatusControl()?.hasError('required')">Status is required.</mat-error>
-    </mat-form-field>
-  </mat-dialog-content>
-
-  <mat-dialog-actions>
-    <button mat-button (click)="closeDialog()" class="right-button">Cancel</button>
-    <button mat-raised-button color="primary" class="right-button" type="submit" [disabled]="maintenanceForm.invalid">Submit</button>
-  </mat-dialog-actions>
-</form>
+<div class="mat-elevation-z8">
+    <h3>Maintenance Form</h3>
+  
+    <!-- Maintenance Form (Template-Driven Form) -->
+    <form #maintenanceForm="ngForm">
+      <mat-form-field appearance="fill">
+        <mat-label>ID</mat-label>
+        <input matInput [(ngModel)]="id" name="id" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Type</mat-label>
+        <input matInput [(ngModel)]="type" name="type" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="name" name="name" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Emp ID</mat-label>
+        <input matInput [(ngModel)]="emp_id" name="emp_id" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput [(ngModel)]="title" name="title" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Admin</mat-label>
+        <input matInput [(ngModel)]="admin" name="admin" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Admin ID</mat-label>
+        <input matInput [(ngModel)]="admin_id" name="admin_id" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Receive</mat-label>
+        <input matInput [(ngModel)]="receive" name="receive" required />
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label>Status</mat-label>
+        <input matInput [(ngModel)]="status" name="status" required />
+      </mat-form-field>
+  
+      <!-- Buttons to submit or cancel -->
+      <div class="buttons">
+        <button mat-raised-button color="warn" class="right-button" (click)="closeDialog()">Cancel</button>
+        <button mat-raised-button color="primary" class="right-button1" (click)="submitForm()">Submit</button>
+      </div>
+    </form>
+  </div>
+  

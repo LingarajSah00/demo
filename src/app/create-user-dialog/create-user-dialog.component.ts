@@ -9,7 +9,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';  // <-- Import FormsModule
 import { MatSelectModule } from '@angular/material/select';
-
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-create-user-dialog',
   imports: [ MatDialogModule,
