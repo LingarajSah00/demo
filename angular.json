@@ -32,7 +32,11 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
-            "scripts": [],
+            "scripts": [   
+            
+            "node_modules/jquery/dist/jquery.min.js",
+            "node_modules/summernote/dist/summernote-bs4.min.js"
+          ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {

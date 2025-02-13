@@ -7,10 +7,16 @@
       <input matInput [(ngModel)]="campaign.name" placeholder="Enter campaign name" required>
     </mat-form-field>
   
+      <!-- Campaign Name Field -->
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Campaign Type</mat-label>
+        <input matInput [(ngModel)]="campaign.type" placeholder="Enter campaign type" required>
+      </mat-form-field>
+    
     <!-- Campaign Description Field -->
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Campaign Description</mat-label>
-      <textarea matInput [(ngModel)]="campaign.description" placeholder="Enter campaign description" rows="3"></textarea>
+      <textarea matInput [(ngModel)]="campaign.description" placeholder="Enter description" ></textarea>
     </mat-form-field>
   
     <!-- Status Selection -->

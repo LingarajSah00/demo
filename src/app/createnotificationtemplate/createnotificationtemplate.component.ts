@@ -19,7 +19,6 @@ import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.compon
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-
 interface Campaign {
   name: string;
   type: string;
@@ -27,28 +26,27 @@ interface Campaign {
   status: string;
 }
 @Component({
-  selector: 'app-create-campaign',
+  selector: 'app-createnotificationtemplate',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
-        MatButtonModule,  // Optional: To add buttons or actions
-        MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
-        MatPaginatorModule, // For pagination
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatSnackBarModule,
-        MatSlideToggleModule,
-        FormsModule,
-      CommonModule,
-      MatSelectModule,
-      MatOptionModule,
-      ],
-  templateUrl: './create-campaign.component.html',
-  styleUrl: './create-campaign.component.css'
+          MatButtonModule,  // Optional: To add buttons or actions
+          MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
+          MatPaginatorModule, // For pagination
+          MatInputModule,
+          MatDialogModule,
+          MatButtonModule,
+          MatInputModule,
+          MatFormFieldModule,
+          MatSnackBarModule,
+          MatSlideToggleModule,
+          FormsModule,
+        CommonModule,
+        MatSelectModule,
+        MatOptionModule,],
+  templateUrl: './createnotificationtemplate.component.html',
+  styleUrl: './createnotificationtemplate.component.css'
 })
-export class CreateCampaignComponent {
- // New campaign model
+export class CreatenotificationtemplateComponent {
+// New campaign model
  campaign: Campaign = {
   name: '',
   type: '',
@@ -76,7 +74,6 @@ onSubmit(): void {
 onCancel(): void {
   this.dialogRef.close();
 }
-
 
 
 

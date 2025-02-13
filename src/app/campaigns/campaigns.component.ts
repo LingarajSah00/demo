@@ -12,10 +12,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
+import { EditcampaignsdialogComponent } from '../editcampaignsdialog/editcampaignsdialog.component';
 
 interface UserData {
   id: number;
   name: string;
+  description: string;
+  type: String;
   status: string;
 }
 @Component({
@@ -37,13 +40,13 @@ export class CampaignsComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'name',  'status','actions']; // Define table column names
+  displayedColumns: string[] = ['id', 'name', 'type','description', 'status','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
-    { id: 1, name: 'campaign1',  status: 'ACTIVE' },
-    { id: 2, name: 'campaign1',  status: 'ACTIVE' },
-    { id: 3, name: 'campaign1',  status: 'ACTIVE' },
-    { id: 4, name: 'campaign1',  status: 'ACTIVE' },
-    { id: 5, name: 'campaign1',  status: 'ACTIVE' },
+    { id: 1, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
+    { id: 2, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
+    { id: 3, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
+    { id: 4, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
+    { id: 5, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
   ]);
 
   openCreateUserDialog(): void {
@@ -80,6 +83,8 @@ onSubmit(userData: any): void {
   const newUser: UserData = {
     id: this.dataSource.data.length + 1,
     name: userData.name,
+    type: userData.type,
+    description: userData.description,
     status: userData.status
   };
 
@@ -100,7 +105,7 @@ onSubmit(userData: any): void {
   }
 
   openEditUserDialog(user: UserData): void {
-    const dialogRef = this.dialog.open(EdituserdialogComponent, {
+    const dialogRef = this.dialog.open(EditcampaignsdialogComponent, {
       width: '400px',
       data: { status: user.status }
     });

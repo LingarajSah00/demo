@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router'; // To navigate after form submission
+import { Component, AfterViewInit,Inject,importProvidersFrom } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -16,18 +16,20 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
-import { CommonModule } from '@angular/common';
-import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Import CUSTOM_ELEMENTS_SCHEMA if needed
+import Quill from 'quill';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+declare var $: any;
 
-interface Campaign {
+interface TemplateData {
+  id: number;
   name: string;
-  type: string;
-  description?: string;
+  email: string;
   status: string;
 }
 @Component({
-  selector: 'app-create-campaign',
+  selector: 'app-edit-template-dialog',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
         MatButtonModule,  // Optional: To add buttons or actions
         MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
@@ -39,45 +41,38 @@ interface Campaign {
         MatFormFieldModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        FormsModule,
-      CommonModule,
-      MatSelectModule,
-      MatOptionModule,
-      ],
-  templateUrl: './create-campaign.component.html',
-  styleUrl: './create-campaign.component.css'
+        FormsModule  ,CKEditorModule    ],
+          // Import QuillModule
+
+
+  templateUrl: './edit-template-dialog.component.html',
+  styleUrl: './edit-template-dialog.component.css'
 })
-export class CreateCampaignComponent {
- // New campaign model
- campaign: Campaign = {
-  name: '',
-  type: '',
-  description: '',
-  status: 'ACTIVE'
-};
+export class EditTemplateDialogComponent implements AfterViewInit{
+ 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 
-// Campaign statuses
-statuses = ['ACTIVE', 'INACTIVE'];
+  ngOnInit(): void {
+    console.log('Editor Initialized'); // Log to confirm initialization
+  }
 
-constructor(private router: Router,public dialogRef: MatDialogRef<CreateUserDialogComponent>) {}
+  saveChanges() {
+  }
 
-// Handle form submission
-onSubmit(): void {
-  // You can add your logic to save the new campaign here (e.g., call a service to store the campaign)
-  console.log('New Campaign Created:', this.campaign);
+  cancel() {
+    console.log('Cancelled');
+  }
 
-  // Redirect to the campaigns list page (e.g., the list of campaigns)
-  //this.router.navigate(['/campaigns']);
-  this.dialogRef.close({ name: this.campaign.name, type: this.campaign.type,description:this.campaign.description, status: this.campaign.status});
-
-}
-
-// Cancel the form and go back to the campaign list
-onCancel(): void {
-  this.dialogRef.close();
-}
-
-
-
-
+  ngAfterViewInit() {
+    $('#element').tooltip();  // Initialize tooltip
+    $('#summernote').summernote({
+      height: 300,
+      toolbar: [
+        ['style', ['bold', 'italic', 'underline']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['para', ['ul', 'ol', 'paragraph']]
+      ]
+    });
+  }
+ 
 }
