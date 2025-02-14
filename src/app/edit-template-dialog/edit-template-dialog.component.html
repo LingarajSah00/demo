@@ -1,28 +1,16 @@
-<h1 mat-dialog-title>Edit Template</h1>
+<h8 mat-dialog-title>Text for Notification Template - <font color="red" >Retail Past Due Initial Escalation to Manager</font></h8>
 <mat-dialog-content>
-  <mat-form-field appearance="fill">
-    <mat-label>Template Name</mat-label>
-    <input matInput [(ngModel)]="data.name" placeholder="Enter Template Name">
-  </mat-form-field>
+ 
+  <!-- CKEditor -->
+<div>
+    <!-- <div id="editor"></div> -->
+    <div #editorContainer id="editor"></div>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Template Email</mat-label>
-    <input matInput [(ngModel)]="data.email" placeholder="Enter Template Email">
-  </mat-form-field>
+</div>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Status</mat-label>
-    <input matInput [(ngModel)]="data.status" placeholder="Enter Template Status">
-  </mat-form-field>
-
-  <!-- Quill HTML text editor -->
-  <div>
-    <h2>Edit Template</h2>
-    <div id="summernote"></div>
-
-  </div>
+</mat-dialog-content>
 
 <mat-dialog-actions>
-  <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-button color="primary" (click)="saveChanges()">Save</button>
+  <button mat-button class="right-button" (click)="cancel()">Cancel</button>
+  <button mat-button class="right-button" color="primary" (click)="saveChanges()">Save</button>
 </mat-dialog-actions>

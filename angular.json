@@ -30,10 +30,12 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/quill/dist/quill.snow.css"
+
             ],
             "scripts": [   
-            
+            "node_modules/jquery-ui-dist/jquery-ui.min.js",
             "node_modules/jquery/dist/jquery.min.js",
             "node_modules/summernote/dist/summernote-bs4.min.js"
           ],

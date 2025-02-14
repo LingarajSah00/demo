@@ -11,7 +11,7 @@
   .confirmation-icon {
     display: block;
     margin: 0 auto 10px auto; /* Center the image and add some space below it */
-    width: 50px; /* Adjust the image width */
+    width: 100px; /* Adjust the image width */
     height: 50px; /* Adjust the image height */
   }
   

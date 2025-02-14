@@ -1,4 +1,4 @@
-import { Component, AfterViewInit,Inject,importProvidersFrom } from '@angular/core';
+import { Component, AfterViewInit,Inject,ViewChild, ElementRef ,importProvidersFrom } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -17,10 +17,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Impor
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Import CUSTOM_ELEMENTS_SCHEMA if needed
-import Quill from 'quill';
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-declare var $: any;
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
+import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
+import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
+import Quill from 'quill';
+
 
 interface TemplateData {
   id: number;
@@ -41,7 +45,7 @@ interface TemplateData {
         MatFormFieldModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        FormsModule  ,CKEditorModule    ],
+        FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule  ],
           // Import QuillModule
 
 
@@ -49,30 +53,75 @@ interface TemplateData {
   styleUrl: './edit-template-dialog.component.css'
 })
 export class EditTemplateDialogComponent implements AfterViewInit{
+  editor: any;  // Quill editor instance
+  @ViewChild('editorContainer') editorContainer!: ElementRef;
+
+  htmlContent: string = '';  // Editor content
+  config = {
+    editable: true,
+    spellcheck: true,
+    height: '200px',  // Customize height
+    minHeight: '100px',
+    placeholder: 'Enter your content here...',
+  };
+
+  // You can log the content or save it as needed
+  saveContent() {
+    
+    console.log('Saved Content:', this.htmlContent);
+  }
+
  
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
+  constructor(
+    public dialogRef: MatDialogRef<EditTemplateDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,private dialog: MatDialog) { }
 
   ngOnInit(): void {
     console.log('Editor Initialized'); // Log to confirm initialization
-  }
+    this.htmlContent = '<p>Editor is ready!</p>';
 
-  saveChanges() {
-  }
-
-  cancel() {
-    console.log('Cancelled');
-  }
-
-  ngAfterViewInit() {
-    $('#element').tooltip();  // Initialize tooltip
-    $('#summernote').summernote({
-      height: 300,
-      toolbar: [
-        ['style', ['bold', 'italic', 'underline']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['para', ['ul', 'ol', 'paragraph']]
-      ]
-    });
   }
  
+
+   
+
+  // Save changes to the editor content
+  saveChanges() {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px',
+      data: { message: 'Are you sure you want to save the changes?' }  // Pass a custom message to the dialog
+    });
+  
+    // After the confirmation dialog is closed
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Saved Content:', this.htmlContent);  // Log the content, or save it to a service
+        // You can send this content to a backend or another component
+        this.dialogRef.close(this.htmlContent);  // Close the dialog and send content to the parent
+      } else {
+        console.log('Save operation cancelled');  // Log or perform any other action when cancelled
+      }
+    });
+  }
+  
+
+  // Handle cancel button
+  cancel() {
+    console.log('Cancelled');
+    this.dialogRef.close();  // Just close the dialog without saving
+  }
+
+  ngAfterViewInit(): void {
+    if (this.editorContainer) {
+      // Initialize Quill once the view has been initialized
+      this.editor = new Quill(this.editorContainer.nativeElement, {
+        theme: 'snow', // Choose the theme
+      });
+
+      // Set default content in the editor
+      this.editor.root.innerHTML = '<p>Our LearninHub records indicate  the colleague(s) below have required Compliance Training that is <b>PAST DUE</b>.</p>';
+    }
+  }
+  
+
 }

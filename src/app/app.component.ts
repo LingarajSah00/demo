@@ -19,6 +19,7 @@ import { filter } from 'rxjs/operators';
 import { isPlatformBrowser } from '@angular/common';
 import { Chart, ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PieController, LineController, LineElement, PointElement, Filler, BarElement, BarController } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PieController, LineController, LineElement, PointElement, Filler, BarElement, BarController);
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @Component({
   selector: 'app-root',
@@ -29,7 +30,8 @@ Chart.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, P
     MatIconModule,
     MatToolbarModule,
     MatExpansionModule,
-    RouterModule
+    RouterModule,
+    CKEditorModule
   ],
   standalone: true,  // Declare DashboardComponent as standalone
 

@@ -5,4 +5,30 @@ mat-form-field {
   quill-editor {
     height: 300px; /* Adjust height as needed */
   }
+  /* edit-template-dialog.component.css */
+angular-editor {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  .right-button {
+    background-color: #cc0000; /* Red background */
+    color: white; /* Black text */
+  }
+  
+  .right-button:hover {
+    background-color: darkred; /* Darker shade when hovering */
+    color: white; /* White text on hover */
+  }
+
+  ::ng-deep .mat-dialog-container {
+    width: 70%;
+    height: 70%;
+    max-width: 800px;
+    max-height: 600px;
+  }
+  #editor {
+    height: 300px; /* Adjust this based on your needs */
+  }
   
