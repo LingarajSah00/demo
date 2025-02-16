@@ -53,7 +53,7 @@ export class UsersComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id','username', 'name', 'email', 'status','actions']; // Define table column names
+  displayedColumns: string[] = ['username', 'name', 'email', 'status','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
     { id: 1, username: '9906504',name:'Paul Russo', email: 'Paul.Russo2@cvshealth.com', status: 'Active' },
     { id: 2, username: '9906504',name:'Paul Russo', email: 'Paul.Russo2@cvshealth.com', status: 'Active' },

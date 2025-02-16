@@ -41,7 +41,7 @@ export class NotificationtemplateComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'name', 'email', 'status','actions']; // Define table column names
+  displayedColumns: string[] = [ 'name', 'email', 'status','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
     { id: 1, name: 'Production', email: '2323323', status: 'To Compliance Annual Due' },
     { id: 2, name: 'Production', email: 'EMP_AN_DUE', status: 'To Employee Compliance Annual Due' },

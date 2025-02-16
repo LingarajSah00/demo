@@ -60,7 +60,7 @@ export class MaintenanceComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'type', 'name', 'emp_id', 'title', 'admin', 'admin_id', 'receive', 'status', 'actions'];
+  displayedColumns: string[] = [ 'type', 'name', 'emp_id', 'title', 'admin', 'admin_id', 'receive', 'status', 'actions'];
   dataSource = new MatTableDataSource<UserData>([
     { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
     { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},

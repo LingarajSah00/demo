@@ -39,7 +39,7 @@ export class PastdueescalationComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['id', 'name', 'email', 'status','assignType','dateNeeded','dateCompleted','escalationDate','week','sendStatus','template','actions']; // Define table column names
+  displayedColumns: string[] = [ 'name', 'email', 'status','assignType','dateNeeded','dateCompleted','escalationDate','week','sendStatus','template','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
     { id: 1, name: 'Production', email: '2323323', status: 'To Compliance Annual Due',assignType:'NEW',dateNeeded:'12/25/2024',dateCompleted:'',escalationDate:'01/29/2025',week:'6',sendStatus:'SENT',template:'SUP_PD' },
     { id: 2, name: 'Production', email: '2323323', status: 'To Compliance Annual Due',assignType:'NEW',dateNeeded:'12/25/2024',dateCompleted:'',escalationDate:'01/29/2025',week:'6',sendStatus:'SENT',template:'SUP_PD' },
