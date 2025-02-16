@@ -23,12 +23,17 @@ angular-editor {
   }
 
   ::ng-deep .mat-dialog-container {
-    width: 70%;
-    height: 70%;
-    max-width: 800px;
-    max-height: 600px;
+    width: 90%; /* Set to 90% of the screen width or a custom value */
+    max-width: 1000px; /* Max width of the dialog */
+    height: auto; /* Let the height adjust automatically */
+    max-height: 80vh; /* Max height to ensure it doesn't take up too much vertical space */
+    padding: 20px; /* Add some padding for a more spacious look */
+    box-sizing: border-box; /* Ensure padding doesn't affect the total width */
   }
   #editor {
     height: 300px; /* Adjust this based on your needs */
   }
-  
+  .cdk-overlay-pane mat-mdc-dialog-panel{
+    width: 609px;
+    position: static;
+  }

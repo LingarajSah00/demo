@@ -65,7 +65,7 @@ export class NotificationtemplateComponent {
   // When a row is clicked, open the edit dialog
   onRowClick(template: UserData): void {
     const dialogRef = this.dialog.open(EditTemplateDialogComponent, {
-      width: '400px',
+      width: '800px',
       data: template // Pass the clicked row data to the dialog
     });
 
