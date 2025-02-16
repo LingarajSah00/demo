@@ -8,10 +8,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field'; // mat-label is part of MatFormFieldModule
 import { MatIconModule } from '@angular/material/icon';  // Import MatIconModule
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,CommonModule,MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatIconModule],
+  imports: [FormsModule,CommonModule,MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatIconModule,MatButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

@@ -29,8 +29,10 @@
           <mat-icon>campaign</mat-icon>Campaigns
         </a>
         
-  
-        <mat-expansion-panel>
+        <a mat-list-item routerLink="/dashboard/template" routerLinkActive="active">
+          <mat-icon>edit</mat-icon>Templates
+        </a>
+        <!-- <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-icon mat-expansion-panel-header>edit</mat-icon>
             <mat-panel-title>Templates</mat-panel-title>
@@ -40,9 +42,11 @@
             <a mat-list-item routerLink="/development">Annual Course/Certification Memos</a>
             <a mat-list-item routerLink="/seo">Notification Helper Text Snippets</a>
           </mat-nav-list>
-        </mat-expansion-panel>
-  
-        <mat-expansion-panel>
+        </mat-expansion-panel> -->
+        <a mat-list-item routerLink="/dashboard/compliance" routerLinkActive="active">
+          <mat-icon>grid_on</mat-icon>Compliance Courses
+        </a>
+        <!-- <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-icon mat-expansion-panel-header>grid_on</mat-icon>
             <mat-panel-title>Compliance Courses</mat-panel-title>
@@ -53,13 +57,16 @@
             <a mat-list-item routerLink="/seo">Annual</a>
             <a mat-list-item routerLink="/seo">All</a>
           </mat-nav-list>
-        </mat-expansion-panel>
+        </mat-expansion-panel> -->
   
         <a mat-list-item routerLink="/memo" routerLinkActive="active">
           <mat-icon>description</mat-icon>Memos
         </a>
   
-        <mat-expansion-panel>
+        <a mat-list-item routerLink="/dashboard/pastdueescalation" routerLinkActive="active">
+          <mat-icon>insert_chart</mat-icon>Reporting
+        </a>
+        <!-- <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-icon mat-expansion-panel-header>insert_chart</mat-icon>
             <mat-panel-title>Reporting</mat-panel-title>
@@ -68,7 +75,7 @@
             <a mat-list-item routerLink="/web-design">Employee Compliance</a>
             <a mat-list-item routerLink="/dashboard/pastdueescalation">Employee Past Due Escalations</a>
           </mat-nav-list>
-        </mat-expansion-panel>
+        </mat-expansion-panel> -->
         <a mat-list-item routerLink="/dashboard/maintenance" routerLinkActive="active">
           <mat-icon>build</mat-icon>Maintenance
         </a>
@@ -88,7 +95,7 @@
           </button>
       <span class="title">Compliance Training Dashboard</span>
       <span class="spacer"></span>
-      <button mat-button class="right-button">Profile</button>
+      <button mat-button class="right-button profile">Profile</button>
       <button mat-button class="right-button" (click)="logout()">Logout</button>
     </mat-toolbar>
 

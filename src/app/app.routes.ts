@@ -43,6 +43,10 @@ export const routes: Routes = [
           {
             path: 'diagnostics',
             loadComponent: () => import('./diagnostics/diagnostics.component').then(m => m.DiagnosticsComponent),
+          },
+          {
+            path: 'compliance',
+            loadComponent: () => import('./compliancecourses/compliancecourses.component').then(m => m.CompliancecoursesComponent),
           }
         ]
       }

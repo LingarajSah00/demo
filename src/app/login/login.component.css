@@ -13,16 +13,19 @@
 
 /* Style for the left image in the header */
 .welcome-image-left {
-  width: 50px;  /* Adjust size to your preference */
+  width: 80px;  /* Adjust size to your preference */
   height: auto;  /* Maintain aspect ratio */
   margin-right: 16px;  /* Space between image and text */
 }
 
 /* Header text */
-.header h1 {
-  margin: 0;
+.header h2 {
+  margin: 10px;
   font-weight: lighter;
   font-size: xx-large;
+  color: #808080;
+
+font-size: 25px;
 }
 
 /* Main login container */
@@ -63,14 +66,25 @@
 
 /* SSO button styling */
 .blue-sso-btn {
-  background-color: #007bff;
+  background-color: #42A5F5;
   color: white;
   font-weight: bold;
   height: 35px;
+  border: none;
+  height: 45px;  /* Matching the standard height for buttons */
+  width: 100%;   /* Let it fill available space like the other buttons */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);  /* Light shadow for depth */
+  cursor: pointer;
+  text-transform: uppercase;  /* Optional: Uppercase text for uniformity */
+
 }
 
-.blue-sso-btn:hover {
-  background-color: #0056b3;
+
+.mat-mdc-raised-button:not(:disabled) {
+  background-color: #42A5F5;
 }
 
 /* Alert Box Styling */

@@ -187,9 +187,13 @@ mat-expansion-panel-header .mat-expansion-indicator {
 .right-button mat-button {
   color: white !important;
 }
+.right-button.profile {
+  margin-right: 10px; /* Add space between Profile and Logout */
+}
 .mdc-button__label {
   color: white;
 }
+
 
 /* Force text color to white inside mat-mdc-button */
 ::ng-deep .mat-mdc-button .mdc-button__label {
