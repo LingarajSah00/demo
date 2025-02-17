@@ -15,15 +15,19 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
+import { HttpClientModule } from '@angular/common/http';
+import { UserserviceService } from '../userservice.service';
+import { HttpClient } from '@angular/common/http';
 
 
 interface UserData {
-  id: number;
-  name: string;
+  userId: string;
   username: string;
-
-  email: string;
-  status: string;
+  fullName: string;
+  userStatus: string;
+  roles: string[];
+  jobName: string;
+  orgName: string;
 }
 @Component({
   selector: 'app-users',
@@ -38,14 +42,17 @@ interface UserData {
       MatFormFieldModule,
       MatSnackBarModule,
       MatSlideToggleModule,
-      FormsModule],
+      FormsModule,HttpClientModule],
+      providers: [UserserviceService],  // Provide UserService here explicitly
+
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 
 })
 export class UsersComponent {
 
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar,    private userService: UserserviceService // Inject the UserService
+) {}
 
 // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -53,20 +60,22 @@ export class UsersComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = ['username', 'name', 'email', 'status','actions']; // Define table column names
+  displayedColumns: string[] = ['username', 'name', 'email', 'role','status','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
-    { id: 1, username: '9906504',name:'Paul Russo', email: 'Paul.Russo2@cvshealth.com', status: 'Active' },
-    { id: 2, username: '9906504',name:'Paul Russo', email: 'Paul.Russo2@cvshealth.com', status: 'Active' },
-    { id: 3, username: '9906504',name:'Paul Russo', email: 'Paul.Russo2@cvshealth.com', status: 'Active' },
-    { id: 4, username: '9906504',name:'Paul Russo', email: 'Paul.Russo2@cvshealth.com', status: 'Active' },
-    { id: 5, username: '9906504',name:'Paul Russo', email: 'Paul.Russo2@cvshealth.com', status: 'Active' },
+    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
+    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
+    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
+    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
+    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
 
   ]);
 
 
   ngOnInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
+    //this.dataSource.paginator = this.paginator;
+    //this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
+    this.loadUsers(); // Fetch users when component is initialized
+
   }
 
   // Filter the table based on the input search text
@@ -90,9 +99,9 @@ export class UsersComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // If confirmed, change the status
-        user.status = user.status === 'Active' ? 'Active' : 'Inactive';
+        user.userStatus = user.userStatus === 'Active' ? 'Active' : 'Inactive';
         this.dataSource._updateChangeSubscription(); // Refresh the table
-        this._snackBar.open(`User status changed to ${user.status}`, 'Close', { duration: 2000 });
+        this._snackBar.open(`User status changed to ${user.userStatus}`, 'Close', { duration: 2000 });
       } else {
         // If canceled, revert the change or do nothing
         console.log(`Status change for ${user.username} was canceled.`);
@@ -132,11 +141,13 @@ openConfirmationDialog(userData: any): void {
 onSubmit(userData: any): void {
   // Logic to add the new user to the table or save to server
   const newUser: UserData = {
-    id: this.dataSource.data.length + 1,
+    userId: userData.userId,
     username: userData.username,
-    name: userData.name,
-    email: userData.email,
-    status: userData.status
+    fullName: userData.name,
+    userStatus: userData.status,
+    roles: userData.role,
+    orgName: userData.orgName,
+    jobName: userData.jobName
   };
 
   // Add the new user to the table
@@ -148,7 +159,7 @@ onSubmit(userData: any): void {
 openEditUserDialog(user: UserData): void {
   const dialogRef = this.dialog.open(EdituserdialogComponent, {
     width: '400px',
-    data: { status: user.status }
+    data: { status: user.userStatus }
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -164,9 +175,9 @@ openEditUserDialog(user: UserData): void {
       confirmDialogRef.afterClosed().subscribe(confirmResult => {
         if (confirmResult) {
           // If confirmed, update the user status
-          user.status = result;
+          user.userStatus = result;
           this.dataSource._updateChangeSubscription(); // Refresh the table
-          this._snackBar.open(`User status updated to ${user.status}`, 'Close', { duration: 3000 });
+          this._snackBar.open(`User status updated to ${user.userStatus}`, 'Close', { duration: 3000 });
         } else {
           // If canceled, revert changes or do nothing
           console.log(`Edit for ${user.username} was canceled.`);
@@ -175,5 +186,39 @@ openEditUserDialog(user: UserData): void {
     }
   });
 }
+
+
+  // Fetch all users
+  loadUsers(): void {
+    this.userService.getUsers().subscribe(
+      (data: UserData[]) => {
+        this.dataSource.data = data; // Update data source
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      },
+      error => {
+        console.error('Error fetching user data', error);
+        this._snackBar.open('Error fetching users', 'Close', { duration: 3000 });
+      }
+    );
+  }
+
+  // Search for users based on path variable
+  searchUser(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+    if (filterValue) {
+      this.userService.searchUser(filterValue).subscribe(
+        (data: UserData[]) => {
+          this.dataSource.data = data; // Update the data table with search results
+        },
+        error => {
+          console.error('Error searching for user', error);
+          this._snackBar.open('Error searching users', 'Close', { duration: 3000 });
+        }
+      );
+    } else {
+      this.loadUsers(); // If no search query, load all users
+    }
+  }
 
 }

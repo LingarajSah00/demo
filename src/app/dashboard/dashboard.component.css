@@ -54,14 +54,19 @@ mat-sidenav {
 /* Active link style */
 a.active {
   font-weight: bold;
-  color: #f44336; /* Red text for active link */
-  background-color: #fafafa; /* Light grey background for active link */
+  color: #f44336 !important; /* Ensure red color stays active */
+  background-color: #fafafa;
+  transition: background-color 0.3s ease;
 }
 
 /* Hover effect for active links to prevent color change */
 ::ng-deep .sidenav a.active:hover {
   background-color: #fafafa; /* Keep active background when hovered */
   color: #f44336 !important; /* Ensure active text stays red on hover */
+}
+::ng-deep .sidenav a.active:focus {
+  color: #f44336 !important;  /* Red color on focus */
+  background-color: #fafafa;
 }
 /* Target mat-list-item within the sidenav */
 ::ng-deep mat-nav-list .mat-list-item:hover {

@@ -20,6 +20,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Chart, ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PieController, LineController, LineElement, PointElement, Filler, BarElement, BarController } from 'chart.js';
 Chart.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PieController, LineController, LineElement, PointElement, Filler, BarElement, BarController);
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     MatToolbarModule,
     MatExpansionModule,
     RouterModule,
-    CKEditorModule
+    CKEditorModule,
+    HttpClientModule
   ],
   standalone: true,  // Declare DashboardComponent as standalone
 
