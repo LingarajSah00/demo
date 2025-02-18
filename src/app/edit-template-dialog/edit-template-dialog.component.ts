@@ -131,15 +131,14 @@ export class EditTemplateDialogComponent implements AfterViewInit{
       const content = `
       <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
       <br>
-      <b>The Following colleague(s) in your store must complete their Compliance Training within 21 days of assignment date.</b>
+      <p>The Following colleague(s) in your store must complete their Compliance Training within 21 days of assignment date.</p>
       <br>
-      <p><employeeList</p>
-      <b>Since your colleague(s) do not have access to email , it is important to notify them as soon as possible so they can complete their required training on time. Colleague that fail to complete certain courses by the due date will result in their access being suspended </b>
+      <p>employeeList<br>
+      Since your colleague(s) do not have access to email , it is important to notify them as soon as possible so they can complete their required training on time. <b>Colleague that fail to complete certain courses by the due date will result in their access being suspended </b></p>
 
       <br>
-      <accessLearningHubStoreText>
-      <br>
-      <p>Compliance Training Team</p>
+      <p>accessLearningHubStoreText
+      <br>Compliance Training Team</p>
     `;
     
       // Set default content in the editor
