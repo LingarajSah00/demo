@@ -24,6 +24,7 @@ import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
+import 'quill-table';
 
 
 interface TemplateData {
@@ -115,11 +116,34 @@ export class EditTemplateDialogComponent implements AfterViewInit{
     if (this.editorContainer) {
       // Initialize Quill once the view has been initialized
       this.editor = new Quill(this.editorContainer.nativeElement, {
-        theme: 'snow', // Choose the theme
+        theme: 'snow',
+        modules: {
+          table: true, // Enable table module
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['link'],
+            [{ 'align': [] }],
+            ['table'], // Add table button to toolbar
+          ],
+        },
       });
+      const content = `
+      <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
+      <br>
+      <b>The Following colleague(s) in your store must complete their Compliance Training within 21 days of assignment date.</b>
+      <br>
+      <p><employeeList</p>
+      <b>Since your colleague(s) do not have access to email , it is important to notify them as soon as possible so they can complete their required training on time. Colleague that fail to complete certain courses by the due date will result in their access being suspended </b>
 
+      <br>
+      <accessLearningHubStoreText>
+      <br>
+      <p>Compliance Training Team</p>
+    `;
+    
       // Set default content in the editor
-      this.editor.root.innerHTML = '<p>Our LearninHub records indicate  the colleague(s) below have required Compliance Training that is <b>PAST DUE</b>.</p>';
+      this.editor.root.innerHTML =content;
     }
   }
   

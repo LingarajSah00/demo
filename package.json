@@ -33,6 +33,7 @@
     "jquery-ui-dist": "^1.13.3",
     "ngx-quill": "^27.0.0",
     "quill": "^2.0.3",
+    "quill-table": "^1.0.0",
     "rxjs": "~7.8.0",
     "summernote": "^0.9.1",
     "tslib": "^2.3.0",

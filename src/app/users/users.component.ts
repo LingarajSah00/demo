@@ -62,19 +62,19 @@ export class UsersComponent {
 
   displayedColumns: string[] = ['username', 'name', 'email', 'role','status','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
-    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
-    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
-    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
-    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
-    { userId: '1', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admin',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admiabc@gmail.comn',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
 
   ]);
 
 
   ngOnInit() {
-    //this.dataSource.paginator = this.paginator;
-    //this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
-    this.loadUsers(); // Fetch users when component is initialized
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
+    //this.loadUsers(); // Fetch users when component is initialized
 
   }
 
