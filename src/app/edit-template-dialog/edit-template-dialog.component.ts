@@ -133,11 +133,11 @@ export class EditTemplateDialogComponent implements AfterViewInit{
       <br>
       <p>The Following colleague(s) in your store must complete their Compliance Training within 21 days of assignment date.</p>
       <br>
-      <p>employeeList<br>
+      <p>&lt; employeeList &gt;<br>
       Since your colleague(s) do not have access to email , it is important to notify them as soon as possible so they can complete their required training on time. <b>Colleague that fail to complete certain courses by the due date will result in their access being suspended </b></p>
 
       <br>
-      <p>accessLearningHubStoreText
+      <p>&lt; accessLearningHubStoreText &gt;
       <br>Compliance Training Team</p>
     `;
     
