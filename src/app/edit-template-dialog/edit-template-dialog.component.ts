@@ -61,8 +61,8 @@ export class EditTemplateDialogComponent implements AfterViewInit{
   config = {
     editable: true,
     spellcheck: true,
-    height: '200px',  // Customize height
-    minHeight: '100px',
+    height: '700px',  // Customize height
+    minHeight: '700px',
     placeholder: 'Enter your content here...',
   };
 
@@ -114,20 +114,31 @@ export class EditTemplateDialogComponent implements AfterViewInit{
 
   ngAfterViewInit(): void {
     if (this.editorContainer) {
+
       // Initialize Quill once the view has been initialized
-      this.editor = new Quill(this.editorContainer.nativeElement, {
-        theme: 'snow',
-        modules: {
-          table: true, // Enable table module
-          toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-            ['link'],
-            [{ 'align': [] }],
-            ['table'], // Add table button to toolbar
-          ],
-        },
-      });
+    this.editor = new Quill(this.editorContainer.nativeElement, {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],  // Formatting options
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
+          ['link'], // Add link button
+          [{ 'align': [] }], // Alignment options
+          ['table'], // Table button
+          ['image', 'code-block'], // Image and code block buttons
+          [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
+          [{ 'color': [] }, { 'background': [] }], // Text and background colors
+          [{ 'font': [] }], // Font selection
+        ],
+      },
+      formats: [
+        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background'
+      ]
+    });
+
+    this.addCustomFontFamilyDropdown();
+    this.addCustomFontSizeDropdown();
+
       const content = `
       <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
       <br>
@@ -145,6 +156,47 @@ export class EditTemplateDialogComponent implements AfterViewInit{
       this.editor.root.innerHTML =content;
     }
   }
-  
+  // Add the custom font family dropdown to the toolbar
+  addCustomFontFamilyDropdown() {
+    const toolbar = this.editor.container.querySelector('.ql-toolbar');
+    const fontFamilyDropdown = document.createElement('select');
+    fontFamilyDropdown.classList.add('ql-font');
+    fontFamilyDropdown.innerHTML = `
+      <option value="arial">Arial</option>
+      <option value="times">Times New Roman</option>
+      <option value="courier">Courier New</option>
+      <option value="verdana">Verdana</option>
+    `;
+
+    // Add event listener to change font family
+    fontFamilyDropdown.addEventListener('change', (event) => {
+      const font = (event.target as HTMLSelectElement).value;
+      this.editor.format('font', font); // Apply font family to selected text
+    });
+
+    toolbar?.appendChild(fontFamilyDropdown);  // Append to toolbar
+  }
+
+  // Add the custom font size dropdown to the toolbar
+  addCustomFontSizeDropdown() {
+    const toolbar = this.editor.container.querySelector('.ql-toolbar');
+    const fontSizeDropdown = document.createElement('select');
+    fontSizeDropdown.classList.add('ql-size');
+    fontSizeDropdown.innerHTML = `
+      <option value="12px">12px</option>
+      <option value="14px">14px</option>
+      <option value="16px">16px</option>
+      <option value="18px">18px</option>
+    `;
+
+    // Add event listener to change font size
+    fontSizeDropdown.addEventListener('change', (event) => {
+      const size = (event.target as HTMLSelectElement).value;
+      this.editor.format('size', size); // Apply font size to selected text
+    });
+
+    toolbar?.appendChild(fontSizeDropdown);  // Append to toolbar
+  }
+
 
 }

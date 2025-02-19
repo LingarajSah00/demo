@@ -1,17 +1,15 @@
-<div></div>
-<h8 mat-dialog-title>Text for Notification Template - <font color="#cc0000" >To Store Compliance New Hire Welcome </font></h8>
-<mat-dialog-content>
- 
-  <!-- CKEditor -->
-<div>
-    <!-- <div id="editor"></div> -->
-    <div #editorContainer id="editor" style="height: 300px;"></div>
-
-</div>
-
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <button mat-button class="right-button" (click)="cancel()">Cancel</button>
-  <button mat-button class="right-button" color="primary" (click)="saveChanges()">Save</button>
-</mat-dialog-actions>
+<h8 mat-dialog-title>
+    Text for Notification Template - 
+    <font color="#cc0000">To Store Compliance New Hire Welcome</font>
+  </h8>
+  
+  <mat-dialog-content>
+    <!-- Quill Editor Container -->
+    <div #editorContainer id="editor" style="height: 700px;"></div>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions>
+    <button mat-button class="right-button" (click)="cancel()">Cancel</button>
+    <button mat-button class="right-button" color="primary" (click)="saveChanges()">Save</button>
+  </mat-dialog-actions>
+  

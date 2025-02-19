@@ -16,19 +16,12 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Impor
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 import { HttpClientModule } from '@angular/common/http';
-import { UserserviceService } from '../userservice.service';
+import { UserserviceService } from '../service/userservice.service';
 import { HttpClient } from '@angular/common/http';
+import { UserData } from '../model/user.model';  // Import the UserData model
 
 
-interface UserData {
-  userId: string;
-  username: string;
-  fullName: string;
-  userStatus: string;
-  roles: string[];
-  jobName: string;
-  orgName: string;
-}
+
 @Component({
   selector: 'app-users',
   imports: [ MatTableModule  ,   // Import MatTableModule for Angular Material Table
@@ -62,11 +55,11 @@ export class UsersComponent {
 
   displayedColumns: string[] = ['username', 'name', 'email', 'role','status','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
-    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
-    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'Admiabc@gmail.comn',orgName:'Admin'},
-    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
-    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
-    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,roles:['Admin'],jobName:'abc@gmail.com',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
 
   ]);
 
@@ -145,7 +138,8 @@ onSubmit(userData: any): void {
     username: userData.username,
     fullName: userData.name,
     userStatus: userData.status,
-    roles: userData.role,
+    email: userData.email,
+    securityRoles: userData.securityRoles,
     orgName: userData.orgName,
     jobName: userData.jobName
   };
@@ -167,6 +161,7 @@ openEditUserDialog(user: UserData): void {
       // Open the confirmation dialog before submitting
       const confirmDialogRef = this.dialog.open(ConfirmationDialogComponent, {
         width: '300px',
+
         data: {
           message: `Are you sure you want to submit the changes for ${user.username}?`
         }
@@ -219,6 +214,29 @@ openEditUserDialog(user: UserData): void {
     } else {
       this.loadUsers(); // If no search query, load all users
     }
+  }
+
+  deleteRecord(element: UserData): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        title: 'Confirm Deletion',
+        message: `Are you sure you want to delete the record for ${element.username}?`
+      }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // Proceed with deletion if confirmed
+        const index = this.dataSource.data.indexOf(element);
+        if (index > -1) {
+          this.dataSource.data.splice(index, 1);  // Remove the record from the dataSource
+          this.dataSource._updateChangeSubscription();  // Refresh table view
+          this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
+        }
+      } else {
+        console.log('Deletion canceled');
+      }
+    });
   }
 
 }
