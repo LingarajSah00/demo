@@ -16,23 +16,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Impor
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
 import { CreateMaintenanceDialogComponent } from '../create-maintenance-dialog/create-maintenance-dialog.component';
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
+import { NotificationService } from '../service/notification.service';
+import { ELTData } from '../model/elt.model';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { Setting } from '../model/setting.model';
+import { ListOption } from '../model/list-option.model';
 
 
-interface UserData {
-  id: number;
-  type: string;
-  name: string;
 
-  emp_id: string;
-  title: string;
-  admin: string;
-  admin_id: string;
-
-  receive: string;
-  status: string;
-
-
-}
 @Component({
   selector: 'app-maintenance',
   imports: [ MatTableModule  ,   // Import MatTableModule for Angular Material Table
@@ -46,13 +37,15 @@ interface UserData {
         MatFormFieldModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        FormsModule],
+        FormsModule,HttpClientModule],
+         providers: [NotificationService], 
   templateUrl: './maintenance.component.html',
   styleUrl: './maintenance.component.css'
 })
 export class MaintenanceComponent {
 
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+  constructor( private notificationService: NotificationService,
+    public dialog: MatDialog, private _snackBar: MatSnackBar) {}
 
 // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -60,20 +53,47 @@ export class MaintenanceComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = [ 'type', 'name', 'emp_id', 'title', 'admin', 'admin_id', 'receive', 'status', 'actions'];
-  dataSource = new MatTableDataSource<UserData>([
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
-    { id: 1, type: 'ETL',name:'Paul Russo', emp_id: '3232', title: 'EVP and Chief Medical Officer,CVS Health',admin: 'Nancy Gelinas',admin_id: '0022874' ,receive: 'yes',status:'Active'},
+  loading: boolean = false; // Flag to show loading state
+
+  displayedColumns: string[] = [  'fullName', 'username', 'userTitle', 'adminFullName', 'adminId',  'personExceptionStatus', 'actions'];
+  dataSource = new MatTableDataSource<ELTData>([
+    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:''},
+    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:''},
+    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:''},
+    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:''},
+    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:''},
 
   ]);
+  secondTableColumns: string[] = [ 'name', 'securityRoles'];
+  secondTableData = new MatTableDataSource<Setting>([
+    {  name: 'John Doe',value:'', securityRoles: ['Admin'], canUpdate:true,valueDataType:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    {  name: 'John Doe',value:'', securityRoles: ['Admin'], canUpdate:true,valueDataType:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    {  name: 'John Doe',value:'', securityRoles: ['Admin'], canUpdate:true,valueDataType:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    {  name: 'John Doe',value:'', securityRoles: ['Admin'], canUpdate:true,valueDataType:'',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+
+    // More data here...
+  ]);
+
+  // For third table (notifications)
+  thirdTableColumns: string[] = ['id', 'name', 'value'];
+  thirdTableData = new MatTableDataSource<ListOption>([
+    { id:1, name: 'John Doe',value:'Active', displayText: '', nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id:1, name: 'John Doe',value:'Active', displayText: '', nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id:1, name: 'John Doe',value:'Active', displayText: '', nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id:1, name: 'John Doe',value:'Active', displayText: '', nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+
+  ]); // Use Notification model for the third table
 
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
+    //this.loadPersonExceptions();
+    this.loadSettings();
+    this.loadListOptions();
+
+
+
   }
 
   // Filter the table based on the input search text
@@ -103,11 +123,11 @@ openCreateMaintenanceDialog(): void {
   });
 }
 
-deleteRecord(element: UserData): void {
+deleteRecord(element: ELTData): void {
   const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
     data: {
       title: 'Confirm Deletion',
-      message: `Are you sure you want to delete the record for ${element.name}?`
+      message: `Are you sure you want to delete the record for ${element.fullName}?`
     }
   });
 
@@ -127,10 +147,10 @@ deleteRecord(element: UserData): void {
 }
 
 
-openEditUserDialog(user: UserData): void {
+openEditUserDialog(user: ELTData): void {
   const dialogRef = this.dialog.open(EdituserdialogComponent, {
     width: '400px',
-    data: { status: user.status }
+    data: { status: user.personExceptionStatus }
   });
 
   dialogRef.afterClosed().subscribe(result => {
@@ -139,22 +159,107 @@ openEditUserDialog(user: UserData): void {
       const confirmDialogRef = this.dialog.open(ConfirmationDialogComponent, {
         width: '300px',
         data: {
-          message: `Are you sure you want to submit the changes for ${user.name}?`
+          message: `Are you sure you want to submit the changes for ${user.fullName}?`
         }
       });
 
       confirmDialogRef.afterClosed().subscribe(confirmResult => {
         if (confirmResult) {
           // If confirmed, update the user status
-          user.status = result;
+          user.personExceptionStatus = result;
           this.dataSource._updateChangeSubscription(); // Refresh the table
-          this._snackBar.open(`User status updated to ${user.status}`, 'Close', { duration: 3000 });
+          this._snackBar.open(`User status updated to ${user.personExceptionStatus}`, 'Close', { duration: 3000 });
         } else {
           // If canceled, revert changes or do nothing
-          console.log(`Edit for ${user.name} was canceled.`);
+          console.log(`Edit for ${user.fullName} was canceled.`);
         }
       });
     }
   });
+}
+
+ // Method to load all person exceptions from the API
+ loadPersonExceptions(): void {
+  this.loading = true; // Set loading to true while fetching data
+  this.notificationService.getPersonExceptions().subscribe(
+    (data: ELTData[]) => {
+      this.dataSource.data = data; // Populate table with data
+      this.loading = false; // Set loading to false after data is fetched
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error fetching person exceptions:', error);
+      this._snackBar.open('Failed to load person exceptions', 'Close', { duration: 3000 });
+      this.loading = false; // Stop loading even in case of error
+    }
+  );
+}
+
+// Search for a specific person exception by username
+searchPersonException(username: string): void {
+  this.loading = true; // Set loading to true while searching
+  this.notificationService.getPersonExceptionByUsername(username).subscribe(
+    (data: ELTData[]) => {
+      this.dataSource.data = data; // Populate table with search result
+      this.loading = false; // Set loading to false after search is complete
+    },
+    (error: HttpErrorResponse) => {
+      console.error('Error fetching person exception by username:', error);
+      this._snackBar.open('Failed to find person exception by username', 'Close', { duration: 3000 });
+      this.loading = false; // Stop loading even in case of error
+    }
+  );
+}
+
+// Method to load all settings data into the second table
+loadSettings(): void {
+  this.notificationService.getAllSettings().subscribe(
+    (data: Setting[]) => {
+      this.secondTableData.data = data; // Set the data for the second table
+    },
+    (error) => {
+      console.error('Error fetching settings:', error);
+    }
+  );
+}
+
+// Method to search for a specific setting by its name
+searchSettingByName(name: string): void {
+  this.notificationService.getSettingByName(name).subscribe(
+    (data: Setting) => {
+      this.secondTableData.data = [data]; // Populate the table with the searched result
+    },
+    (error) => {
+      console.error('Error fetching setting by name:', error);
+    }
+  );
+}
+
+ // Handle any action on the third table row (for example, edit)
+ onNotificationActionClick(notification: Notification): void {
+  console.log('Action clicked for notification:', notification);
+}
+
+ // Load list options data for the third table (list option values)
+ loadListOptions(): void {
+  this.notificationService.getAllListOptions().subscribe(
+    (data: ListOption[]) => {
+      this.thirdTableData.data = data;
+    },
+    (error) => {
+      console.error('Error fetching list options:', error);
+    }
+  );
+}
+
+ // Search functionality for the third table
+ searchListOptionByName(name: string): void {
+  this.notificationService.getListOptionByName(name).subscribe(
+    (data: ListOption) => {
+      this.thirdTableData.data = [data];
+    },
+    (error) => {
+      console.error('Error fetching list option by name:', error);
+    }
+  );
 }
 }
