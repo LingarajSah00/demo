@@ -47,6 +47,10 @@ export const routes: Routes = [
           {
             path: 'compliance',
             loadComponent: () => import('./compliancecourses/compliancecourses.component').then(m => m.CompliancecoursesComponent),
+          },
+          {
+            path: 'manualrun',
+            loadComponent: () => import('./manualrun/manualrun.component').then(m => m.ManualrunComponent),
           }
         ]
       }
