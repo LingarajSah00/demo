@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { CreatenotificationtemplateComponent } from '../createnotificationtemplate/createnotificationtemplate.component';
+import { HttpClientModule } from '@angular/common/http';  // Import HttpClientModule
+import { NotificationTemplateService } from '../service/notification-template.service';
 
 interface UserData {
   id: number;
@@ -25,15 +27,17 @@ interface UserData {
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination
-    MatInputModule
+    MatInputModule,
+    HttpClientModule
      ],
+     providers: [NotificationTemplateService],
   templateUrl: './notificationtemplate.component.html',
   styleUrl: './notificationtemplate.component.css'
 })
 
 export class NotificationtemplateComponent {
 
-    constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+    constructor(private notificationService: NotificationTemplateService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
   
   // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -67,6 +71,8 @@ export class NotificationtemplateComponent {
     const dialogRef = this.dialog.open(EditTemplateDialogComponent, {
       width: '900px',
       height: '700px',
+      maxWidth: '100%',  // Allow the dialog to take up 100% of the screen width
+
       data: template // Pass the clicked row data to the dialog
     });
 
@@ -143,4 +149,30 @@ onSubmit(userData: any): void {
     status: userData.status
   };
 }
+
+// // Get all templates
+// loadTemplates(): void {
+//   this.notificationService.getAllTemplates().subscribe(
+//     (data) => {
+//       this.templates = data;
+//       console.log('Templates loaded:', this.templates);
+//     },
+//     (error) => {
+//       console.error('Error loading templates:', error);
+//     }
+//   );
+// } 
+
+// // Search for a template by ID
+// searchTemplateById(id: number): void {
+//   this.notificationService.getTemplateById(id).subscribe(
+//     (data) => {
+//       this.selectedTemplate = data.length > 0 ? data[0] : null; // Assuming the response is an array
+//       console.log('Selected Template:', this.selectedTemplate);
+//     },
+//     (error) => {
+//       console.error('Error loading template by ID:', error);
+//     }
+//   );
+// }
 }

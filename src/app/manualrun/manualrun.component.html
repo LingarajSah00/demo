@@ -1,0 +1,81 @@
+<mat-tab-group>
+    <mat-tab label="Core">
+      <p>Adminstator Email(s):</p>
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <input matInput placeholder="Enter some text here" value="defaultemail@example.com">
+      </mat-form-field>
+      
+     
+      <!-- Create a flex container for div1 and div2 -->
+
+      <div class="flex-container">
+        
+        <div class="div1">
+            <p>Target Audience: <mat-checkbox checked>All</mat-checkbox><br>
+            </p>
+
+            <div class="scrollable-container">
+                <div class="row">All</div>
+                <div class="row">All</div>
+                <!-- Add more rows as needed -->
+              </div>
+        <p>Run Date:</p>
+          <mat-form-field appearance="fill">
+            <mat-label>Select Date</mat-label>
+            <input matInput [matDatepicker]="picker" placeholder="Choose a date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+  
+        <!-- div2 will take the remaining space (70%) -->
+        <div class="div2">
+            <p>Specific Compliance Course(s):<mat-checkbox checked>All</mat-checkbox></p>
+
+            <div class="scrollable-container">
+                
+                <div class="row">All</div>
+                <div class="row">All</div>
+                <!-- Add more rows as needed -->
+              </div>
+              <div class="div3-div4-container">
+
+              <div class="div3">
+                <p>Options:</p>
+
+               <!-- Checkboxes under div3 -->
+            <mat-checkbox >Run Employee Complliance Course Backgroud Data Component</mat-checkbox><br>
+
+            <!-- Sublist of checkboxes -->
+            <div class="checkbox-sublist">
+              <mat-checkbox >Run New Hire Background Data Component </mat-checkbox><br>
+              <mat-checkbox >Run Annuals Background data component</mat-checkbox><br>
+            </div>
+            <mat-checkbox >Get Current Course Histories Status</mat-checkbox><br>
+            <mat-checkbox >Run Processes to Assemble NEWHIRE Training Due Notification</mat-checkbox><br>
+            <mat-checkbox >Run Processes To Assemble ANNUAL Training Due Notification</mat-checkbox><br>
+            <mat-checkbox >Run Processes To Assemble Escalation Notification</mat-checkbox><br>
+
+              </div>
+              <div class="div4">
+                <mat-checkbox >Send Emails to Colleagues</mat-checkbox><br>
+                <mat-checkbox >Run Process to Determine System Shutoff(NOT SET)</mat-checkbox><br>
+    
+                <!-- Sublist of checkboxes -->
+                <div class="checkbox-sublist">
+                  <mat-checkbox >Run Process to SET System Shutoff</mat-checkbox><br>
+                </div>
+                <mat-checkbox >Run Missing Email Addresses Component</mat-checkbox><br>
+
+              </div>
+              </div>
+
+        </div>
+      </div>
+    </mat-tab>
+  
+    <mat-tab label="Advanced/Testing">
+      <p>This is the content for Tab 2.</p>
+    </mat-tab>
+  </mat-tab-group>
+  

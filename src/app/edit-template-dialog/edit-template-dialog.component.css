@@ -63,4 +63,22 @@ angular-editor {
     margin-left: 10px;
     padding: 5px;
   }
+
+  .editor-container {
+    height: 700px; /* Maintain your custom height */
+    width: 100%;   /* Set width to 100% */
+    max-width: 1200px;  /* Limit width to 1200px */
+
+  }
+
+  .mat-dialog-container {
+    width: 900px !important;  /* Make sure the dialog container width is fixed */
+    height: 700px !important;  /* Same for height */
+  }
+  
+  #editor {
+    width: 100% !important;  /* Ensure the editor stretches to fill the dialog */
+    height: 100% !important; /* Make the editor fill the container */
+  }
+  
   

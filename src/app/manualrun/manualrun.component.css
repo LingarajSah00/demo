@@ -1,0 +1,50 @@
+/* Flex container to arrange div1 and div2 in a horizontal line */
+.flex-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  /* div1 will take 30% of the available width */
+  .div1 {
+    flex: 0 0 30%;  /* Take 30% width */
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* div2 will take 70% of the available width */
+  .div2 {
+    flex: 0 0 70%;  /* Take 70% width */
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Optional: Add styling for scrollable container and rows */
+  .scrollable-container {
+    max-height: 50px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+  
+  .row {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+  }
+  .div3-div4-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px; /* To give some spacing between div2 content and div3/div4 */
+  }
+  
+  .div3, .div4 {
+    flex: 0 0 48%; /* Both div3 and div4 take 48% of the width, leaving space between them */
+    padding: 10px;
+    background-color: #e0e0e0;
+    margin-top: 10px; /* To give some spacing between the scrollable container and div3/div4 */
+  }
+  .checkbox-sublist {
+    margin-top: 20px;
+    padding-left: 20px;
+  }
