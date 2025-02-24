@@ -14,6 +14,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { CreatenotificationtemplateComponent } from '../createnotificationtemplate/createnotificationtemplate.component';
 import { HttpClientModule } from '@angular/common/http';  // Import HttpClientModule
 import { NotificationTemplateService } from '../service/notification-template.service';
+import { NotificationTemplate } from '../model/notification.template.model';
 
 interface UserData {
   id: number;
@@ -44,20 +45,23 @@ export class NotificationtemplateComponent {
 
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
+  templates: NotificationTemplate[] = [];  
 
   displayedColumns: string[] = [ 'name', 'email', 'status','actions']; // Define table column names
-  dataSource = new MatTableDataSource<UserData>([
-    { id: 1, name: 'Production', email: '2323323', status: 'To Compliance Annual Due' },
-    { id: 2, name: 'Production', email: 'EMP_AN_DUE', status: 'To Employee Compliance Annual Due' },
-    { id: 3, name: 'Production', email: '2323323', status: 'To Compliance Annual Due' },
-    { id: 4, name: 'Production', email: 'STR_NH', status: 'To Store Compliance New Hire Welcome' },
-    { id: 5, name: 'Production', email: '2323323', status: 'To Compliance Annual Due' }
+  dataSource = new MatTableDataSource<NotificationTemplate>([
+    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
   ]);
 
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
+    this.loadTemplates();  // Call the loadTemplates method to fetch data
+
   }
 
   // Filter the table based on the input search text
@@ -67,13 +71,14 @@ export class NotificationtemplateComponent {
   }
 
   // When a row is clicked, open the edit dialog
-  onRowClick(template: UserData): void {
+  onRowClick(template: NotificationTemplate): void {
     const dialogRef = this.dialog.open(EditTemplateDialogComponent, {
-      width: '900px',
-      height: '700px',
-      maxWidth: '100%',  // Allow the dialog to take up 100% of the screen width
+      width: '1300px', // Set a fixed width (you can adjust this value)
+      height: '800px', // Set a fixed height (you can adjust this value)
+      maxWidth: 'none',   // Allow the dialog to take up 100% of the screen width
+      panelClass: 'custom-dialog', // Add the custom CSS class here
 
-      data: template // Pass the clicked row data to the dialog
+      data: template.body // Pass the clicked row data to the dialog
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -88,7 +93,7 @@ export class NotificationtemplateComponent {
     });
   }
 
-    deleteRecord(element: UserData): void {
+    deleteRecord(element: NotificationTemplate): void {
       const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
         data: {
           title: 'Confirm Deletion',
@@ -150,29 +155,37 @@ onSubmit(userData: any): void {
   };
 }
 
-// // Get all templates
-// loadTemplates(): void {
-//   this.notificationService.getAllTemplates().subscribe(
-//     (data) => {
-//       this.templates = data;
-//       console.log('Templates loaded:', this.templates);
-//     },
-//     (error) => {
-//       console.error('Error loading templates:', error);
-//     }
-//   );
-// } 
+// Load all templates from the backend
+loadTemplates(): void {
+  this.notificationService.getAllTemplates().subscribe(
+    (data: NotificationTemplate[]) => {
+      this.dataSource.data = data;  // Update table data with response
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.templates = data;
+      console.log('Templates loaded:', this.templates);
+    },
+    (error) => {
+      console.error('Error loading templates:', error);
+    }
+  );
+}
 
-// // Search for a template by ID
-// searchTemplateById(id: number): void {
-//   this.notificationService.getTemplateById(id).subscribe(
-//     (data) => {
-//       this.selectedTemplate = data.length > 0 ? data[0] : null; // Assuming the response is an array
-//       console.log('Selected Template:', this.selectedTemplate);
-//     },
-//     (error) => {
-//       console.error('Error loading template by ID:', error);
-//     }
-//   );
-// }
+  // Get a template by ID
+  loadTemplateById(id: number): void {
+    this.notificationService.getTemplateById(id).subscribe(
+      (data: NotificationTemplate) => {
+        // Handle the response, e.g., open an edit dialog or update the view
+        console.log('Template loaded by ID:', data);
+        // Use 'data' which is a single NotificationTemplate object
+        // For example, pass it to a dialog for editing:
+        //this.openEditDialog(data);
+      },
+      (error) => {
+        console.error('Error loading template by ID:', error);
+      }
+    );
+  }
+
+
 }

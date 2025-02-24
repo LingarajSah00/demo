@@ -48,3 +48,54 @@
     margin-top: 20px;
     padding-left: 20px;
   }
+
+  .div4 {
+    position: relative;
+    min-height: 200px; /* Ensure there is enough height for the buttons */
+    padding-bottom: 70px; /* Give enough space for the buttons at the bottom */
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: flex-end;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    gap: 10px; /* Space between buttons */
+  }
+  .edit-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 35px;
+    margin-top: 0;
+    margin-right: 67px;
+    padding: 6px;
+    background-color: #40b249; /* Red background */
+    color: white; /* Black text */
+  }
+  .cancel-btn {
+    position: absolute;
+    bottom: 10px;
+    right: 35px;
+    margin-top: 0;
+    padding: 6px;
+
+  }
+
+  mat-tab {
+    display: flex;
+    justify-content: space-between; /* Spread the child divs evenly across the row */
+    padding: 10px;
+  }
+  
+  .container {
+    display: flex; /* Align div5 and div6 side by side */
+    width: 100%;
+  }
+  
+  .div5, .div6 {
+    width: 20%; /* Each div takes up 20% of the container */
+    padding: 10px;
+    box-sizing: border-box; /* Ensure padding is included in width calculation */
+  }
+  

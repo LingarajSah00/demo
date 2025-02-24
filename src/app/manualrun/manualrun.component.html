@@ -66,6 +66,8 @@
                   <mat-checkbox >Run Process to SET System Shutoff</mat-checkbox><br>
                 </div>
                 <mat-checkbox >Run Missing Email Addresses Component</mat-checkbox><br>
+                <button mat-button class="edit-btn" >Continue</button>
+                <button mat-button class="cancel-btn" >Cancel</button>
 
               </div>
               </div>
@@ -75,7 +77,47 @@
     </mat-tab>
   
     <mat-tab label="Advanced/Testing">
-      <p>This is the content for Tab 2.</p>
+        <div class="container">
+
+      <div class="div5">
+
+         <!-- Dropdown 1 -->
+          <p>Compliance Data Database:</p>
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Select Option 1</mat-label>
+        <mat-select>
+          <mat-option value="option1">Option 1</mat-option>
+          <mat-option value="option2">Option 2</mat-option>
+          <mat-option value="option3">Option 3</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Dropdown 2 -->
+      <p>Notification Letter Database:</p>
+
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Select Option 2</mat-label>
+        <mat-select>
+          <mat-option value="option1">Option 1</mat-option>
+          <mat-option value="option2">Option 2</mat-option>
+          <mat-option value="option3">Option 3</mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+      <div class="div6">
+
+        <br><br>
+                <mat-checkbox >CLEAR EMPLOYEE_COMPLIANCE_COURSE TABLE</mat-checkbox><br>
+        <mat-checkbox >CLEAR EMPLOYEE_PASTDUE_ESCALATION TABLE</mat-checkbox><br>
+        <mat-checkbox >ONE OF EACH EMAIL TYPE ENCOUNTERED TO ADMINS ONLY</mat-checkbox><br>
+        <mat-checkbox >Generate PDF's when NOT sending emails</mat-checkbox><br>
+        <mat-checkbox checked>Display Output</mat-checkbox><br>
+        <button mat-button class="edit-btn" >Continue</button>
+        <button mat-button class="cancel-btn" >Cancel</button>
+
+      </div>
+      </div>
+
     </mat-tab>
   </mat-tab-group>
   

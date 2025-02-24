@@ -88,3 +88,9 @@ table td button:active {
     background-color: darkred; /* Darker shade when hovering */
     color: white; /* White text on hover */
   }
+
+  .custom-dialog .mat-dialog-container {
+    max-width: 100%; /* Ensure the dialog container can stretch fully */
+    width: 100%; /* Ensure full width utilization */
+    height: 800px; /* Set height as needed */
+  }

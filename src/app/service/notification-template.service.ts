@@ -8,7 +8,7 @@ import { NotificationTemplate } from '../model/notification.template.model';
 })
 export class NotificationTemplateService {
 
-  private baseUrl = 'https://your-api-url/notification/template'; // Base URL for the API
+  private baseUrl = 'http://localhost:8080/notification/template'; // Base URL for the API
 
   constructor(private http: HttpClient) {}
 
@@ -18,7 +18,7 @@ export class NotificationTemplateService {
   }
 
   // Get a specific notification template by ID
-  getTemplateById(id: number): Observable<NotificationTemplate[]> {
-    return this.http.get<NotificationTemplate[]>(`${this.baseUrl}/${id}`);
+  getTemplateById(id: number): Observable<NotificationTemplate> {
+    return this.http.get<NotificationTemplate>(`${this.baseUrl}/${id}`);
   }
 }

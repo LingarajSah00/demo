@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { UserserviceService } from '../service/userservice.service';
 import { HttpClient } from '@angular/common/http';
 import { UserData } from '../model/user.model';  // Import the UserData model
+import { CommonModule } from '@angular/common';
 
 
 
@@ -35,7 +36,7 @@ import { UserData } from '../model/user.model';  // Import the UserData model
       MatFormFieldModule,
       MatSnackBarModule,
       MatSlideToggleModule,
-      FormsModule,HttpClientModule],
+      FormsModule,HttpClientModule,CommonModule],
       providers: [UserserviceService],  // Provide UserService here explicitly
 
   templateUrl: './users.component.html',
@@ -59,11 +60,26 @@ export class UsersComponent {
     { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
     { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
     { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
-    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Admin'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
+    { userId: 'emplo000000000137158', username: '9906504',fullName:'Paul Russo',  userStatus: 'Active' ,securityRoles:['Notifications Tool - Compliance User'],email:'abc@gmail.com',jobName:'',orgName:'Admin'},
 
   ]);
 
+   // Simulate a logged-in user
+   currentUser: UserData = {
+    userId: 'emplo000000000137158',
+    username: '1468808',
+    fullName: 'Brian Kearney',
+    userStatus: 'Active',
+    securityRoles: [
+      'Notifications Tool - Compliance User',
+      'Notifications Tool - View Only'
+    ],
+    email: 'abc@cvshealth.com',
+    jobName: 'Mgr,Corp Compliance (IC)',
+    orgName: 'Compliance / Industry Integrity Corp Compliance'
+  };
 
+  //currentUser = this.dataSource.data[0];  // Get the first user for user role in the table
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
@@ -239,4 +255,8 @@ openEditUserDialog(user: UserData): void {
     });
   }
 
+   // Check if user has Admin role
+   hasRole(user: UserData, role: string): boolean {
+    return user.securityRoles.includes(role);
+  }
 }
