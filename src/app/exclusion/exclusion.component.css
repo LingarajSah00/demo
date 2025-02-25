@@ -1,0 +1,44 @@
+/* Dropdown container */
+.dropdown-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  mat-form-field {
+    width: 22%; /* Decreased width to fit the text box */
+  }
+  
+  /* Button container */
+  .button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  button {
+    width: 100px;
+  }
+  
+  /* Styling for the new text box */
+  mat-form-field:last-child {
+    width: 22%;
+  }
+
+
+  .create-button {
+    background-color: #cc0000; /* Red background */
+    color: white; /* Black text */
+    padding: 15px;
+    border: none;
+  }
+  
+  .create-button:hover {
+    background-color: darkred; /* Darker shade when hovering */
+    color: white; /* White text on hover */
+  }
+  .create-button {
+    margin-bottom: 20px;  /* Space between button and table */
+    margin-right: 10px;   /* Space on the right */
+  }

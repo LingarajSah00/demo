@@ -47,6 +47,16 @@
         <th mat-header-cell *matHeaderCellDef> Status </th>
         <td mat-cell *matCellDef="let element"> {{element.personExceptionStatus}} </td>
       </ng-container>
+
+      <ng-container matColumnDef="nmUpdate">
+        <th mat-header-cell *matHeaderCellDef> Updated By </th>
+        <td mat-cell *matCellDef="let element"> {{element.nmUpdate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="dtUpdate">
+        <th mat-header-cell *matHeaderCellDef> Updated At </th>
+        <td mat-cell *matCellDef="let element"> {{element.dtUpdate}} </td>
+      </ng-container>
   
       <!-- Action Column (Create and Edit Buttons) -->
       <ng-container matColumnDef="actions">
@@ -69,28 +79,24 @@
                    showFirstLastButtons>
     </mat-paginator>
     <!-- Second Table (New Table) -->
-  <div style="margin-top: 20px; overflow-x: auto;">
+  <!-- <div style="margin-top: 20px; overflow-x: auto;">
     <h3>Setting: Admin Data</h3>
     <table mat-table [dataSource]="secondTableData">
-      <!-- ID Column -->
       <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>
         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
       </ng-container>
 
-      <!-- Name Column -->
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.name}} </td>
       </ng-container>
 
-      <!-- Other columns for the second table -->
       <ng-container matColumnDef="securityRoles">
         <th mat-header-cell *matHeaderCellDef> Role </th>
         <td mat-cell *matCellDef="let element"> {{element.securityRoles}} </td>
       </ng-container>
 
-      <!-- Action Column -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let element">
@@ -103,20 +109,19 @@
         </td>
       </ng-container>
 
-      <!-- Header and Row definitions -->
       <tr mat-header-row *matHeaderRowDef="secondTableColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: secondTableColumns;"></tr>
     </table>
-  </div>
+  </div> -->
 
   <!-- Pagination for second table -->
-  <mat-paginator [length]="secondTableData"
+  <!-- <mat-paginator [length]="secondTableData"
                  [pageSize]="5"
                  [pageSizeOptions]="[5, 10, 20]"
                  showFirstLastButtons>
-  </mat-paginator>
+  </mat-paginator> -->
 
-  <div style="margin-top: 20px; overflow-x: auto;">
+  <!-- <div style="margin-top: 20px; overflow-x: auto;">
     <h3>List</h3>
   
     <table mat-table [dataSource]="thirdTableData">
@@ -150,5 +155,6 @@
     <mat-paginator [length]="thirdTableData.data.length" [pageSize]="5" 
     [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
   </div>
+   -->
   </div>
   <!-- Third Table (Notifications) -->

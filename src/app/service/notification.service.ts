@@ -10,9 +10,9 @@ import { ListOption } from '../model/list-option.model';
 })
 export class NotificationService {
 
-  private apiUrl = 'http://localhost:8080/notification/personexception'; // Change to your actual API base URL
-  private settingApiUrl = 'http://localhost:8080/notification/setting'; // Change to your actual API base URL
-  private listOptionUrl = 'http://localhost:8080/notification/listoption'; // New API endpoint for list options
+  private apiUrl = 'http://localhost:8080/notification/personexception/'; // Change to your actual API base URL
+  private settingApiUrl = 'http://localhost:8080/notification/setting/'; // Change to your actual API base URL
+  private listOptionUrl = 'http://localhost:8080/notification/listoption/'; // New API endpoint for list options
 
   constructor(private http: HttpClient) { }
 

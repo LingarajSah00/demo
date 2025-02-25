@@ -83,7 +83,7 @@ export class UsersComponent {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
-    //this.loadUsers(); // Fetch users when component is initialized
+    this.loadUsers(); // Fetch users when component is initialized
 
   }
 

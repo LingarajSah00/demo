@@ -51,6 +51,10 @@ export const routes: Routes = [
           {
             path: 'manualrun',
             loadComponent: () => import('./manualrun/manualrun.component').then(m => m.ManualrunComponent),
+          },
+          {
+            path: 'exclusion',
+            loadComponent: () => import('./exclusion/exclusion.component').then(m => m.ExclusionComponent),
           }
         ]
       }

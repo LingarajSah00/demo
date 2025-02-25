@@ -8,7 +8,7 @@ import { NotificationTemplate } from '../model/notification.template.model';
 })
 export class NotificationTemplateService {
 
-  private baseUrl = 'http://localhost:8080/notification/template'; // Base URL for the API
+  private baseUrl = 'http://localhost:8080/notification/template/'; // Base URL for the API
 
   constructor(private http: HttpClient) {}
 
