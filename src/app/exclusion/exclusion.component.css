@@ -4,41 +4,115 @@
     justify-content: space-between;
     gap: 10px;
     margin-bottom: 20px;
-  }
-  
-  mat-form-field {
-    width: 22%; /* Decreased width to fit the text box */
-  }
-  
-  /* Button container */
-  .button-container {
+}
+
+mat-form-field {
+    width: 22%;
+    /* Decreased width to fit the text box */
+}
+
+/* Button container */
+.button-container {
     display: flex;
     gap: 10px;
     margin-top: 20px;
-  }
-  
-  button {
+}
+
+button {
     width: 100px;
-  }
-  
-  /* Styling for the new text box */
-  mat-form-field:last-child {
+}
+
+/* Styling for the new text box */
+mat-form-field:last-child {
     width: 22%;
-  }
+}
 
 
-  .create-button {
-    background-color: #cc0000; /* Red background */
-    color: white; /* Black text */
-    padding: 15px;
+.create-button {
+    background-color: #cc0000;
+    /* Red background */
+    color: white;
+    /* Black text */
+    padding: 20px;
     border: none;
-  }
-  
-  .create-button:hover {
-    background-color: darkred; /* Darker shade when hovering */
-    color: white; /* White text on hover */
-  }
-  .create-button {
-    margin-bottom: 20px;  /* Space between button and table */
-    margin-right: 10px;   /* Space on the right */
-  }
+    position: absolute;
+    right: 10px;
+    top: 90px;
+    margin-bottom: 100px;
+}
+
+.create-button:hover {
+    background-color: darkred;
+    /* Darker shade when hovering */
+    color: white;
+    /* White text on hover */
+}
+
+.create-button {
+    margin-bottom: 20px;
+    /* Space between button and table */
+    margin-right: 10px;
+    /* Space on the right */
+}
+
+/* Style the Edit and Delete buttons */
+table td button {
+    margin-top: 2px;
+    width: 20px;
+    max-width: 35px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    /* Add space between buttons */
+    padding: 5px 10px;
+    /* Padding inside the buttons */
+    cursor: pointer;
+    /* Add pointer cursor */
+    position: relative;
+    display: flex;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    /* Smooth transition on hover */
+    font-weight: bold;
+    /* Optional: Make the button text bold */
+}
+
+/* Specific red color for Edit button */
+table td button.edit-btn {
+    background-color: #cc0000;
+    /* Red background for Edit */
+    color: white;
+    /* White text */
+    border: none;
+    /* Remove border */
+}
+
+/* Hover effect for Edit button */
+table td button.edit-btn:hover {
+    background-color: darkred;
+    /* Darker red on hover */
+    color: white;
+    /* Keep text white on hover */
+}
+
+/* Specific red color for Delete button */
+table td button.delete-btn {
+    background-color: #cc0000;
+    /* Red background for Delete */
+    color: white;
+    /* White text */
+    border: none;
+    /* Remove border */
+}
+
+/* Hover effect for Delete button */
+table td button.delete-btn:hover {
+    background-color: darkred;
+    /* Darker red on hover */
+    color: white;
+    /* Keep text white on hover */
+}
+
+/* Optional: Add custom styles for when the button is clicked (pressed state) */
+table td button:active {
+    background-color: #b30000;
+    /* Darker red when the button is pressed */
+}

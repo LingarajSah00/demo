@@ -1,48 +1,41 @@
-<h3>Exclusions </h3>
-
-<div class="dropdown-container">
-
-    <!-- Dropdown 1 -->
-    <mat-form-field appearance="fill">
-      <mat-label>Leader</mat-label>
-      <mat-select [(value)]="selectedOption1">
-        <mat-option *ngFor="let option of dropdown1Options" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  
-    <!-- Dropdown 2 -->
-    <mat-form-field appearance="fill">
-      <mat-label>Location</mat-label>
-      <mat-select [(value)]="selectedOption2">
-        <mat-option *ngFor="let option of dropdown2Options" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  
-    <!-- Dropdown 3 -->
-    <mat-form-field appearance="fill">
-      <mat-label>Employee</mat-label>
-      <mat-select [(value)]="selectedOption3">
-        <mat-option *ngFor="let option of dropdown3Options" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-  
-  <!-- New Text Box -->
-  <mat-form-field appearance="fill">
-    <mat-label>Days</mat-label>
-    <input matInput [(ngModel)]="textBoxValue" placeholder="Enter value">
-  </mat-form-field>
-  
-  <!-- Action Buttons -->
-  <div class="button-container">
-    <button mat-icon-button color="primary" class="create-button"(click)="onAdd()">Add</button>
-    <button mat-icon-button color="accent"  class="create-button"(click)="onEdit()">Edit</button>
-    <button mat-icon-button color="warn"  class="create-button"(click)="onDelete()">Delete</button>
-  </div>
-  
+<h3>Exclusions </h3> <!-- Create Button at the top --> <button mat-raised-button color="warn" class="create-button"
+    (click)="openCreateMaintenanceDialog()"(click)="openSearchDialog()">Create</button>
+<!-- Table -->
+<table mat-table [dataSource]="dataSource"> <!-- ID Column --> <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+    </ng-container> <!-- Email Column --> <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef> UserName </th>
+        <td mat-cell *matCellDef="let element"> {{element.username}} </td>
+    </ng-container> <ng-container matColumnDef="userTitle">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.userTitle}} </td>
+    </ng-container> <ng-container matColumnDef="adminFullName">
+        <th mat-header-cell *matHeaderCellDef> Campaign Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.adminFullName}} </td>
+    </ng-container> <!-- Status Column --> <ng-container matColumnDef="personExceptionStatus">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let element"> {{element.personExceptionStatus}} </td>
+    </ng-container>
+    <ng-container matColumnDef="nmUpdate">
+        <th mat-header-cell *matHeaderCellDef> Updated By </th>
+        <td mat-cell *matCellDef="let element"> {{element.nmUpdate}} </td>
+    </ng-container>
+    <ng-container matColumnDef="dtUpdate">
+        <th mat-header-cell *matHeaderCellDef> Updated At </th>
+        <td mat-cell *matCellDef="let element"> {{element.dtUpdate}} </td>
+    </ng-container> <!-- Action Column (Create and Edit Buttons) --> <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element"> <button mat-button class="edit-btn"
+                (click)="openEditUserDialog(element)">Edit</button> <button mat-button class="delete-btn"
+                (click)="deleteRecord(element)">Delete</button> </td>
+    </ng-container>
+    <!-- Header and Row definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table> <!-- Pagination Controls --> <mat-paginator [length]="dataSource.data.length" [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>

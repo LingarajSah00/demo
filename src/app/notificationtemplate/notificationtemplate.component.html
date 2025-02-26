@@ -5,9 +5,11 @@
     <mat-label>Search</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search by Name or Email" />
   </mat-form-field>
+  <div class="button-container">
 
   <button mat-raised-button color="warn" class="create-button" (click)="openCreateUserDialog()">Create Template</button>
-
+  <button mat-raised-button class="download-btn" (click)="openDownloadDialog()">Download</button>
+</div>
   <table mat-table [dataSource]="dataSource">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> ID </th>

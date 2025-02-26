@@ -1,48 +1,137 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatTabsModule } from '@angular/material/tabs';  // Import MatTabsModule for tabs
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';  // Import the MatDatepicker module
-import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';  // Import the native date module
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { CreateMaintenanceDialogComponent } from '../create-maintenance-dialog/create-maintenance-dialog.component';
+import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
+import { NotificationService } from '../service/notification.service';
+import { ELTData } from '../model/elt.model';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
+
 
 @Component({
-  selector: 'app-exclusion',
-  imports: [MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
-    , MatDatepickerModule,  // Import MatDatepicker module
-    MatNativeDateModule,MatCheckboxModule],
-  templateUrl: './exclusion.component.html',
-  styleUrl: './exclusion.component.css'
+    selector: 'app-exclusion',
+    imports: [MatTableModule,
+        MatButtonModule,
+        MatIconModule,
+        MatPaginatorModule,
+        MatInputModule,
+        MatDialogModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatSnackBarModule,
+        MatSlideToggleModule,
+        FormsModule, HttpClientModule],
+    providers: [NotificationService],
+    templateUrl: './exclusion.component.html',
+    styleUrl: './exclusion.component.css'
 })
 export class ExclusionComponent {
-  textBoxValue: string = '';
 
-    // Define arrays for the dropdown options
-    dropdown1Options = ['Option 1', 'Option 2', 'Option 3'];
-    dropdown2Options = ['Option A', 'Option B', 'Option C'];
-    dropdown3Options = ['Choice X', 'Choice Y', 'Choice Z'];
-  
-// The selected values from the dropdowns
-selectedOption1: string | null = null;
-selectedOption2: string | null = null;
-selectedOption3: string | null = null;
+    constructor(private notificationService: NotificationService,
+        public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
-// Methods for button actions
-onAdd(): void {
-  console.log('Add clicked');
-  console.log('Selected Options:', this.selectedOption1, this.selectedOption2, this.selectedOption3);
-}
 
-onEdit(): void {
-  console.log('Edit clicked');
-  console.log('Selected Options:', this.selectedOption1, this.selectedOption2, this.selectedOption3);
-}
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
 
-onDelete(): void {
-  console.log('Delete clicked');
-  console.log('Selected Options:', this.selectedOption1, this.selectedOption2, this.selectedOption3);
-}
+    loading: boolean = false;
+
+    displayedColumns: string[] = ['fullName', 'username', 'userTitle', 'adminFullName', 'personExceptionStatus', 'nmUpdate', 'dtUpdate', 'actions'];
+    dataSource = new MatTableDataSource<ELTData>([
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
+
+    ]);
+
+    ngOnInit() {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.loadPersonExceptions();
+    }
+
+
+
+    openCreateMaintenanceDialog(): void {
+
+    }
+
+    deleteRecord(element: ELTData): void {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                title: 'Confirm Deletion',
+                message: `Are you sure you want to delete the record for ${element.fullName}?`
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                const index = this.dataSource.data.indexOf(element);
+                if (index > -1) {
+                    this.dataSource.data.splice(index, 1);
+                    this.dataSource._updateChangeSubscription();
+                    this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
+                }
+            } else {
+                console.log('Deletion canceled');
+            }
+        });
+    }
+
+
+    openEditUserDialog(user: ELTData): void {
+    }
+
+
+    loadPersonExceptions(): void {
+        this.loading = true;
+        this.notificationService.getPersonExceptions().subscribe(
+            (data: ELTData[]) => {
+                this.dataSource.data = data;
+                this.loading = false;
+            },
+            (error: HttpErrorResponse) => {
+                console.error('Error fetching person exceptions:', error);
+                this._snackBar.open('Failed to load person exceptions', 'Close', { duration: 3000 });
+                this.loading = false;
+            }
+        );
+    }
+
+    openSearchDialog(): void {
+        const dialogRef = this.dialog.open(SearchDialogComponent, {
+          width: '600px',
+          height: '600px'
+
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('Dialog closed');
+          // Handle any actions you want after closing the dialog
+        });
+      }
+
 }
