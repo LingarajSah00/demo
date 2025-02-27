@@ -88,7 +88,7 @@ export class MaintenanceComponent {
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;  // Optional: Enable sorting by columns
-    //this.loadPersonExceptions();
+    this.loadPersonExceptions();
     this.loadSettings();
     this.loadListOptions();
 
