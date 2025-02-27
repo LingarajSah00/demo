@@ -5,8 +5,28 @@
   
   <mat-dialog-content>
     <!-- Quill Editor Container -->
-    <div #editorContainer id="editor" style="height: 700px; width: 100%;"></div>
-  </mat-dialog-content>
+    <div class="dropdown-container">
+      <!-- Dropdown for Predefined Text Snippets -->
+      <mat-form-field appearance="fill" style="width: 100%;">
+        <mat-label>Select Text Snippet</mat-label>
+        <mat-select [(value)]="selectedText" (selectionChange)="onSnippetSelect($event)">
+            <mat-option *ngFor="let snippet of textSnippets" [value]="snippet">
+                {{ snippet }}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <!-- Drag-and-drop text container that updates based on selected snippet -->
+    <div *ngIf="selectedText" class="draggable-text" 
+         [draggable]="true" (dragstart)="onDragStart($event, selectedText)">
+        {{ selectedText }}
+    </div>
+  </div>
+    <div #editorContainer id="editor" 
+    style="height: 700px; width: 100%;" 
+    (drop)="onDrop($event)" 
+    (dragover)="onDragOver($event)">
+</div>  </mat-dialog-content>
   
   <mat-dialog-actions>
     <button mat-button class="right-button" (click)="cancel()">Cancel</button>

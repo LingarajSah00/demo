@@ -25,6 +25,8 @@ import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the mod
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
 import 'quill-table';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 
 
 interface TemplateData {
@@ -46,7 +48,7 @@ interface TemplateData {
         MatFormFieldModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule  ],
+        FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule ],
           // Import QuillModule
 
 
@@ -56,7 +58,16 @@ interface TemplateData {
 export class EditTemplateDialogComponent implements AfterViewInit{
   editor: any;  // Quill editor instance
   @ViewChild('editorContainer') editorContainer!: ElementRef;
+// Predefined text snippets for dropdown and drag-and-drop
+selectedText: string = '';
 
+textSnippets = [
+  '< accessLearningHubStoreText >',
+  '<employeeList1>',
+  '< accessLearningHubStoreText >',
+  '<employeeList1>',
+  '<employeeList1>'
+];
   htmlContent: string = '';  // Editor content
   config = {
     editable: true,
@@ -66,6 +77,7 @@ export class EditTemplateDialogComponent implements AfterViewInit{
     placeholder: 'Enter your content here...',
   };
 
+  
   // You can log the content or save it as needed
   saveContent() {
     
@@ -197,6 +209,41 @@ export class EditTemplateDialogComponent implements AfterViewInit{
 
     toolbar?.appendChild(fontSizeDropdown);  // Append to toolbar
   }
+ // Handle when snippet is selected from the dropdown
+ onSnippetSelect(event: any): void {
+  console.log('Snippet Selected:', event.value);
+  this.selectedText = event.value;  // Set the selected snippet text
+}
+
+// Handle the dragstart event for the selected snippet
+onDragStart(event: any, text: string): void {
+  event.dataTransfer.setData('text', text);  // Store the dragged text
+  console.log('Drag started with text:', text);
+}
+
+// Handle the drop event to insert text into the Quill editor
+onDrop(event: any): void {
+  event.preventDefault();
+  const text = event.dataTransfer.getData('text');  // Get the dragged text
+  if (text) {
+    const range = this.editor.getSelection();  // Get the current cursor position in the editor
+    if (range) {
+      this.editor.insertText(range.index, text);  // Insert the dragged text at the cursor position
+    }
+  }
+}
+
+// Handle the dragover event to allow the drop
+onDragOver(event: any): void {
+  event.preventDefault();  // Allow the drop event to happen
+}
 
 
+// Insert the selected or dragged text into the Quill editor at the current cursor position
+insertTextIntoEditor(text: string): void {
+  const range = this.editor.getSelection();  // Get the current selection (cursor position)
+  if (range) {
+    this.editor.insertText(range.index, text);  // Insert the text at the current position
+  }
+}
 }

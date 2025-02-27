@@ -116,3 +116,15 @@ table td button:active {
     background-color: #b30000;
     /* Darker red when the button is pressed */
 }
+.create-search-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+
+  .create-search-container mat-form-field {
+    /* Custom search field styles */
+    width: 300px;
+  }
+  

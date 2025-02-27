@@ -1,5 +1,21 @@
-<h3>Exclusions </h3> <!-- Create Button at the top --> <button mat-raised-button color="warn" class="create-button"
+<h3>Exclusions </h3> <!-- Create Button at the top --> 
+<div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 10px;">
+
+<mat-form-field appearance="fill">
+    <mat-label>Select Type</mat-label>
+    <mat-select>
+      <mat-option value="option1">By Employee</mat-option>
+      <mat-option value="option2">By Location</mat-option>
+      <mat-option value="option3">By Leader</mat-option>
+    </mat-select>
+  </mat-form-field>
+<mat-form-field appearance="fill">
+    <mat-label>Search</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search by Name or Email" />
+  </mat-form-field>
+<button mat-raised-button color="warn" class="create-button"
     (click)="openCreateMaintenanceDialog()"(click)="openSearchDialog()">Create</button>
+    </div>
 <!-- Table -->
 <table mat-table [dataSource]="dataSource"> <!-- ID Column --> <ng-container matColumnDef="id">
         <th mat-header-cell *matHeaderCellDef> ID </th>

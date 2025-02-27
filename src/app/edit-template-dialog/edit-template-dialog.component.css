@@ -81,4 +81,47 @@ angular-editor {
     height: 100% !important; /* Make the editor fill the container */
   }
   
-  
+  /* Quill Editor Styling */
+/* Quill Editor Styling */
+#editor {
+  border: 1px solid #ccc;
+  padding: 10px;
+  min-height: 400px;
+  background-color: #fff;
+}
+
+/* Flexbox container for the dropdown and draggable text */
+.dropdown-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;  /* Align elements to the start of the container */
+  margin-bottom: 20px;  /* Add some space below the elements */
+}
+
+/* Dropdown Styling */
+mat-form-field {
+  width: 45%;  /* Set the dropdown width to 45% of the parent container */
+}
+
+/* Draggable Text Styling */
+.draggable-text-container {
+  width: 45%;  /* Set the container for draggable text to 45% of the parent */
+  max-height: 300px;  /* Limit the height for better control */
+  overflow-y: auto;  /* Allow scrolling if content exceeds height */
+}
+/* Styling for draggable text */
+.draggable-text {
+  cursor: grab;
+  padding: 10px;
+  background-color: #f1f1f1;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  display: inline-block;
+  max-width: 300px;
+}
+
+/* Optional: Apply hover effect to make the text visually interactive */
+.draggable-text:hover {
+  background-color: #e0e0e0;
+}

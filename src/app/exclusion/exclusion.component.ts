@@ -41,7 +41,7 @@ import { SearchDialogComponent } from '../search-dialog/search-dialog.component'
         MatFormFieldModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        FormsModule, HttpClientModule],
+        FormsModule, HttpClientModule,MatSelectModule],
     providers: [NotificationService],
     templateUrl: './exclusion.component.html',
     styleUrl: './exclusion.component.css'
@@ -134,4 +134,8 @@ export class ExclusionComponent {
         });
       }
 
+      applyFilter(event: Event): void {
+        const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
+        this.dataSource.filter = filterValue;
+      }
 }
