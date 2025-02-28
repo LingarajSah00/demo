@@ -26,6 +26,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { SearchDialogComponent } from '../search-dialog/search-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
@@ -41,7 +42,7 @@ import { SearchDialogComponent } from '../search-dialog/search-dialog.component'
         MatFormFieldModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        FormsModule, HttpClientModule,MatSelectModule],
+        FormsModule, HttpClientModule,MatSelectModule,MatTooltipModule],
     providers: [NotificationService],
     templateUrl: './exclusion.component.html',
     styleUrl: './exclusion.component.css'
@@ -59,11 +60,11 @@ export class ExclusionComponent {
 
     displayedColumns: string[] = ['fullName', 'username', 'userTitle', 'adminFullName', 'personExceptionStatus', 'nmUpdate', 'dtUpdate', 'actions'];
     dataSource = new MatTableDataSource<ELTData>([
-        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
-        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
-        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
-        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
-        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '3234234', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '3234234', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '3234234', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '3234234', dtUpdate: '' },
+        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '3234234', dtUpdate: '' },
 
     ]);
 

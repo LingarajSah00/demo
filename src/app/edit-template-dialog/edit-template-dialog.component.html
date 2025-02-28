@@ -10,7 +10,7 @@
       <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Select Text Snippet</mat-label>
         <mat-select [(value)]="selectedText" (selectionChange)="onSnippetSelect($event)">
-            <mat-option *ngFor="let snippet of textSnippets" [value]="snippet">
+            <mat-option *ngFor="let snippet of textSnippets" [value]="snippet" matTooltip="{{'<employeeList1>'}}" matTooltipPosition="above">
                 {{ snippet }}
             </mat-option>
         </mat-select>
