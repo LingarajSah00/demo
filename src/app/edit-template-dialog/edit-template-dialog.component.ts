@@ -140,7 +140,9 @@ textSnippets = [
           ['image', 'code-block'], // Image and code block buttons
           [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
           [{ 'color': [] }, { 'background': [] }], // Text and background colors
-          [{ 'font': [] }], // Font selection
+          [{ 'font': [] }],
+          ['blockquote'],
+          ['code-block'] // Font selection
         ],
       },
       formats: [

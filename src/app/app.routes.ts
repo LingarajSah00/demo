@@ -55,6 +55,10 @@ export const routes: Routes = [
           {
             path: 'exclusion',
             loadComponent: () => import('./exclusion/exclusion.component').then(m => m.ExclusionComponent),
+          },
+          {
+            path: 'memo',
+            loadComponent: () => import('./memos/memos.component').then(m => m.MemosComponent),
           }
         ]
       }

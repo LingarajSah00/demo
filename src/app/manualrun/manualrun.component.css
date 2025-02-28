@@ -1,101 +1,124 @@
-/* Flex container to arrange div1 and div2 in a horizontal line */
-.flex-container {
-    display: flex;
-    width: 100%;
-  }
-  
-  /* div1 will take 30% of the available width */
-  .div1 {
-    flex: 0 0 30%;  /* Take 30% width */
-    padding: 10px;
-    border: 1px solid #ccc;
-  }
-  
-  /* div2 will take 70% of the available width */
-  .div2 {
-    flex: 0 0 70%;  /* Take 70% width */
-    padding: 10px;
-    border: 1px solid #ccc;
-  }
-  
-  /* Optional: Add styling for scrollable container and rows */
-  .scrollable-container {
-    max-height: 50px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-  }
-  
-  .row {
-    margin-bottom: 10px;
-    padding: 5px;
-    background-color: #f1f1f1;
-    border-radius: 4px;
-  }
-  .div3-div4-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px; /* To give some spacing between div2 content and div3/div4 */
-  }
-  
-  .div3, .div4 {
-    flex: 0 0 48%; /* Both div3 and div4 take 48% of the width, leaving space between them */
-    padding: 10px;
-    background-color: #e0e0e0;
-    margin-top: 10px; /* To give some spacing between the scrollable container and div3/div4 */
-  }
-  .checkbox-sublist {
-    margin-top: 20px;
-    padding-left: 20px;
-  }
 
-  .div4 {
-    position: relative;
-    min-height: 200px; /* Ensure there is enough height for the buttons */
-    padding-bottom: 70px; /* Give enough space for the buttons at the bottom */
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: flex-end;
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    gap: 10px; /* Space between buttons */
-  }
-  .edit-btn {
-    position: absolute;
-    bottom: 10px;
-    right: 35px;
-    margin-top: 0;
-    margin-right: 67px;
-    padding: 6px;
-    background-color: #40b249; /* Red background */
-    color: white; /* Black text */
-  }
-  .cancel-btn {
-    position: absolute;
-    bottom: 10px;
-    right: 35px;
-    margin-top: 0;
-    padding: 6px;
+.row {
+  margin-bottom: 10px;
+  padding: 5px;
+  background-color: #f1f1f1;
+  border-radius: 4px;
+}
 
-  }
 
-  mat-tab {
-    display: flex;
-    justify-content: space-between; /* Spread the child divs evenly across the row */
-    padding: 10px;
-  }
-  
-  .container {
-    display: flex; /* Align div5 and div6 side by side */
-    width: 100%;
-  }
-  
-  .div5, .div6 {
-    width: 20%; /* Each div takes up 20% of the container */
-    padding: 10px;
-    box-sizing: border-box; /* Ensure padding is included in width calculation */
-  }
-  
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  border-radius: 20px;
+  bottom: 10px;
+  right: 10px;
+  gap: 10px; /* Space between buttons */
+}
+.edit-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 35px;
+  white-space: nowrap;
+  margin-top: 0;
+  border-radius: 20px;
+  margin-right: 67px;
+  border: none;
+  padding: 10px;
+  background-color: #40b249; /* Red background */
+  color: white; /* Black text */
+}
+.cancel-btn {
+  position: absolute;
+  bottom: 10px;
+  right: 35px;
+  border: none;
+  border-radius: 20px;
+  margin-top: 0;
+  padding: 10px;
+
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.styled-btn {
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px; /* Rounded button */
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+.form-group {
+  margin-top: 20px;
+display: flex;
+align-items: center; /* Aligns items vertically */
+gap: 10px; /* Adds spacing between label and input */
+margin-bottom: 15px; /* Adds spacing below the row */
+}
+
+.input-medium {
+width: 250px; /* Adjust width to fit well */
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.run-btn {
+  background-color: green;
+  color: white;
+}
+
+.styled-btn:hover {
+  opacity: 0.8;
+}
+
+.form-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.full-width {
+  flex-grow: 1;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.medium-width {
+  width: 500px;
+}
+
+.start-btn {
+  background-color: green;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #CC0000;
+  color: white;
+}
+
+mat-tab {
+  display: flex;
+  justify-content: space-between; /* Spread the child divs evenly across the row */
+  padding: 10px;
+}
+
+.container {
+  display: flex; /* Align div5 and div6 side by side */
+  width: 100%;
+}
+
