@@ -133,20 +133,17 @@ textSnippets = [
       modules: {
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],  // Formatting options
-          [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
-          ['link'], // Add link button
-          [{ 'align': [] }], // Alignment options
-          ['table'], // Table button
-          ['image', 'code-block'], // Image and code block buttons
-          [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
-          [{ 'color': [] }, { 'background': [] }], // Text and background colors
-          [{ 'font': [] }],
-          ['blockquote'],
-          ['code-block'] // Font selection
-        ],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
+                    ['link'], // Add link button
+                    [{ 'align': [] }], // Alignment options
+                    ['image', 'code-block'], // Image and code block buttons
+                    [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
+                    [{ 'color': [] }, { 'background': [] }], // Text and background colors
+                    [{ 'font': [] }],
+                    ['blockquote']        ],
       },
       formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background'
+        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
       ]
     });
 
@@ -211,11 +208,7 @@ textSnippets = [
 
     toolbar?.appendChild(fontSizeDropdown);  // Append to toolbar
   }
- // Handle when snippet is selected from the dropdown
- onSnippetSelect(event: any): void {
-  console.log('Snippet Selected:', event.value);
-  this.selectedText = event.value;  // Set the selected snippet text
-}
+ 
 
 // Handle the dragstart event for the selected snippet
 onDragStart(event: any, text: string): void {
@@ -241,11 +234,22 @@ onDragOver(event: any): void {
 }
 
 
-// Insert the selected or dragged text into the Quill editor at the current cursor position
+onSnippetSelect(event: any): void {
+  console.log('Snippet Selected:', event.value);
+  this.selectedText = event.value; // Store selected snippet
+  this.insertTextIntoEditor(this.selectedText); // Insert it into the Quill editor
+}
+
 insertTextIntoEditor(text: string): void {
-  const range = this.editor.getSelection();  // Get the current selection (cursor position)
-  if (range) {
-    this.editor.insertText(range.index, text);  // Insert the text at the current position
+  let range = this.editor.getSelection();
+
+  // If there is no selection (i.e., the cursor is not set), we set it to the end of the document
+  if (!range) {
+    const length = this.editor.getLength(); // Get the current length of the document
+    range = { index: length - 1, length: 0 }; // Set the cursor at the end of the document
   }
+
+  // Insert the text at the current selection or the end of the document
+  this.editor.insertText(range.index, text);
 }
 }
