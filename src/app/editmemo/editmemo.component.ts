@@ -28,34 +28,26 @@ import 'quill-table';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 
-
-interface TemplateData {
-  id: number;
-  name: string;
-  email: string;
-  status: string;
-}
 @Component({
-  selector: 'app-edit-template-dialog',
+  selector: 'app-editmemo',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
-        MatButtonModule,  // Optional: To add buttons or actions
-        MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
-        MatPaginatorModule, // For pagination
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatSnackBarModule,
-        MatSlideToggleModule,
-        FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule ],
-          // Import QuillModule
-
-
-  templateUrl: './edit-template-dialog.component.html',
-  styleUrl: './edit-template-dialog.component.css'
+          MatButtonModule,  // Optional: To add buttons or actions
+          MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
+          MatPaginatorModule, // For pagination
+          MatInputModule,
+          MatDialogModule,
+          MatButtonModule,
+          MatInputModule,
+          MatFormFieldModule,
+          MatSnackBarModule,
+          MatSlideToggleModule,
+          FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule 
+            // Import QuillModule
+  ],
+  templateUrl: './editmemo.component.html',
+  styleUrl: './editmemo.component.css'
 })
-export class EditTemplateDialogComponent implements AfterViewInit{
+export class EditmemoComponent {
   editor: any;  // Quill editor instance
   @ViewChild('editorContainer') editorContainer!: ElementRef;
 // Predefined text snippets for dropdown and drag-and-drop
@@ -86,7 +78,7 @@ textSnippets = [
 
  
   constructor(
-    public dialogRef: MatDialogRef<EditTemplateDialogComponent>,
+    public dialogRef: MatDialogRef<EditmemoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -136,7 +128,7 @@ textSnippets = [
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
-                    ['image', 'code-block'],  // Code-block button included
+                    ['image', 'code-block'], // Image and code block buttons
                     [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
                     [{ 'color': [] }, { 'background': [] }], // Text and background colors
                     [{ 'font': [] }],
@@ -252,18 +244,4 @@ insertTextIntoEditor(text: string): void {
   // Insert the text at the current selection or the end of the document
   this.editor.insertText(range.index, text);
 }
-turnEntireContentIntoCodeBlock() {
-  // Get the entire content of the editor
-  const content = this.editor.root.innerHTML;
-  
-  // Wrap the entire content in a <pre><code></code></pre> block
-  const wrappedContent = `<pre><code>${content}</code></pre>`;
-  
-  // Set the updated content back into the Quill editor
-  this.editor.root.innerHTML = wrappedContent;
-
-  // Optional: Format the content as code block
-  this.editor.formatText(0, this.editor.getLength(), 'code-block', true);
-}
-
 }
