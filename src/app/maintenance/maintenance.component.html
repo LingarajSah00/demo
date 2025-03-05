@@ -7,6 +7,8 @@
       <mat-label>Search</mat-label>
       <input matInput (keyup)="applyFilter($event)" placeholder="Search by Name or Email" />
     </mat-form-field>
+        <button mat-raised-button class="download-btn" (click)="openDownloadDialog()" ><mat-icon>file_download</mat-icon></button>
+
      <!-- Create Button at the top -->
      <button mat-raised-button color="warn" class="create-button" (click)="openCreateMaintenanceDialog()">Add</button>
 
