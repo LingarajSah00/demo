@@ -28,6 +28,7 @@ export class SearchDialogComponent {
   options: string[] = [];  // This will store the options based on the radio selection
   searchControl = new FormControl();
   filteredOptions: Observable<string[]>;  // For filtering the options
+  selectedFile: File | null = null; // Holds the selected file
 
   // Sample data for auto-suggestion
   allOptions: { [key: string]: string[] } = {
@@ -56,5 +57,17 @@ export class SearchDialogComponent {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+
+
+  // Handle file selection
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];  // Get the first selected file
+    if (file) {
+      this.selectedFile = file;
+      console.log('Selected file:', file);
+      // You can now process the file (e.g., upload it to the server)
+    }
   }
 }

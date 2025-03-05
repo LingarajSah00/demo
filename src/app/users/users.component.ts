@@ -71,7 +71,7 @@ export class UsersComponent {
     fullName: 'Brian Kearney',
     userStatus: 'Active',
     securityRoles: [
-      'Notifications Tool - Compliance User',
+      //'Notifications Tool - Compliance User',
       'Notifications Tool - View Only'
     ],
     email: 'abc@cvshealth.com',

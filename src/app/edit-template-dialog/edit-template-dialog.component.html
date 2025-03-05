@@ -10,7 +10,8 @@
       <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Select Text Snippet</mat-label>
         <mat-select [(value)]="selectedText" (selectionChange)="onSnippetSelect($event)">
-            <mat-option *ngFor="let snippet of textSnippets" [value]="snippet" matTooltip="{{'<employeeList1>'}}" matTooltipPosition="above">
+            <mat-option *ngFor="let snippet of textSnippets" [value]="snippet" matTooltip="{{'your colleague(s) must complete mandatory Complance Training. This ensure our organizations obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks'}}"   matTooltipClass="dynamic-tooltip"
+            aria-label="Button with dynamic tooltip">
                 {{ snippet }}
             </mat-option>
         </mat-select>

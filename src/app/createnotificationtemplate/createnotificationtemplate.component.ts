@@ -24,6 +24,7 @@ interface Campaign {
   type: string;
   description?: string;
   status: string;
+  audience_group: string;
 }
 @Component({
   selector: 'app-createnotificationtemplate',
@@ -51,6 +52,7 @@ export class CreatenotificationtemplateComponent {
   name: '',
   type: '',
   description: '',
+  audience_group: '',
   status: 'ACTIVE'
 };
 
@@ -66,7 +68,7 @@ onSubmit(): void {
 
   // Redirect to the campaigns list page (e.g., the list of campaigns)
   //this.router.navigate(['/campaigns']);
-  this.dialogRef.close({ name: this.campaign.name, type: this.campaign.type,description:this.campaign.description, status: this.campaign.status});
+  this.dialogRef.close({ name: this.campaign.name, type: this.campaign.type,description:this.campaign.description,audience_group:this.campaign.audience_group, status: this.campaign.status});
 
 }
 

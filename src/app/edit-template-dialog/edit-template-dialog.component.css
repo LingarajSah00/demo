@@ -125,3 +125,29 @@ mat-form-field {
 .draggable-text:hover {
   background-color: #e0e0e0;
 }
+.ql-html {
+  margin-left: 10px;  /* Adds some space between buttons */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+/* Styles */
+/* Styles */
+::ng-deep .dynamic-tooltip {
+  white-space: normal;           /* Allow wrapping of text */
+  max-width: 500px;              /* You can adjust this to your needs */
+  width: auto !important;        /* Allow the tooltip to expand based on content */
+  word-wrap: break-word;         /* Ensure long words are broken and do not overflow */
+  padding: 10px;                 /* Optional: padding for a better look */
+  min-width: 200px;              /* Optional: Ensure the tooltip has a minimum width */
+  box-sizing: border-box;        /* Ensure padding is included in the element's width */
+}
+
+::ng-deep .dynamic-tooltip {
+  position: absolute !important;  /* Allow absolute positioning */
+  z-index: 1000 !important;       /* Ensure it stays on top of other elements */
+}

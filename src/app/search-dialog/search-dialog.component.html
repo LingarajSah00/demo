@@ -16,12 +16,26 @@
       <mat-label>Search for {{ radioSelection }}</mat-label>
       <input matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="Type to search" />
       <mat-icon matSuffix>search</mat-icon>
+
+      
+      
+
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{ option }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+
+     <!-- File upload button -->
+     <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput />
+     <button mat-icon-button (click)="fileInput.click()" matTooltip="Upload File">
+       <mat-icon>attach_file</mat-icon> <!-- File upload icon -->
+     </button>
+     
+     <!-- Show the selected file name -->
+     <span *ngIf="selectedFile" style="margin-left: 10px;"> {{ selectedFile.name }}</span>
+   
   </div>
 
   <!-- Dropdowns side by side -->

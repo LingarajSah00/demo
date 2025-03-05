@@ -19,49 +19,43 @@ import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.compon
 import { CommonModule } from '@angular/common';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-
 interface Campaign {
   name: string;
   type: string;
   description?: string;
   status: string;
-  template: string;
 }
 @Component({
-  selector: 'app-create-campaign',
+  selector: 'app-creatememo',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
-        MatButtonModule,  // Optional: To add buttons or actions
-        MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
-        MatPaginatorModule, // For pagination
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatSnackBarModule,
-        MatSlideToggleModule,
-        FormsModule,
-      CommonModule,
-      MatSelectModule,
-      MatOptionModule,
-      ],
-  templateUrl: './create-campaign.component.html',
-  styleUrl: './create-campaign.component.css'
+            MatButtonModule,  // Optional: To add buttons or actions
+            MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
+            MatPaginatorModule, // For pagination
+            MatInputModule,
+            MatDialogModule,
+            MatButtonModule,
+            MatInputModule,
+            MatFormFieldModule,
+            MatSnackBarModule,
+            MatSlideToggleModule,
+            FormsModule,
+          CommonModule,
+          MatSelectModule,
+          MatOptionModule,],
+  templateUrl: './creatememo.component.html',
+  styleUrl: './creatememo.component.css'
 })
-export class CreateCampaignComponent {
- // New campaign model
+export class CreatememoComponent {
+// New campaign model
  campaign: Campaign = {
   name: '',
   type: '',
   description: '',
-  status: 'ACTIVE',
-  template: 'Template1'
-
+  status: 'ACTIVE'
 };
 
 // Campaign statuses
 statuses = ['ACTIVE', 'INACTIVE'];
-templates = ['Template1', 'Template2'];
 
 constructor(private router: Router,public dialogRef: MatDialogRef<CreateUserDialogComponent>) {}
 
@@ -72,7 +66,7 @@ onSubmit(): void {
 
   // Redirect to the campaigns list page (e.g., the list of campaigns)
   //this.router.navigate(['/campaigns']);
-  this.dialogRef.close({ name: this.campaign.name, type: this.campaign.type,description:this.campaign.description,template:this.campaign.template, status: this.campaign.status});
+  this.dialogRef.close({ name: this.campaign.name, type: this.campaign.type,description:this.campaign.description, status: this.campaign.status});
 
 }
 
@@ -80,8 +74,5 @@ onSubmit(): void {
 onCancel(): void {
   this.dialogRef.close();
 }
-
-
-
 
 }

@@ -60,6 +60,7 @@ export class EditTemplateDialogComponent implements AfterViewInit{
   @ViewChild('editorContainer') editorContainer!: ElementRef;
 // Predefined text snippets for dropdown and drag-and-drop
 selectedText: string = '';
+htmlMode: boolean = false;  // Track if the editor is in HTML mode
 
 textSnippets = [
   '< accessLearningHubStoreText >',
@@ -140,7 +141,9 @@ textSnippets = [
                     [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
                     [{ 'color': [] }, { 'background': [] }], // Text and background colors
                     [{ 'font': [] }],
-                    ['blockquote']        ],
+                    ['blockquote']   ,    ['blockquote'] ,        ['html']  // We will create this button
+                  ],
+                    
       },
       formats: [
         'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
@@ -162,9 +165,12 @@ textSnippets = [
       <p>&lt; accessLearningHubStoreText &gt;
       <br>Compliance Training Team</p>
     `;
-    
+ 
+    this.addHTMLButton();
+
+
       // Set default content in the editor
-      this.editor.root.innerHTML =content;
+      this.editor.root.innerHTML =this.data;
     }
   }
   // Add the custom font family dropdown to the toolbar
@@ -186,6 +192,24 @@ textSnippets = [
     });
 
     toolbar?.appendChild(fontFamilyDropdown);  // Append to toolbar
+  }
+
+   // Add the custom HTML button to the toolbar
+   addHTMLButton() {
+    const toolbar = this.editor.container.querySelector('.ql-toolbar');
+    if (toolbar) {
+      // Create the HTML button
+      const htmlButton = document.createElement('button');
+      htmlButton.innerText = 'HTML';
+      htmlButton.classList.add('ql-html');
+      htmlButton.style.marginLeft = '10px'; // Add some spacing if needed
+
+      // Append the button to the toolbar
+      toolbar.appendChild(htmlButton);
+
+      // Bind click event for HTML toggle button
+      htmlButton.addEventListener('click', () => this.toggleHTMLMode());
+    }
   }
 
   // Add the custom font size dropdown to the toolbar
@@ -264,6 +288,78 @@ turnEntireContentIntoCodeBlock() {
 
   // Optional: Format the content as code block
   this.editor.formatText(0, this.editor.getLength(), 'code-block', true);
+}
+
+toggleHTMLMode() {
+  this.htmlMode = !this.htmlMode;
+
+  if (this.htmlMode) {
+    // Switch to HTML mode: convert the content to HTML and wrap it in <p> tags
+    const htmlContent = this.convertToHTML(this.editor.root.innerHTML);
+    this.editorContainer.nativeElement.innerHTML = `
+      <textarea id="html-editor" style="width: 100%; height: 100%;">${htmlContent}</textarea>
+    `;
+
+    // Listen for input changes in the textarea
+    const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
+    htmlEditor.addEventListener('input', () => {
+      // Update Quill content when switching back to rich-text mode
+      this.editor.root.innerHTML = htmlEditor.value;
+    });
+
+  } else {
+    // Switch back to Quill editor mode
+    const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
+    if (htmlEditor) {
+      const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
+      this.editor.root.innerHTML = newHtml;  // Set it back to Quill editor
+    }
+
+    // Reinitialize Quill editor with preserved formatting
+    this.editorContainer.nativeElement.innerHTML = '';
+    this.editor = new Quill(this.editorContainer.nativeElement, {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          ['link'],
+          [{ 'align': [] }],
+          ['image', 'code-block'],
+          [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'font': [] }],
+          ['blockquote'],
+          ['html']  // Add HTML button to the toolbar
+        ],
+      },
+      formats: [
+        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background', 'code-block', 'blockquote'
+      ]
+    });
+
+    this.addHTMLButton();  // Re-add HTML button after reinitializing Quill
+  }
+}
+convertToHTML(content: string): string {
+  // Wrap each block of content (in this case, assuming paragraphs) in <p> tags
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
+  const paragraphs = tempDiv.querySelectorAll('p');
+
+  // For each paragraph, wrap its text in <p> tags if it's not already
+  let htmlString = '';
+  paragraphs.forEach((p) => {
+    htmlString += `<p>${p.innerHTML}</p>`;
+  });
+
+  // If there's other block-level content, such as divs, lists, etc., handle it
+  const divs = tempDiv.querySelectorAll('div, ul, ol, li');
+  divs.forEach((div) => {
+    htmlString += div.outerHTML;  // Convert other elements to HTML
+  });
+
+  return htmlString;
 }
 
 }

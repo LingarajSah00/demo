@@ -19,6 +19,13 @@
       <textarea matInput [(ngModel)]="campaign.description" placeholder="Enter description" ></textarea>
     </mat-form-field>
   
+     <!-- Status Selection -->
+     <mat-form-field appearance="fill" class="form-field">
+      <mat-label>Template</mat-label>
+      <mat-select [(ngModel)]="campaign.template">
+        <mat-option *ngFor="let template of templates" [value]="template">{{template}}</mat-option>
+      </mat-select>
+      </mat-form-field>
     <!-- Status Selection -->
     <mat-form-field appearance="fill" class="form-field">
       <mat-label>Status</mat-label>

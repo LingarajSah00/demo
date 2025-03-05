@@ -49,10 +49,10 @@ export class NotificationtemplateComponent {
   @ViewChild(MatSort) sort!: MatSort;
   templates: NotificationTemplate[] = [];  
 
-  displayedColumns: string[] = [ 'name', 'email', 'status','actions']; // Define table column names
+  displayedColumns: string[] = [ 'name', 'email','audience_group', 'status','actions']; // Define table column names
   dataSource = new MatTableDataSource<NotificationTemplate>([
     { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
-    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
+    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'accessLearningHubStoreText',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
     { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
     { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
     { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },

@@ -18,6 +18,7 @@ import * as XLSX from 'xlsx';
 import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.component';
 import { MemoModel } from '../model/memo.model';
 import { EditmemoComponent } from '../editmemo/editmemo.component';
+import { CreatememoComponent } from '../creatememo/creatememo.component';
 
 interface MemoData {
   id: number;
@@ -117,7 +118,7 @@ export class MemosComponent {
     }
 
     openCreateUserDialog(): void {
-        const dialogRef = this.dialog.open(CreatenotificationtemplateComponent, {
+        const dialogRef = this.dialog.open(CreatememoComponent, {
           width: '400px'
         });
       

@@ -20,6 +20,7 @@ interface UserData {
   description: string;
   type: String;
   status: string;
+  template: string;
 }
 @Component({
   selector: 'app-campaigns',
@@ -40,13 +41,13 @@ export class CampaignsComponent {
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = [ 'name', 'type','description', 'status','actions']; // Define table column names
+  displayedColumns: string[] = [ 'name', 'type','description','template', 'status','actions']; // Define table column names
   dataSource = new MatTableDataSource<UserData>([
-    { id: 1, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
-    { id: 2, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
-    { id: 3, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
-    { id: 4, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
-    { id: 5, name: 'campaign1', type:'Course1' ,description:'couse details',status: 'ACTIVE' },
+    { id: 1, name: 'campaign1', type:'Course1' ,description:'couse details',template:'Template1',status: 'ACTIVE' },
+    { id: 2, name: 'campaign1', type:'Course1' ,description:'couse details',template:'Template1',status: 'ACTIVE' },
+    { id: 3, name: 'campaign1', type:'Course1' ,description:'couse details',template:'Template1',status: 'ACTIVE' },
+    { id: 4, name: 'campaign1', type:'Course1' ,description:'couse details',template:'Template1',status: 'ACTIVE' },
+    { id: 5, name: 'campaign1', type:'Course1' ,description:'couse details',template:'Template1',status: 'ACTIVE' },
   ]);
 
   openCreateUserDialog(): void {
@@ -85,7 +86,8 @@ onSubmit(userData: any): void {
     name: userData.name,
     type: userData.type,
     description: userData.description,
-    status: userData.status
+    status: userData.status,
+    template: userData.template
   };
 
   // Add the new user to the table
