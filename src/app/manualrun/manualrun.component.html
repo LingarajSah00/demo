@@ -32,6 +32,11 @@
       <td mat-cell *matCellDef="let row"> {{ row.campaigns }} </td>
     </ng-container>
 
+         <ng-container matColumnDef="notificationType">
+            <th mat-header-cell *matHeaderCellDef> Notification Type </th>
+            <td mat-cell *matCellDef="let row"> {{ row.notificationType }} </td>
+          </ng-container>
+
     <ng-container matColumnDef="dateRun">
       <th mat-header-cell *matHeaderCellDef> Date Run </th>
       <td mat-cell *matCellDef="let row"> {{ row.dateRun | date }} </td>

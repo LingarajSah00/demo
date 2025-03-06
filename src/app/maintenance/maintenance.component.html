@@ -49,7 +49,7 @@
 
       <ng-container matColumnDef="nmUpdate">
         <th mat-header-cell *matHeaderCellDef> Updated By </th>
-        <td mat-cell *matCellDef="let element"  matTooltip="{{'3234234'}}" matTooltipPosition="above"> {{element.nmUpdate}} </td>
+        <td mat-cell *matCellDef="let element"  matTooltip="{{element.nmUpdate}}" matTooltipPosition="above"> {{element.updatedByFullName}} </td>
       </ng-container>
 
       <ng-container matColumnDef="dtUpdate">

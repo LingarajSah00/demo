@@ -14,6 +14,7 @@ interface Run {
   audience: string;
   campaigns: string;
   dateRun: Date;
+  notificationType: string;
 }
 
 import { MatSelectModule } from '@angular/material/select';
@@ -33,11 +34,11 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './manualrun.component.css'
 })
 export class ManualrunComponent {
-  displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'dateRun'];
+  displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'notificationType','dateRun'];
   dataSource = new MatTableDataSource<Run>([
-    { id: 1, email: 'user1@example.com', audience: 'Audience 1', campaigns: 'Campaign 1', dateRun: new Date() },
-    { id: 2, email: 'user2@example.com', audience: 'Audience 2', campaigns: 'Campaign 2', dateRun: new Date() },
-    { id: 3, email: 'user3@example.com', audience: 'Audience 3', campaigns: 'Campaign 3', dateRun: new Date() }
+    { id: 1, email: 'user1@example.com', audience: 'Audience 1', campaigns: 'Campaign 1', dateRun: new Date() ,notificationType: 'System'},
+    { id: 2, email: 'user2@example.com', audience: 'Audience 2', campaigns: 'Campaign 2', dateRun: new Date() ,notificationType:'Manual',},
+    { id: 3, email: 'user3@example.com', audience: 'Audience 3', campaigns: 'Campaign 3', dateRun: new Date() ,notificationType:'Manual',},
   ]);
 
 

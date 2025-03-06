@@ -8,7 +8,7 @@
     <div class="dropdown-container">
       <!-- Dropdown for Predefined Text Snippets -->
       <mat-form-field appearance="fill" style="width: 100%;">
-        <mat-label>Select Text Snippet</mat-label>
+        <mat-label>Dynamic Merge Tags</mat-label>
         <mat-select [(value)]="selectedText" (selectionChange)="onSnippetSelect($event)">
             <mat-option *ngFor="let snippet of textSnippets" [value]="snippet" matTooltip="{{'<employeeList1>'}}" matTooltipPosition="above">
                 {{ snippet }}

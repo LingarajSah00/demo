@@ -67,7 +67,7 @@ table {
   .create-button {
     position: absolute;
     top: 10px;    /* Distance from the top of the container */
-    right: -100px;  /* Distance from the right of the container */
+    right: -60px;  /* Distance from the right of the container */
     z-index: 10;  /* Ensure it stays above other elements */
   }
   .create-button {

@@ -14,4 +14,5 @@ export interface ELTData {
     dtCreate: string;
     nmUpdate: string;
     dtUpdate: string;
+    updatedByFullName: string;
   }

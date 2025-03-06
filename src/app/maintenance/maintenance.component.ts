@@ -60,11 +60,7 @@ export class MaintenanceComponent {
 
   displayedColumns: string[] = [  'fullName', 'username', 'userTitle', 'adminFullName',  'personExceptionStatus','nmUpdate','dtUpdate', 'actions'];
   dataSource = new MatTableDataSource<ELTData>([
-    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'234234',dtUpdate:''},
-    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'234234',dtUpdate:''},
-    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'234234',dtUpdate:''},
-    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'234234',dtUpdate:''},
-    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'234234',dtUpdate:''},
+    { id: 1, fullName:'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health',adminFullName: 'Nancy Gelinas',adminId: '0022874' ,personExceptionStatus:'Active',receiveDirectReportNotifications:'',blockAllNotifications:'',adminUsername:'',adminEmail:'',nmCreate:'',dtCreate:'',nmUpdate:'234234',dtUpdate:'',updatedByFullName:''},
 
   ]);
   secondTableColumns: string[] = [ 'name', 'securityRoles'];
