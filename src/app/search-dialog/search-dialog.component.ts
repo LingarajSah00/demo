@@ -10,6 +10,7 @@ import { startWith, map } from 'rxjs/operators';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-search-dialog',
@@ -17,7 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatRadioModule,
     MatInputModule,
     MatAutocompleteModule,
-    MatButtonModule,FormsModule,    ReactiveFormsModule ,CommonModule ,MatIconModule,MatSelectModule],
+    MatButtonModule,FormsModule, MatTableModule,   ReactiveFormsModule ,CommonModule ,MatIconModule,MatSelectModule],
   templateUrl: './search-dialog.component.html',
   styleUrl: './search-dialog.component.css'
 })
@@ -30,6 +31,15 @@ export class SearchDialogComponent {
   filteredOptions: Observable<string[]>;  // For filtering the options
   selectedFile: File | null = null; // Holds the selected file
 
+   // Table data
+   tableData = [
+    { name: 'John Doe',  status: 'Active' },
+    { name: 'Jane Smith',  status: 'Active' },
+    { name: 'James Brown',  status: 'InActive' }
+  ];
+
+  displayedColumns: string[] = ['name',  'status'];
+
   // Sample data for auto-suggestion
   allOptions: { [key: string]: string[] } = {
     option1: ['Emp1', 'Emp2', 'Emp3', 'Emp4'],
@@ -37,6 +47,10 @@ export class SearchDialogComponent {
     option3: ['Leader1', 'Leader2', 'Leader3', 'Leader4']
   };
 
+  onOkClick(): void {
+    console.log("OK button clicked!");
+    // Add any logic you need for the "OK" button here.
+  }
   constructor(public dialogRef: MatDialogRef<SearchDialogComponent>) {
     this.filteredOptions = this.searchControl.valueChanges.pipe(
       startWith(''),

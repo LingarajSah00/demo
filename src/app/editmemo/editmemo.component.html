@@ -4,6 +4,8 @@
   </h8>
   
   <mat-dialog-content>
+    <button mat-button (click)="exportToPDF()" class="export-btn">Export to PDF</button>
+
     <!-- Quill Editor Container -->
     <div class="dropdown-container">
       <!-- Dropdown for Predefined Text Snippets -->
@@ -26,7 +28,9 @@
     style="height: 700px; width: 100%;" 
     (drop)="onDrop($event)" 
     (dragover)="onDragOver($event)">
-</div>  </mat-dialog-content>
+</div> 
+
+</mat-dialog-content>
   
   <mat-dialog-actions>
     <button mat-button class="right-button" (click)="cancel()">Cancel</button>

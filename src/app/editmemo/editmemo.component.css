@@ -125,3 +125,18 @@ mat-form-field {
 .draggable-text:hover {
   background-color: #e0e0e0;
 }
+
+.export-btn {
+  position: absolute; /* Fix the button on the screen */
+  top: 20px; /* Adjust the distance from the top of the screen */
+  right: 85px; /* Place it on the right side */
+  background-color: #cc0000;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  z-index: 9999; /* Ensure it's above other elements */
+}
+
+.export-btn:hover {
+  background-color: #303f9f; /* Change color on hover */
+}

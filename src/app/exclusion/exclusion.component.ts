@@ -121,8 +121,9 @@ export class ExclusionComponent {
 
     openSearchDialog(): void {
         const dialogRef = this.dialog.open(SearchDialogComponent, {
-          width: '600px',
-          height: '600px'
+          width: '900px',
+          height: '700px',
+          maxWidth: 'none',   // Allow the dialog to take up 100% of the screen width
 
         });
     

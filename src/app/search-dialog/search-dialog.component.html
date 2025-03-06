@@ -1,7 +1,7 @@
 <h2 mat-dialog-title>Add Exclusion</h2>
 
 <mat-dialog-content>
-  <div style="display: flex; align-items: center;">
+  <div style="display: flex; align-items: center;"  >
     <span style="margin-right: 10px;">Select Type:</span> <!-- Text placed here -->
     
     <mat-radio-group [(ngModel)]="radioSelection" (change)="onRadioChange($event)" style="display: flex;">
@@ -12,30 +12,56 @@
   </div>
 
   <div *ngIf="radioSelection">
-    <mat-form-field appearance="fill">
-      <mat-label>Search for {{ radioSelection }}</mat-label>
-      <input matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="Type to search" />
-      <mat-icon matSuffix>search</mat-icon>
+    <br><br>
+    <!-- Search Input Section with space and file upload aligned to the right -->
+    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+      <mat-form-field appearance="fill" style="flex: 1;">
+        <mat-label>Search for {{ radioSelection }}</mat-label>
+        <input matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="Type to search" />
+        <mat-icon matSuffix>search</mat-icon>
+
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- File Upload Button aligned to the right -->
+      <div style="margin-left: 10px; display: flex; align-items: center;border: 2px dashed #3f51b5;border-radius: 5px;background-color: #f1f8ff;padding: 10px;margin-top: -17px;">
+        <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput />
+        <button mat-icon-button (click)="fileInput.click()" matTooltip="Upload File">
+          <mat-icon>attach_file</mat-icon> <!-- File upload icon -->
+        </button>
+
+        <!-- Display the selected file name -->
+        <span *ngIf="selectedFile" style="margin-left: 10px;">{{ selectedFile.name }}</span>
+        <span *ngIf="!selectedFile" style="margin-left: 10px; color: #3f51b5;">Upload File</span>
+      </div>
+      <button mat-button style="margin-left: 10px;" class="right-button" (click)="onOkClick()">OK</button>
+
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;width: 100%; ">
+    <mat-table [dataSource]="tableData">
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
 
       
-      
 
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.status}} </mat-cell>
+      </ng-container>
 
-     <!-- File upload button -->
-     <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput />
-     <button mat-icon-button (click)="fileInput.click()" matTooltip="Upload File">
-       <mat-icon>attach_file</mat-icon> <!-- File upload icon -->
-     </button>
-     
-     <!-- Show the selected file name -->
-     <span *ngIf="selectedFile" style="margin-left: 10px;"> {{ selectedFile.name }}</span>
-   
+      <!-- Header Row -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <!-- Data Row -->
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
   </div>
 
   <!-- Dropdowns side by side -->
