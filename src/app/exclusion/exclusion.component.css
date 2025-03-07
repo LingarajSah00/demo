@@ -77,7 +77,7 @@ table td button {
 
 /* Specific red color for Edit button */
 table td button.edit-btn {
-    background-color: #cc0000;
+    background-color: #cc0000 !important;;
     /* Red background for Edit */
     color: white;
     /* White text */
@@ -95,7 +95,7 @@ table td button.edit-btn:hover {
 
 /* Specific red color for Delete button */
 table td button.delete-btn {
-    background-color: #cc0000;
+    background-color: #cc0000!important;;
     /* Red background for Delete */
     color: white;
     /* White text */
@@ -130,3 +130,31 @@ table td button:active {
   .mat-tooltip {
     z-index: 10000 !important;
   }
+
+  .right-button mdc-button mat-mdc-button mat-unthemed mat-mdc-button-base {
+    background-color: #cc0000; /* Red background */
+    color: white; /* Black text */
+  }
+  
+  .right-button:hover {
+    background-color: darkred; /* Darker shade when hovering */
+    color: white; /* White text on hover */
+  }
+/* Using ::ng-deep to apply styles to Material buttons */
+::ng-deep table td button.edit-btn {
+    background-color: #cc0000 !important;
+    color: white;
+    border: none;
+}
+
+::ng-deep table td button.delete-btn {
+    background-color: #cc0000 !important;
+    color: white;
+    border: none;
+}
+
+::ng-deep table td button.edit-btn:hover,
+::ng-deep table td button.delete-btn:hover {
+    background-color: darkred;
+    color: white;
+}
