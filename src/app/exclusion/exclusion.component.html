@@ -1,58 +1,116 @@
-<h3>Exclusions </h3> <!-- Create Button at the top --> 
+<h3>Exclusions</h3>
+<!-- Create Button and Dropdown -->
 <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 10px;">
-
-<mat-form-field appearance="fill">
+  <mat-form-field appearance="fill">
     <mat-label>Select Type</mat-label>
-    <mat-select>
-        <mat-select [(value)] = "defaultOption"></mat-select>
+    <mat-select [(value)]="selectedOption">
       <mat-option value="option1">By Employee</mat-option>
       <mat-option value="option2">By Location</mat-option>
       <mat-option value="option3">By Leader</mat-option>
     </mat-select>
   </mat-form-field>
-<mat-form-field appearance="fill">
+
+  <mat-form-field appearance="fill">
     <mat-label>Search</mat-label>
     <input matInput (keyup)="applyFilter($event)" placeholder="Search by Name or Email" />
   </mat-form-field>
-<button mat-raised-button color="warn" class="create-button"
-    (click)="openCreateMaintenanceDialog()"(click)="openSearchDialog()">Create</button>
-    </div>
-<!-- Table -->
-<table mat-table [dataSource]="dataSource"> <!-- ID Column --> <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef> ID </th>
+
+  <button mat-raised-button color="warn" class="create-button" (click)="openCreateMaintenanceDialog()"(click)="openSearchDialog()">Create</button>
+</div>
+
+<!-- Table 1 (By Employee) -->
+<div *ngIf="selectedOption === 'option1'">
+    <table mat-table [dataSource]="dataSource1" matSort>
+      <!-- Columns go here -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
         <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
-    <ng-container matColumnDef="fullName">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
+      </ng-container>
+  
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
         <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
-    </ng-container> <!-- Email Column --> <ng-container matColumnDef="username">
-        <th mat-header-cell *matHeaderCellDef> UserName </th>
-        <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-    </ng-container> <ng-container matColumnDef="userTitle">
-        <th mat-header-cell *matHeaderCellDef> Title </th>
-        <td mat-cell *matCellDef="let element"> {{element.userTitle}} </td>
-    </ng-container> <ng-container matColumnDef="adminFullName">
-        <th mat-header-cell *matHeaderCellDef> Campaign Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.adminFullName}} </td>
-    </ng-container> <!-- Status Column --> <ng-container matColumnDef="personExceptionStatus">
-        <th mat-header-cell *matHeaderCellDef> Status </th>
-        <td mat-cell *matCellDef="let element"> {{element.personExceptionStatus}} </td>
-    </ng-container>
-    <ng-container matColumnDef="nmUpdate">
-        <th mat-header-cell *matHeaderCellDef> Updated By </th>
-        <td mat-cell *matCellDef="let element" matTooltip="{{element.nmUpdate}}" matTooltipPosition="above"> {{element.updatedByFullName}} </td>
-    </ng-container>
-    <ng-container matColumnDef="dtUpdate">
-        <th mat-header-cell *matHeaderCellDef> Updated At </th>
-        <td mat-cell *matCellDef="let element"> {{element.dtUpdate}} </td>
-    </ng-container> <!-- Action Column (Create and Edit Buttons) --> <ng-container matColumnDef="actions">
+      </ng-container>
+  
+      <!-- Other columns go here -->
+  
+      <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
-        <td mat-cell *matCellDef="let element"> <button mat-button class="edit-btn"
-                (click)="openEditUserDialog(element)">Edit</button> <button mat-button class="delete-btn"
-                (click)="deleteRecord(element)">Delete</button> </td>
-    </ng-container>
-    <!-- Header and Row definitions -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table> <!-- Pagination Controls --> <mat-paginator [length]="dataSource.data.length" [pageSize]="5"
-    [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons> </mat-paginator>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="openEditUserDialog(element)">Edit</button>
+          <button mat-button (click)="deleteRecord(element)">Delete</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [length]="dataSource1.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons (page)="onPageChange($event, 1)">
+    </mat-paginator>
+  </div>
+  
+  <!-- Table 2 (By Location) -->
+  <div *ngIf="selectedOption === 'option2'">
+    <table mat-table [dataSource]="dataSource2" matSort>
+      <!-- Same table structure -->
+        <!-- Columns go here -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+      </ng-container>
+  
+      <!-- Other columns go here -->
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="openEditUserDialog(element)">Edit</button>
+          <button mat-button (click)="deleteRecord(element)">Delete</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [length]="dataSource2.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons (page)="onPageChange($event, 2)">
+    </mat-paginator>
+  </div>
+  
+  <!-- Table 3 (By Leader) -->
+  <div *ngIf="selectedOption === 'option3'">
+    <table mat-table [dataSource]="dataSource3" matSort>
+      <!-- Same table structure -->
+        <!-- Columns go here -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+      </ng-container>
+  
+      <!-- Other columns go here -->
+  
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button  (click)="openEditUserDialog(element)">Edit</button>
+          <button mat-button (click)="deleteRecord(element)">Delete</button>
+        </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [length]="dataSource3.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons (page)="onPageChange($event, 3)">
+    </mat-paginator>
+  </div>
+  
+

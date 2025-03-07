@@ -42,7 +42,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
         MatFormFieldModule,
         MatSnackBarModule,
         MatSlideToggleModule,
-        FormsModule, HttpClientModule,MatSelectModule,MatTooltipModule],
+        FormsModule, HttpClientModule,MatSelectModule,MatTooltipModule,CommonModule],
     providers: [NotificationService],
     templateUrl: './exclusion.component.html',
     styleUrl: './exclusion.component.css'
@@ -53,25 +53,62 @@ export class ExclusionComponent {
         public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
 
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;
+        @ViewChild('paginator1') paginator1!: MatPaginator;
+        @ViewChild('paginator2') paginator2!: MatPaginator;
+        @ViewChild('paginator3') paginator3!: MatPaginator;
+          @ViewChild(MatSort) sort!: MatSort;
 
     loading: boolean = false;
 
-    displayedColumns: string[] = ['fullName', 'username', 'userTitle', 'adminFullName', 'personExceptionStatus', 'nmUpdate', 'dtUpdate', 'actions'];
-    dataSource = new MatTableDataSource<ELTData>([
-        { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer,CVS Health', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', receiveDirectReportNotifications: '', blockAllNotifications: '', adminUsername: '', adminEmail: '', nmCreate: '', dtCreate: '', nmUpdate: '3234234', dtUpdate: '' ,updatedByFullName:''},
-        
+    selectedOption: string = 'option1';
 
+    displayedColumns: string[] = ['id', 'fullName', 'actions'];
+  
+    // Different data sources for each table
+    dataSource1 = new MatTableDataSource<ELTData>([
+      { id: 1, fullName: 'Paul Russo', username: '3232', userTitle: 'EVP and Chief Medical Officer', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', nmUpdate: '3234234', dtUpdate: '', updatedByFullName: '', adminUsername: '', adminEmail: '', receiveDirectReportNotifications: '', blockAllNotifications: '' ,nmCreate:'',dtCreate:''},
+      { id: 2, fullName: 'John Doe', username: 'jdoe', userTitle: 'Manager', adminFullName: 'Jane Smith', adminId: '004500', personExceptionStatus: 'Inactive', nmUpdate: 'admin', dtUpdate: '2025-03-06', updatedByFullName: 'John Smith', adminUsername: '', adminEmail: '', receiveDirectReportNotifications: '', blockAllNotifications: '' ,nmCreate:'',dtCreate:''},
     ]);
+  
+    dataSource2 = new MatTableDataSource<ELTData>([
+        { id: 1, fullName: 'Paul Russo1', username: '3232', userTitle: 'EVP and Chief Medical Officer', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', nmUpdate: '3234234', dtUpdate: '', updatedByFullName: '', adminUsername: '', adminEmail: '', receiveDirectReportNotifications: '', blockAllNotifications: '' ,nmCreate:'',dtCreate:''},
+        { id: 2, fullName: 'John Doe1', username: 'jdoe', userTitle: 'Manager', adminFullName: 'Jane Smith', adminId: '004500', personExceptionStatus: 'Inactive', nmUpdate: 'admin', dtUpdate: '2025-03-06', updatedByFullName: 'John Smith', adminUsername: '', adminEmail: '', receiveDirectReportNotifications: '', blockAllNotifications: '' ,nmCreate:'',dtCreate:''},
+      ]);
+  
+    dataSource3 = new MatTableDataSource<ELTData>([
+        { id: 1, fullName: 'Paul Russo2', username: '3232', userTitle: 'EVP and Chief Medical Officer', adminFullName: 'Nancy Gelinas', adminId: '0022874', personExceptionStatus: 'Active', nmUpdate: '3234234', dtUpdate: '', updatedByFullName: '', adminUsername: '', adminEmail: '', receiveDirectReportNotifications: '', blockAllNotifications: '' ,nmCreate:'',dtCreate:''},
+        { id: 2, fullName: 'John Doe2', username: 'jdoe', userTitle: 'Manager', adminFullName: 'Jane Smith', adminId: '004500', personExceptionStatus: 'Inactive', nmUpdate: 'admin', dtUpdate: '2025-03-06', updatedByFullName: 'John Smith', adminUsername: '', adminEmail: '', receiveDirectReportNotifications: '', blockAllNotifications: '' ,nmCreate:'',dtCreate:''},
+      ]);
 
     ngOnInit() {
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.loadPersonExceptions();
+        this.dataSource1.paginator = this.paginator1;
+        this.dataSource2.paginator = this.paginator2;
+        this.dataSource3.paginator = this.paginator3;
+        this.dataSource1.sort = this.sort;
+        this.dataSource2.sort = this.sort;
+        this.dataSource3.sort = this.sort;
+        //this.loadPersonExceptions();
     }
 
-
+    onPageChange(event: any, tableNumber: number): void {
+        switch (tableNumber) {
+          case 1:
+            if (this.dataSource1.paginator) {
+                this.dataSource1.paginator.pageIndex = event.pageIndex;
+            }
+            break;
+          case 2:
+            if (this.dataSource2.paginator) {
+                this.dataSource2.paginator.pageIndex = event.pageIndex;
+            }
+            break;
+          case 3:
+            if (this.dataSource3.paginator) {
+                this.dataSource3.paginator.pageIndex = event.pageIndex;
+            }
+            break;
+        }
+    }
 
     openCreateMaintenanceDialog(): void {
 
@@ -84,20 +121,34 @@ export class ExclusionComponent {
                 message: `Are you sure you want to delete the record for ${element.fullName}?`
             }
         });
-
+    
         dialogRef.afterClosed().subscribe(result => {
             if (result) {
-                const index = this.dataSource.data.indexOf(element);
-                if (index > -1) {
-                    this.dataSource.data.splice(index, 1);
-                    this.dataSource._updateChangeSubscription();
-                    this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
+                // Determine which dataSource is being used
+                let dataSourceToUpdate;
+                if (this.selectedOption === 'option1') {
+                    dataSourceToUpdate = this.dataSource1;
+                } else if (this.selectedOption === 'option2') {
+                    dataSourceToUpdate = this.dataSource2;
+                } else if (this.selectedOption === 'option3') {
+                    dataSourceToUpdate = this.dataSource3;
+                }
+    
+                // Perform deletion on the correct dataSource
+                if (dataSourceToUpdate) {
+                    const index = dataSourceToUpdate.data.indexOf(element);
+                    if (index > -1) {
+                        dataSourceToUpdate.data.splice(index, 1);
+                        dataSourceToUpdate._updateChangeSubscription();  // Refresh the data source
+                        this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
+                    }
                 }
             } else {
                 console.log('Deletion canceled');
             }
         });
     }
+    
 
 
     openEditUserDialog(user: ELTData): void {
@@ -106,9 +157,21 @@ export class ExclusionComponent {
 
     loadPersonExceptions(): void {
         this.loading = true;
+    
+        // Fetch person exceptions from the service
         this.notificationService.getPersonExceptions().subscribe(
             (data: ELTData[]) => {
-                this.dataSource.data = data;
+                // Based on the selectedOption, update the appropriate dataSource
+                if (this.selectedOption === 'option1') {
+                    this.dataSource1.data = data;
+                    //this.dataSource = this.dataSource1; // Optional: update the default dataSource if needed
+                } else if (this.selectedOption === 'option2') {
+                    this.dataSource2.data = data;
+                    //this.dataSource = this.dataSource2; // Optional: update the default dataSource if needed
+                } else if (this.selectedOption === 'option3') {
+                    this.dataSource3.data = data;
+                    //this.dataSource = this.dataSource3; // Optional: update the default dataSource if needed
+                }
                 this.loading = false;
             },
             (error: HttpErrorResponse) => {
@@ -118,6 +181,7 @@ export class ExclusionComponent {
             }
         );
     }
+    
 
     openSearchDialog(): void {
         const dialogRef = this.dialog.open(SearchDialogComponent, {
@@ -135,6 +199,12 @@ export class ExclusionComponent {
 
       applyFilter(event: Event): void {
         const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-        this.dataSource.filter = filterValue;
+        if (this.selectedOption === 'option1') {
+          this.dataSource1.filter = filterValue;
+        } else if (this.selectedOption === 'option2') {
+          this.dataSource2.filter = filterValue;
+        } else {
+          this.dataSource3.filter = filterValue;
+        }
       }
 }

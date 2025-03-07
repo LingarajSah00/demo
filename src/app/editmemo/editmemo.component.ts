@@ -28,6 +28,8 @@ import 'quill-table';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { jsPDF } from 'jspdf'; // Import jsPDF library
+import * as docx from 'docx';  // Import docx module
+import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloadwordpdfdialog.component';
 
 @Component({
   selector: 'app-editmemo',
@@ -87,6 +89,30 @@ textSnippets = [
     this.htmlContent = '<p>Editor is ready!</p>';
 
   }
+
+
+  // Open the download dialog
+    openDownloadDialog(): void {
+      const dialogRef = this.dialog.open(DownloadwordpdfdialogComponent, {
+        width: '300px', // Adjust the width as needed
+      });
+  
+      // Handle the dialog close event to determine download type
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.downloadData(result); // Pass the selected format to download the data
+        }
+      });
+    }
+
+    downloadData(format: string): void {
+  
+      if (format === 'pdf') {
+        this.exportToPDF();
+      } else if (format === 'word') {
+        this.exportToWord();
+      }
+    }
   // Method to export Quill content to PDF
   exportToPDF(): void {
     const doc = new jsPDF(); // Create a new jsPDF instance
@@ -102,7 +128,40 @@ textSnippets = [
       y: 10,
     });
   }
+ 
 
+  exportToWord(): void {
+    const content = this.editor.root.innerHTML; // Quill content as HTML
+  
+    // Create a new Word document using docx library
+    const doc = new docx.Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new docx.Paragraph({
+              children: [
+                new docx.TextRun("Generated content from Quill editor:"),
+              ],
+            }),
+            new docx.Paragraph({
+              children: [
+                new docx.TextRun(content), // Insert Quill content into Word document
+              ],
+            }),
+          ],
+        },
+      ],
+    });
+  
+    // Convert the document to Blob and trigger the download
+    docx.Packer.toBlob(doc).then((blob) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'memo.docx';
+      link.click();
+    });
+  }
    
 
   // Save changes to the editor content
