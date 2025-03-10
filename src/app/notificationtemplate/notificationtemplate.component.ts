@@ -51,12 +51,37 @@ export class NotificationtemplateComponent {
 
   displayedColumns: string[] = [ 'name', 'email','audience_group', 'status','actions']; // Define table column names
   dataSource = new MatTableDataSource<NotificationTemplate>([
-    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
-    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'accessLearningHubStoreText',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
-    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
-    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
-    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' },
-  ]);
+    { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' ,availableMergeFields: [
+      {
+        name: 'Date Needed',
+        tag: '‹dateNeeded›',
+        description: 'Due date from Saba course and certification assignment tables'
+      }]},
+      { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' ,availableMergeFields: [
+        {
+          name: 'Date Needed',
+          tag: '‹dateNeeded›',
+          description: 'Due date from Saba course and certification assignment tables'
+        }]},
+        { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' ,availableMergeFields: [
+          {
+            name: 'Date Needed',
+            tag: '‹dateNeeded›',
+            description: 'Due date from Saba course and certification assignment tables'
+          }]},
+          { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' ,availableMergeFields: [
+            {
+              name: 'Date Needed',
+              tag: '‹dateNeeded›',
+              description: 'Due date from Saba course and certification assignment tables'
+            }]},
+            { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' ,availableMergeFields: [
+              {
+                name: 'Date Needed',
+                tag: '‹dateNeeded›',
+                description: 'Due date from Saba course and certification assignment tables'
+              }]}, 
+             ]);
 
 
   ngOnInit() {
@@ -80,7 +105,7 @@ export class NotificationtemplateComponent {
       maxWidth: 'none',   // Allow the dialog to take up 100% of the screen width
       panelClass: 'custom-dialog', // Add the custom CSS class here
 
-      data: template.body // Pass the clicked row data to the dialog
+      data: template// Pass the clicked row data to the dialog
     });
 
     dialogRef.afterClosed().subscribe(result => {

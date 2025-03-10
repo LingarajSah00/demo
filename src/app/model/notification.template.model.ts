@@ -8,6 +8,11 @@ export interface NotificationTemplate {
     description: string;
     subject: string;
     body: string;
+    availableMergeFields: Array<{
+      name: string;
+      tag: string;
+      description: string;
+    }>;
     nmCreate: string;
     dtCreate: string;
     nmUpdate: string;

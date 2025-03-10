@@ -27,46 +27,57 @@ import Quill from 'quill';
 import 'quill-table';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+import { jsPDF } from 'jspdf'; // Import jsPDF library
+import * as docx from 'docx';  // Import docx module
+import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloadwordpdfdialog.component';
 
-
-interface TemplateData {
-  id: number;
-  name: string;
-  email: string;
-  status: string;
-}
 @Component({
-  selector: 'app-edit-template-dialog',
+  selector: 'app-clonememo',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
-        MatButtonModule,  // Optional: To add buttons or actions
-        MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
-        MatPaginatorModule, // For pagination
-        MatInputModule,
-        MatDialogModule,
-        MatButtonModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatSnackBarModule,
-        MatSlideToggleModule,
-        FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule ],
-          // Import QuillModule
-
-
-  templateUrl: './edit-template-dialog.component.html',
-  styleUrl: './edit-template-dialog.component.css'
+    MatButtonModule,  // Optional: To add buttons or actions
+    MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
+    MatPaginatorModule, // For pagination
+    MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatSnackBarModule,
+    MatSlideToggleModule,
+    FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule ],
+  templateUrl: './clonememo.component.html',
+  styleUrl: './clonememo.component.css'
 })
-export class EditTemplateDialogComponent implements AfterViewInit{
-  
+export class ClonememoComponent {
   editor: any;  // Quill editor instance
   @ViewChild('editorContainer') editorContainer!: ElementRef;
 // Predefined text snippets for dropdown and drag-and-drop
 selectedText: string = '';
-htmlMode: boolean = false;  // Track if the editor is in HTML mode
+editableText: string = 'Memo -To Store Compliance New Hire Welcome';  // The text that will be shown
 
+isEditing: boolean = false;  // Flag to check if the text is in edit mode
+  // Enable edit mode when the edit icon is clicked
+  enableEdit(): void {
+    this.isEditing = true;
+  }
+
+  // Save the changes and exit edit mode
+  saveEdit(): void {
+    this.isEditing = false;
+    console.log('Saved text:', this.editableText);  // Optionally, log or save the edited text
+  }
+
+  // Cancel the edit mode and revert the text
+  cancelEdit(): void {
+    this.isEditing = false;
+    console.log('Edit cancelled');
+  }
 textSnippets = [
-  { name: 'Date Needed', tag: '‹dateNeeded›', description: 'Due1 date from Saba course and certification assignment tables' },
-    { name: 'Employee List', tag: '‹employeeList›', description: 'List of employees who need to complete the training' }
-    
+  '< accessLearningHubStoreText >',
+  '<employeeList1>',
+  '< accessLearningHubStoreText >',
+  '<employeeList1>',
+  '<employeeList1>'
 ];
   htmlContent: string = '';  // Editor content
   config = {
@@ -86,17 +97,87 @@ textSnippets = [
 
  
   constructor(
-    public dialogRef: MatDialogRef<EditTemplateDialogComponent>,
+    public dialogRef: MatDialogRef<ClonememoComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,private dialog: MatDialog) { }
 
   ngOnInit(): void {
     console.log('Editor Initialized'); // Log to confirm initialization
     this.htmlContent = '<p>Editor is ready!</p>';
-    this.textSnippets = this.data.availableMergeFields || [];
 
+  }
+
+
+  // Open the download dialog
+    openDownloadDialog(): void {
+      const dialogRef = this.dialog.open(DownloadwordpdfdialogComponent, {
+        width: '300px', // Adjust the width as needed
+      });
+  
+      // Handle the dialog close event to determine download type
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.downloadData(result); // Pass the selected format to download the data
+        }
+      });
+    }
+
+    downloadData(format: string): void {
+  
+      if (format === 'pdf') {
+        this.exportToPDF();
+      } else if (format === 'word') {
+        this.exportToWord();
+      }
+    }
+  // Method to export Quill content to PDF
+  exportToPDF(): void {
+    const doc = new jsPDF(); // Create a new jsPDF instance
+    const content = this.editor.root.innerHTML; // Get Quill editor content as HTML
+
+    // Add HTML content to PDF (you can use additional options for customization)
+    doc.html(content, {
+      callback: (doc) => {
+        doc.save('memo.pdf'); // Save the PDF file with the desired name
+      },
+      margin: [10, 10, 10, 10], // Define margin for the PDF
+      x: 10,
+      y: 10,
+    });
   }
  
 
+  exportToWord(): void {
+    const content = this.editor.root.innerHTML; // Quill content as HTML
+  
+    // Create a new Word document using docx library
+    const doc = new docx.Document({
+      sections: [
+        {
+          properties: {},
+          children: [
+            new docx.Paragraph({
+              children: [
+                new docx.TextRun("Generated content from Quill editor:"),
+              ],
+            }),
+            new docx.Paragraph({
+              children: [
+                new docx.TextRun(content), // Insert Quill content into Word document
+              ],
+            }),
+          ],
+        },
+      ],
+    });
+  
+    // Convert the document to Blob and trigger the download
+    docx.Packer.toBlob(doc).then((blob) => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'memo.docx';
+      link.click();
+    });
+  }
    
 
   // Save changes to the editor content
@@ -137,13 +218,11 @@ textSnippets = [
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
-                    ['image', 'code-block'],  // Code-block button included
+                    ['image', 'code-block'], // Image and code block buttons
                     [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
                     [{ 'color': [] }, { 'background': [] }], // Text and background colors
                     [{ 'font': [] }],
-                    ['blockquote']   ,           ['html']  // We will create this button
-                  ],
-                    
+                    ['blockquote']        ],
       },
       formats: [
         'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
@@ -165,22 +244,9 @@ textSnippets = [
       <p>&lt; accessLearningHubStoreText &gt;
       <br>Compliance Training Team</p>
     `;
- 
-    this.addHTMLButton();
-
-
+    
       // Set default content in the editor
-      
-      // Set default content in the editor
-      if (this.data.body) {
-        this.editor.root.innerHTML = this.data.body;
-      } 
-      // Store available merge fields from parent data
-      if (this.data.availableMergeFields && this.data.availableMergeFields.length > 0) {
-        this.textSnippets = this.data.availableMergeFields;
-        console.log('Available Merge Fields:', this.textSnippets);
-      }
-
+      this.editor.root.innerHTML =content;
     }
   }
   // Add the custom font family dropdown to the toolbar
@@ -202,24 +268,6 @@ textSnippets = [
     });
 
     toolbar?.appendChild(fontFamilyDropdown);  // Append to toolbar
-  }
-
-   // Add the custom HTML button to the toolbar
-   addHTMLButton() {
-    const toolbar = this.editor.container.querySelector('.ql-toolbar');
-    if (toolbar) {
-      // Create the HTML button
-      const htmlButton = document.createElement('button');
-      htmlButton.innerText = 'HTML';
-      htmlButton.classList.add('ql-html');
-      htmlButton.style.marginLeft = '10px'; // Add some spacing if needed
-
-      // Append the button to the toolbar
-      toolbar.appendChild(htmlButton);
-
-      // Bind click event for HTML toggle button
-      htmlButton.addEventListener('click', () => this.toggleHTMLMode());
-    }
   }
 
   // Add the custom font size dropdown to the toolbar
@@ -286,90 +334,4 @@ insertTextIntoEditor(text: string): void {
   // Insert the text at the current selection or the end of the document
   this.editor.insertText(range.index, text);
 }
-turnEntireContentIntoCodeBlock() {
-  // Get the entire content of the editor
-  const content = this.editor.root.innerHTML;
-  
-  // Wrap the entire content in a <pre><code></code></pre> block
-  const wrappedContent = `<pre><code>${content}</code></pre>`;
-  
-  // Set the updated content back into the Quill editor
-  this.editor.root.innerHTML = wrappedContent;
-
-  // Optional: Format the content as code block
-  this.editor.formatText(0, this.editor.getLength(), 'code-block', true);
-}
-
-toggleHTMLMode() {
-  this.htmlMode = !this.htmlMode;
-
-  if (this.htmlMode) {
-    // Switch to HTML mode: convert the content to HTML and wrap it in <p> tags
-    const htmlContent = this.convertToHTML(this.editor.root.innerHTML);
-    this.editorContainer.nativeElement.innerHTML = `
-      <textarea id="html-editor" style="width: 100%; height: 100%;">${htmlContent}</textarea>
-    `;
-
-    // Listen for input changes in the textarea
-    const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
-    htmlEditor.addEventListener('input', () => {
-      // Update Quill content when switching back to rich-text mode
-      this.editor.root.innerHTML = htmlEditor.value;
-    });
-
-  } else {
-    // Switch back to Quill editor mode
-    const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
-    if (htmlEditor) {
-      const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
-      this.editor.root.innerHTML = newHtml;  // Set it back to Quill editor
-    }
-
-    // Reinitialize Quill editor with preserved formatting
-    this.editorContainer.nativeElement.innerHTML = '';
-    this.editor = new Quill(this.editorContainer.nativeElement, {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          ['link'],
-          [{ 'align': [] }],
-          ['image', 'code-block'],
-          [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
-          [{ 'color': [] }, { 'background': [] }],
-          [{ 'font': [] }],
-          ['blockquote'],
-          ['html']  // Add HTML button to the toolbar
-        ],
-      },
-      formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background', 'code-block', 'blockquote'
-      ]
-    });
-
-    this.addHTMLButton();  // Re-add HTML button after reinitializing Quill
-  }
-}
-convertToHTML(content: string): string {
-  // Wrap each block of content (in this case, assuming paragraphs) in <p> tags
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = content;
-  const paragraphs = tempDiv.querySelectorAll('p');
-
-  // For each paragraph, wrap its text in <p> tags if it's not already
-  let htmlString = '';
-  paragraphs.forEach((p) => {
-    htmlString += `<p>${p.innerHTML}</p>`;
-  });
-
-  // If there's other block-level content, such as divs, lists, etc., handle it
-  const divs = tempDiv.querySelectorAll('div, ul, ol, li');
-  divs.forEach((div) => {
-    htmlString += div.outerHTML;  // Convert other elements to HTML
-  });
-
-  return htmlString;
-}
-
 }

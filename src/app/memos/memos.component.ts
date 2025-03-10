@@ -19,6 +19,7 @@ import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.compon
 import { MemoModel } from '../model/memo.model';
 import { EditmemoComponent } from '../editmemo/editmemo.component';
 import { CreatememoComponent } from '../creatememo/creatememo.component';
+import { ClonememoComponent } from '../clonememo/clonememo.component';
 
 interface MemoData {
   id: number;
@@ -94,6 +95,28 @@ export class MemosComponent {
     });
   }
 
+  // When a row is clicked, open the edit dialog
+  onRowClick1(template: MemoModel): void {
+    const dialogRef = this.dialog.open(ClonememoComponent, {
+      width: '1300px', // Set a fixed width (you can adjust this value)
+      height: '800px', // Set a fixed height (you can adjust this value)
+      maxWidth: 'none',   // Allow the dialog to take up 100% of the screen width
+      panelClass: 'custom-dialog', // Add the custom CSS class here
+
+      data: template.body // Pass the clicked row data to the dialog
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        // If dialog returns edited data, update the table data
+        const index = this.dataSource.data.findIndex(item => item.id === result.id);
+        if (index !== -1) {
+          this.dataSource.data[index] = result; // Update the modified data
+          this.dataSource._updateChangeSubscription(); // Refresh the table
+        }
+      }
+    });
+  }
     deleteRecord(element: MemoModel): void {
       const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
         data: {
