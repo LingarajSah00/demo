@@ -51,7 +51,7 @@ mat-form-field:last-child {
 .create-button {
     margin-bottom: 20px;
     /* Space between button and table */
-    margin-right: 10px;
+    margin-right: 104px;
     /* Space on the right */
 }
 
@@ -158,3 +158,29 @@ table td button:active {
     background-color: darkred;
     color: white;
 }
+
+
+
+ /* Download CSV button */
+ .download-btn {
+    background-color: #cc0000; /* Red background */
+    color: white; /* White text */
+   
+  }
+  
+  .download-btn {
+    position: absolute;
+    top: 90px;    /* Distance from the top of the container */
+    right: 10px;  /* Distance from the right of the container */
+    z-index: 10;  /* Ensure it stays above other elements */
+  }
+  .download-btn:hover {
+    background-color: darkred; /* Darker shade when hovering */
+    color: white; /* White text on hover */
+  }
+
+  .button-container {
+    display: flex;
+    justify-content: space-between; /* Space between buttons: one on the left, one on the right */
+    margin-bottom: 20px; /* Optional: Adds space below the buttons */
+  }
