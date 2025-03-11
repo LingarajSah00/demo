@@ -30,6 +30,7 @@ import { CommonModule } from '@angular/common';
 import { jsPDF } from 'jspdf'; // Import jsPDF library
 import * as docx from 'docx';  // Import docx module
 import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloadwordpdfdialog.component';
+import { TextRun } from 'docx'; // Ensure you're importing TextRun from docx
 
 @Component({
   selector: 'app-editmemo',
@@ -130,39 +131,81 @@ textSnippets = [
   }
  
 
-  exportToWord(): void {
-    const content = this.editor.root.innerHTML; // Quill content as HTML
+ // Method to export Quill content to Word without HTML tags but preserving formatting
+exportToWord(): void {
+  const content = this.editor.root.innerHTML; // Get the Quill content as HTML
+
+  // Create a new Word document using docx library
+  const doc = new docx.Document({
+    sections: [
+      {
+        properties: {},
+        children: [
+          new docx.Paragraph({
+            children: [
+              new docx.TextRun("Generated content from Quill editor:"),
+            ],
+          }),
+          this.convertQuillToWordContent(content), // Insert Quill content with formatting
+        ],
+      },
+    ],
+  });
+
+  // Convert the document to Blob and trigger the download
+  docx.Packer.toBlob(doc).then((blob) => {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'memo.docx';
+    link.click();
+  });
+}
+
+// Method to convert Quill HTML content into Word's format (docx)
+convertQuillToWordContent(content: string): docx.Paragraph {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, 'text/html');
+  const paragraphs = Array.from(doc.body.children); // Get all paragraphs and elements
   
-    // Create a new Word document using docx library
-    const doc = new docx.Document({
-      sections: [
-        {
-          properties: {},
-          children: [
-            new docx.Paragraph({
-              children: [
-                new docx.TextRun("Generated content from Quill editor:"),
-              ],
-            }),
-            new docx.Paragraph({
-              children: [
-                new docx.TextRun(content), // Insert Quill content into Word document
-              ],
-            }),
-          ],
-        },
-      ],
-    });
+  const paragraphChildren = paragraphs.map((element: Element) => {
+    // Assert that the element is an HTMLElement
+    const htmlElement = element as HTMLElement; 
+    return this.convertHtmlElementToWordTextRun(htmlElement);
+  });
   
-    // Convert the document to Blob and trigger the download
-    docx.Packer.toBlob(doc).then((blob) => {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'memo.docx';
-      link.click();
-    });
+  return new docx.Paragraph({
+    children: paragraphChildren,
+  });
+}
+
+convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
+  let text = element.innerText || ''; // Get the text without HTML tags
+
+  // Create a new TextRun and apply styles conditionally based on the element's tag
+  let textRunOptions: any = { text: text }; // Default options with text
+
+  // Apply styles based on the tag
+  if (element.tagName === 'STRONG' || element.tagName === 'B') {
+    textRunOptions.bold = true; // Apply bold formatting
   }
-   
+
+  if (element.tagName === 'EM' || element.tagName === 'I') {
+    textRunOptions.italic = true; // Apply italic formatting
+  }
+
+  if (element.tagName === 'U') {
+    textRunOptions.underline = true; // Apply underline formatting
+  }
+
+  if (element.tagName === 'BR') {
+    // Handle line breaks
+    return new docx.TextRun('\n');
+  }
+
+  // Create a new TextRun with the specified options
+  return new docx.TextRun(textRunOptions);
+}
+
 
   // Save changes to the editor content
   saveChanges() {

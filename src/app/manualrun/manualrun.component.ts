@@ -35,7 +35,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
   styleUrl: './manualrun.component.css'
 })
 export class ManualrunComponent {
-  displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'notificationType','dateRun'];
+  displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'notificationType','dateRun','actions'];
   dataSource = new MatTableDataSource<Run>([
     { id: 1, email: 'user1@example.com', audience: 'Audience 1', campaigns: 'Campaign 1', dateRun: new Date() ,notificationType: 'System'},
     { id: 2, email: 'user2@example.com', audience: 'Audience 2', campaigns: 'Campaign 2', dateRun: new Date() ,notificationType:'Manual',},
@@ -76,7 +76,7 @@ export class ManualrunComponent {
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
-   // this.dataSource.filter = filterValue;
+    this.dataSource.filter = filterValue;
   }
 
   onClick(): void {

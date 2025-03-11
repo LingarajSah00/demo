@@ -80,7 +80,14 @@ export class SearchDialogComponent {
   }
 
 
-
+  onSubmit(): void {
+    // You can add your logic to save the new campaign here (e.g., call a service to store the campaign)
+  
+    // Redirect to the campaigns list page (e.g., the list of campaigns)
+    //this.router.navigate(['/campaigns']);
+    this.dialogRef.close();
+  
+  }
   // Handle file selection
   onFileSelected(event: any): void {
     const file = event.target.files[0];  // Get the first selected file
