@@ -24,6 +24,7 @@ import { ManualrundialogcomponentComponent } from '../manualrundialogcomponent/m
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 @Component({
   selector: 'app-manualrun',
   imports: [MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
@@ -78,4 +79,36 @@ export class ManualrunComponent {
    // this.dataSource.filter = filterValue;
   }
 
+  onClick(): void {
+   
+    this.openConfirmationDialog(this.dataSource.data[0]);
+    
+  }
+
+     // Open Confirmation Dialog when user clicks Submit
+      openConfirmationDialog(userData: any): void {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+          width: '300px'
+        });
+      
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            // If confirmed, handle form submission
+            this.onSubmit(userData);  // Submit user data
+          }
+        });
+      
+        
+      }
+      onSubmit(userData: any): void {
+        // Logic to add the new user to the table or save to server
+        const newUser: Run = {
+          id: this.dataSource.data.length + 1,
+          audience: userData.audience,
+          email: userData.email,
+          campaigns: userData.campaigns,
+          notificationType: userData.notificationType,
+          dateRun: userData.dateRun
+        };
+      }
 }

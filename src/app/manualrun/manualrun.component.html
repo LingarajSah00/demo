@@ -54,7 +54,7 @@
 
           </div>
 
-          <div class="form-section">
+          <!-- <div class="form-section">
 
               <p>Run Date:</p>
 
@@ -68,18 +68,57 @@
 
               </mat-form-field>
 
-          </div>
+          </div> -->
 
       </div>
 
       <div class="button-container"> 
-        <button mat-button class="edit-btn">Submit</button> 
+        <button mat-button class="edit-btn" (click)="onClick()">Submit</button> 
         <button mat-button class="cancel-btn">Cancel</button> </div>
 
   </mat-tab>
 
   <mat-tab label="History">
+    <div class="table-container">
+      <!-- Display Table in the History Tab -->
+      <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <!-- Define Table Columns -->
+        <ng-container matColumnDef="id">
+          <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+        </ng-container>
 
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="audience">
+          <mat-header-cell *matHeaderCellDef> Audience </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.audience}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="campaigns">
+          <mat-header-cell *matHeaderCellDef> Campaigns </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.campaigns}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="notificationType">
+          <mat-header-cell *matHeaderCellDef> Notification Type </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.notificationType}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="dateRun">
+          <mat-header-cell *matHeaderCellDef> Date Run </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.dateRun | date}} </mat-cell>
+        </ng-container>
+
+        <!-- Header Row -->
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <!-- Data Row -->
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
       <!-- <div class="container">
 
           <div class="div5">
