@@ -25,22 +25,34 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { PreviewdialogComponent } from '../previewdialog/previewdialog.component';
 @Component({
   selector: 'app-manualrun',
   imports: [MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
     , MatDatepickerModule,  // Import MatDatepicker module
-    MatNativeDateModule,MatCheckboxModule,MatTableModule,MatButtonModule
+    MatNativeDateModule,MatCheckboxModule,MatTableModule,MatButtonModule,FormsModule,CommonModule
   ],
   templateUrl: './manualrun.component.html',
   styleUrl: './manualrun.component.css'
 })
 export class ManualrunComponent {
-  displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'notificationType','dateRun','actions'];
+  displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'notificationType','dateRun'];
   dataSource = new MatTableDataSource<Run>([
     { id: 1, email: 'user1@example.com', audience: 'Audience 1', campaigns: 'Campaign 1', dateRun: new Date() ,notificationType: 'System'},
     { id: 2, email: 'user2@example.com', audience: 'Audience 2', campaigns: 'Campaign 2', dateRun: new Date() ,notificationType:'Manual',},
     { id: 3, email: 'user3@example.com', audience: 'Audience 3', campaigns: 'Campaign 3', dateRun: new Date() ,notificationType:'Manual',},
   ]);
+  submittedData: any = null;  // Variable to hold the submitted data
+
+ // Define the model to store form values
+ formData = {
+  adminEmail: '',
+  targetAudience: [],  // For multiple select options
+  targetAudienceAll: false,  // Checkbox for 'All'
+  campaigns: [],  // For multiple select options
+  campaignsAll: false,  // Checkbox for 'All'
+  isTestRun: false  // Checkbox for 'Test Run'
+};
 
 
    
@@ -78,12 +90,34 @@ export class ManualrunComponent {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
     this.dataSource.filter = filterValue;
   }
-
-  onClick(): void {
-   
-    this.openConfirmationDialog(this.dataSource.data[0]);
-    
+// Optionally, handle 'Enter' key press
+onEnter(event: KeyboardEvent): void {
+  if (event.key === 'Enter') {
+    this.onClick(); // Trigger submit when Enter is pressed
   }
+}
+ // Open the Preview Dialog when user clicks Submit
+ onClick(): void {
+  console.log('Form Data:', this.formData);
+
+  // Prepare the data to pass to the dialog
+  const dialogRef = this.dialog.open(PreviewdialogComponent, {
+    width: '400px',  // Adjust width as needed
+    data: this.formData  // Pass the formData to the dialog component
+
+  });
+
+  dialogRef.afterClosed().subscribe(result => {
+    if (result) {
+      // Handle submission logic here (e.g., save to the server)
+      //this.submitData();
+      //this.submittedData = this.formData;  // Store the data in submittedData
+
+      this.openConfirmationDialog(result);
+
+    }
+  });
+}
 
      // Open Confirmation Dialog when user clicks Submit
       openConfirmationDialog(userData: any): void {
@@ -94,7 +128,9 @@ export class ManualrunComponent {
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
             // If confirmed, handle form submission
-            this.onSubmit(userData);  // Submit user data
+            //this.onSubmit(userData);  // Submit user data
+            this.submittedData = this.formData;  // Store the data in submittedData
+
           }
         });
       
@@ -111,4 +147,6 @@ export class ManualrunComponent {
           dateRun: userData.dateRun
         };
       }
+
+      
 }

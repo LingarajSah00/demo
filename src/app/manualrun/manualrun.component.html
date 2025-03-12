@@ -1,83 +1,87 @@
 <mat-tab-group>
-
-  <div style="margin-bottom:120px;"></div>
-
+  <!-- Manual Runs Tab -->
   <mat-tab label="Manual Runs">
+    <div class="form-group">
+      <label for="adminEmail">Administrator Email(s):</label>
+      <mat-form-field appearance="fill" class="medium-width">
+        <input matInput placeholder="Enter email" [(ngModel)]="formData.adminEmail" (keyup)="onEnter($event)">
+      </mat-form-field>
+    </div>
 
-      <div class="form-group">
-          <label for="adminEmail">Administrator Email(s):</label>
+    <div class="form-container">
+      <div class="form-section">
+        <p>Target Audience:</p>
+        <mat-checkbox [(ngModel)]="formData.targetAudience" value="All">All</mat-checkbox>
 
-          <mat-form-field appearance="fill" class="medium-width"> <input matInput placeholder="Enter email"
-                  value="defaultemail@example.com"> </mat-form-field>
-
+        <mat-form-field appearance="fill" class="small-width">
+          <mat-select multiple placeholder="Select Target Audience" [(ngModel)]="formData.targetAudience">
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
-      <div class="form-container">
+      <div class="form-section">
+        <p>Campaign(s):</p>
+        <mat-checkbox [(ngModel)]="formData.campaigns" value="All">All</mat-checkbox>
 
-          <div class="form-section">
-
-              <p>Target Audience:</p>
-
-              <mat-checkbox>All</mat-checkbox>
-
-              <mat-form-field appearance="fill" class="small-width">
-
-                  <mat-select multiple placeholder="Select Target Audience">
-
-                      <mat-option value="option1">Option 1</mat-option>
-
-                      <mat-option value="option2">Option 2</mat-option>
-
-                  </mat-select>
-
-              </mat-form-field>
-
-          </div>
-
-          <div class="form-section">
-
-              <p>Campaign(s):</p>
-
-              <mat-checkbox>All</mat-checkbox>
-
-              <mat-form-field appearance="fill" class="medium-width">
-
-                  <mat-select multiple placeholder="Select Campaigns">
-
-                      <mat-option value="option1">Option 1</mat-option>
-
-                      <mat-option value="option2">Option 2</mat-option>
-
-                  </mat-select>
-
-              </mat-form-field>
-
-          </div>
-
-          <!-- <div class="form-section">
-
-              <p>Run Date:</p>
-
-              <mat-form-field appearance="fill">
-
-                  <mat-label>Select Date</mat-label>
-                  <input matInput [matDatepicker]="picker" placeholder="Choose a date">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-
-                  <mat-datepicker #picker></mat-datepicker>
-
-              </mat-form-field>
-
-          </div> -->
-
+        <mat-form-field appearance="fill" class="medium-width">
+          <mat-select multiple placeholder="Select Campaigns" [(ngModel)]="formData.campaigns">
+            <mat-option value="option1">Option 1</mat-option>
+            <mat-option value="option2">Option 2</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
 
-      <div class="button-container"> 
-        <button mat-button class="edit-btn" (click)="onClick()">Submit</button> 
-        <button mat-button class="cancel-btn">Cancel</button> </div>
+      <div class="form-section">
+        <p>Test Run:</p>
+        <mat-checkbox [(ngModel)]="formData.isTestRun"></mat-checkbox>
+      </div>
 
+      <div class="button-container">
+        <button mat-button class="edit-btn" (click)="onClick()">Submit</button>
+        <button mat-button class="cancel-btn">Cancel</button>
+      </div>
+
+      <!-- Display submitted data below the form if it exists -->
+    <div *ngIf="submittedData">
+      <h3>Retry Time Left:</h3>
+
+      <h3>Submitted Data Preview:</h3>
+      <mat-table [dataSource]="[submittedData]">
+        <ng-container matColumnDef="adminEmail">
+          <mat-header-cell *matHeaderCellDef> Administrator Email(s) </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{ element.adminEmail }} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="targetAudience">
+          <mat-header-cell *matHeaderCellDef> Target Audience </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="element.targetAudienceAll">All</span>
+            <span *ngIf="!element.targetAudienceAll">{{ element.targetAudience.join(', ') }}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="campaigns">
+          <mat-header-cell *matHeaderCellDef> Campaign(s) </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="element.campaignsAll">All</span>
+            <span *ngIf="!element.campaignsAll">{{ element.campaigns.join(', ') }}</span>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="isTestRun">
+          <mat-header-cell *matHeaderCellDef> Test Run </mat-header-cell>
+          <mat-cell *matCellDef="let element">{{ element.isTestRun ? 'Yes' : 'No' }}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'isTestRun']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['adminEmail', 'targetAudience', 'campaigns', 'isTestRun']"></mat-row>
+      </mat-table>
+    </div>
+    </div>
   </mat-tab>
-
+  <!-- History Tab -->
   <mat-tab label="History">
     <mat-form-field appearance="fill">
       <mat-label>Search</mat-label>
@@ -117,12 +121,12 @@
         </ng-container>
         
 
-        <ng-container matColumnDef="actions">
+        <!-- <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef> Actions </th>
           <td mat-cell *matCellDef="let element">
             <button mat-button class="edit-btn">Abort</button>
           </td>
-        </ng-container>
+        </ng-container> -->
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <!-- Data Row -->

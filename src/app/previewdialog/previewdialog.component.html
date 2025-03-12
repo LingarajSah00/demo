@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Preview Submission</h2>
+<mat-dialog-content>
+  <p><strong>Administrator Email(s):</strong> {{ data.adminEmail }}</p>
+  <p><strong>Target Audience:</strong> {{ data.targetAudience }}</p>
+  <p><strong>Campaign(s):</strong> {{ data.campaigns }}</p>
+  <p><strong>Chosen Option:</strong> {{ data.selectedOption }}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button class="create-button" mat-dialog-close (click)="onClose()">Close</button>
+  <button mat-button class="create-button" [mat-dialog-close]="true" (click)="submitData()"  (click)="onSubmit()">Submit</button>
+</mat-dialog-actions>
