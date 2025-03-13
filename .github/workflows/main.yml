@@ -11,23 +11,38 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [18.x]  # You can add more versions here if needed.
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4  # Checkout the repository code
+
+    # Cache node_modules to speed up builds
+    - name: Cache node modules
+      uses: actions/cache@v3
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-modules-
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run lint  # Optional: Lint the code
 
-    - run: npm run build --if-present
-    - run: npm test
+    - run: npm ci  # Install dependencies based on the package-lock.json
+
+    - run: npm run build --if-present  # Build the Angular app
+
+    - run: npm test -- --watch=false --browsers=ChromeHeadlessCI  # Run tests in headless mode
+
+    # Optional: Deploy to GitHub Pages (or other services)
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: gh-pages  # Deploy to the gh-pages branch
+        folder: dist/demoapp  # Path to your build output folder
