@@ -2,7 +2,7 @@
   <!-- Manual Runs Tab -->
   <mat-tab label="Manual Runs">
     <div class="form-group">
-      <label for="adminEmail">Administrator Email(s):</label>
+      <label for="adminEmail">Administrator Email(s)</label>
       <mat-form-field appearance="fill" class="medium-width">
         <input matInput placeholder="Enter email" [(ngModel)]="formData.adminEmail" (keyup)="onEnter($event)">
       </mat-form-field>
@@ -10,7 +10,7 @@
 
     <div class="form-container">
       <div class="form-section">
-        <p>Target Audience:</p>
+        <p>Target Audience</p>
         <mat-checkbox [(ngModel)]="formData.targetAudienceAll" value="All"(change)="toggleAll('campaigns')">All</mat-checkbox>
 
         <mat-form-field appearance="fill" class="small-width">
@@ -22,7 +22,7 @@
       </div>
 
       <div class="form-section">
-        <p>Campaign(s):</p>
+        <p>Campaign(s)</p>
         <mat-checkbox [(ngModel)]="formData.campaignsAll" value="All">All</mat-checkbox>
 
         <mat-form-field appearance="fill" class="medium-width">
@@ -34,7 +34,7 @@
       </div>
 
       <div class="form-section">
-        <p>Test Run:</p>
+        <p>Test Mode (This will not trigger emails) </p>
         <mat-checkbox [(ngModel)]="formData.isTestRun"></mat-checkbox>
       </div>
 
@@ -45,9 +45,9 @@
 
       <!-- Display submitted data below the form if it exists -->
     <div *ngIf="submittedData">
-      <h3>Retry Time Left: 30 min</h3>
+      <h3>Time Left to AutoTrigger The Manual Run: {{ timeLeft }}</h3>
 
-      <h3>Submitted Data Preview:</h3>
+      <h3>Jobs in pipeline</h3>
       <mat-table [dataSource]="[submittedData]">
         <ng-container matColumnDef="adminEmail">
           <mat-header-cell *matHeaderCellDef> Administrator Email(s) </mat-header-cell>
@@ -71,7 +71,7 @@
         </ng-container>
 
         <ng-container matColumnDef="isTestRun">
-          <mat-header-cell *matHeaderCellDef> Test Run </mat-header-cell>
+          <mat-header-cell *matHeaderCellDef> Test Mode (This will not trigger emails) </mat-header-cell>
           <mat-cell *matCellDef="let element">{{ element.isTestRun ? 'Yes' : 'No' }}</mat-cell>
         </ng-container>
 

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';  // Import MatTabsModule for tabs
@@ -35,7 +35,11 @@ import { PreviewdialogComponent } from '../previewdialog/previewdialog.component
   templateUrl: './manualrun.component.html',
   styleUrl: './manualrun.component.css'
 })
-export class ManualrunComponent {
+export class ManualrunComponent implements OnInit, OnDestroy {
+
+  countdown: number = 30 * 60;  // 30 minutes in seconds
+  timerInterval: any;
+
   displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'notificationType','dateRun'];
   dataSource = new MatTableDataSource<Run>([
     { id: 1, email: 'user1@example.com', audience: 'Audience 1', campaigns: 'Campaign 1', dateRun: new Date() ,notificationType: 'System'},
@@ -61,7 +65,15 @@ export class ManualrunComponent {
   filteredData: Run[] = []; // Filtered data based on search text
 
   constructor(private dialog: MatDialog) {}
+  ngOnInit(): void {
+    this.startTimer();
+  }
 
+  ngOnDestroy(): void {
+    if (this.timerInterval) {
+      clearInterval(this.timerInterval);  // Clear the timer when the component is destroyed
+    }
+  }
   // Filter data based on search text
   ngOnChanges() {
     this.filteredData = this.dataSource.data.filter((item) => 
@@ -70,6 +82,25 @@ export class ManualrunComponent {
     );
   }
 
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      if (this.countdown > 0) {
+        this.countdown--; // Decrement time by one second
+      } else {
+        clearInterval(this.timerInterval); // Stop the timer once it reaches 0
+      }
+    }, 1000);
+  }
+
+  get timeLeft() {
+    const minutes = Math.floor(this.countdown / 60);
+    const seconds = this.countdown % 60;
+    return `${this.padTime(minutes)}:${this.padTime(seconds)}`;
+  }
+
+  padTime(time: number): string {
+    return time < 10 ? `0${time}` : `${time}`;
+  }
   // Create Run button handler
   createRun() {
     const dialogRef = this.dialog.open(ManualrundialogcomponentComponent, {
@@ -102,7 +133,8 @@ onEnter(event: KeyboardEvent): void {
 
   // Prepare the data to pass to the dialog
   const dialogRef = this.dialog.open(PreviewdialogComponent, {
-    width: '400px',  // Adjust width as needed
+    width: '400px', 
+    height:'500px' ,// Adjust width as needed
     data: this.formData  // Pass the formData to the dialog component
 
   });
