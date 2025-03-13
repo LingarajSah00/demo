@@ -47,9 +47,9 @@ export class ManualrunComponent {
  // Define the model to store form values
  formData = {
   adminEmail: '',
-  targetAudience: [],  // For multiple select options
+  targetAudience: []as string[],  // For multiple select options
   targetAudienceAll: false,  // Checkbox for 'All'
-  campaigns: [],  // For multiple select options
+  campaigns: []as string[],  // For multiple select options
   campaignsAll: false,  // Checkbox for 'All'
   isTestRun: false  // Checkbox for 'Test Run'
 };
@@ -106,6 +106,7 @@ onEnter(event: KeyboardEvent): void {
     data: this.formData  // Pass the formData to the dialog component
 
   });
+ 
 
   dialogRef.afterClosed().subscribe(result => {
     if (result) {
@@ -118,6 +119,18 @@ onEnter(event: KeyboardEvent): void {
     }
   });
 }
+
+ // Handle checkbox selection for "All" Audience and Campaigns
+ toggleAll(target: string): void {
+  if (target === 'audience') {
+    // If "All" is checked for audience, set targetAudience to ['All'], otherwise reset to empty array
+    this.formData.targetAudience = this.formData.targetAudience.includes('All') ? [] : ['All'];
+  } else if (target === 'campaigns') {
+    // If "All" is checked for campaigns, set campaigns to ['All'], otherwise reset to empty array
+    this.formData.campaigns = this.formData.campaigns.includes('All') ? [] : ['All'];
+  }
+}
+
 
      // Open Confirmation Dialog when user clicks Submit
       openConfirmationDialog(userData: any): void {

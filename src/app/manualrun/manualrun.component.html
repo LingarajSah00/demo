@@ -11,7 +11,7 @@
     <div class="form-container">
       <div class="form-section">
         <p>Target Audience:</p>
-        <mat-checkbox [(ngModel)]="formData.targetAudience" value="All">All</mat-checkbox>
+        <mat-checkbox [(ngModel)]="formData.targetAudienceAll" value="All"(change)="toggleAll('campaigns')">All</mat-checkbox>
 
         <mat-form-field appearance="fill" class="small-width">
           <mat-select multiple placeholder="Select Target Audience" [(ngModel)]="formData.targetAudience">
@@ -23,7 +23,7 @@
 
       <div class="form-section">
         <p>Campaign(s):</p>
-        <mat-checkbox [(ngModel)]="formData.campaigns" value="All">All</mat-checkbox>
+        <mat-checkbox [(ngModel)]="formData.campaignsAll" value="All">All</mat-checkbox>
 
         <mat-form-field appearance="fill" class="medium-width">
           <mat-select multiple placeholder="Select Campaigns" [(ngModel)]="formData.campaigns">
@@ -45,7 +45,7 @@
 
       <!-- Display submitted data below the form if it exists -->
     <div *ngIf="submittedData">
-      <h3>Retry Time Left:</h3>
+      <h3>Retry Time Left: 30 Sec</h3>
 
       <h3>Submitted Data Preview:</h3>
       <mat-table [dataSource]="[submittedData]">
@@ -75,6 +75,14 @@
           <mat-cell *matCellDef="let element">{{ element.isTestRun ? 'Yes' : 'No' }}</mat-cell>
         </ng-container>
 
+        <!-- Actions Column (with Abort Button) -->
+  <ng-container matColumnDef="actions">
+    <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <!-- Abort Button -->
+      <button mat-button >Abort</button>
+    </mat-cell>
+  </ng-container>
         <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'isTestRun']"></mat-header-row>
         <mat-row *matRowDef="let row; columns: ['adminEmail', 'targetAudience', 'campaigns', 'isTestRun']"></mat-row>
       </mat-table>

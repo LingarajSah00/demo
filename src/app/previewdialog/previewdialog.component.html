@@ -1,9 +1,9 @@
-<h2 mat-dialog-title>Preview Submission</h2>
+<h2 mat-dialog-title>Preview</h2>
 <mat-dialog-content>
-  <p><strong>Administrator Email(s):</strong> {{ data.adminEmail }}</p>
-  <p><strong>Target Audience:</strong> {{ data.targetAudience }}</p>
-  <p><strong>Campaign(s):</strong> {{ data.campaigns }}</p>
-  <p><strong>Chosen Option:</strong> {{ data.selectedOption }}</p>
+  <p *ngIf="data.adminEmail"><strong>Administrator Email(s):</strong> {{ data.adminEmail }}</p>
+  <p *ngIf="data.targetAudience.length > 0"><strong>Target Audience:</strong> {{ data.targetAudience }}</p>
+  <p *ngIf="data.campaigns.length > 0"><strong>Campaign(s):</strong> {{ data.campaigns }}</p>
+  <!-- <p><strong>Chosen Option:</strong> {{ data.selectedOption }}</p> -->
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button class="create-button" mat-dialog-close (click)="onClose()">Close</button>
