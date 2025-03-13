@@ -45,7 +45,7 @@
 
       <!-- Display submitted data below the form if it exists -->
     <div *ngIf="submittedData">
-      <h3>Time Left to AutoTrigger The Manual Run: {{ timeLeft }}</h3>
+      <h3>Time Left to AutoTrigger The Manual Run: <span class="timer">{{ timeLeft }}</span></h3>
 
       <h3>Jobs in pipeline</h3>
       <mat-table [dataSource]="[submittedData]">
