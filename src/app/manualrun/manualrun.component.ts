@@ -26,11 +26,12 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { PreviewdialogComponent } from '../previewdialog/previewdialog.component';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-manualrun',
   imports: [MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
     , MatDatepickerModule,  // Import MatDatepicker module
-    MatNativeDateModule,MatCheckboxModule,MatTableModule,MatButtonModule,FormsModule,CommonModule
+    MatNativeDateModule,MatCheckboxModule,MatTableModule,MatButtonModule,FormsModule,CommonModule,MatIconModule
   ],
   templateUrl: './manualrun.component.html',
   styleUrl: './manualrun.component.css'
@@ -39,6 +40,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
 
   countdown: number = 30 * 60;  // 30 minutes in seconds
   timerInterval: any;
+  showTimer: boolean = true;  // Show the timer by default
 
   displayedColumns: string[] = ['id', 'email', 'audience', 'campaigns', 'notificationType','dateRun'];
   dataSource = new MatTableDataSource<Run>([
@@ -55,7 +57,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   targetAudienceAll: false,  // Checkbox for 'All'
   campaigns: []as string[],  // For multiple select options
   campaignsAll: false,  // Checkbox for 'All'
-  isTestRun: false  // Checkbox for 'Test Run'
+  learnerCount: 5000  // Checkbox for 'Test Run'
 };
 
 
@@ -88,6 +90,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
         this.countdown--; // Decrement time by one second
       } else {
         clearInterval(this.timerInterval); // Stop the timer once it reaches 0
+        this.showTimer = false; // Hide the timer once it reaches
       }
     }, 1000);
   }
@@ -133,7 +136,7 @@ onEnter(event: KeyboardEvent): void {
 
   // Prepare the data to pass to the dialog
   const dialogRef = this.dialog.open(PreviewdialogComponent, {
-    width: '400px', 
+    width: '300px', 
     height:'500px' ,// Adjust width as needed
     data: this.formData  // Pass the formData to the dialog component
 

@@ -8,6 +8,8 @@
       <mat-radio-button value="option1">Employee</mat-radio-button>
       <mat-radio-button value="option2">Location</mat-radio-button>
       <mat-radio-button value="option3">Leader</mat-radio-button>
+      <mat-radio-button value="option4">Location(s)</mat-radio-button>
+
     </mat-radio-group>
   </div>
 
@@ -28,7 +30,7 @@
       </mat-form-field>
 
       <!-- File Upload Button aligned to the right -->
-      <div *ngIf="radioSelection === 'option2'" style="margin-left: 30px; display: flex; align-items: center;border: 2px solid grey;border-radius: 5px;background-color: #f1f8ff;padding: 6px;margin-top: -17px;">
+      <div *ngIf="radioSelection === 'option4'" style="margin-left: 30px; display: flex; align-items: center;border: 2px solid grey;border-radius: 5px;background-color: #f1f8ff;padding: 6px;margin-top: -17px;">
         <input type="file" (change)="onFileSelected($event)" style="display: none;" #fileInput />
         <button mat-icon-button (click)="fileInput.click()" matTooltip="Upload File">
           <mat-icon>upload</mat-icon> <!-- File upload icon -->

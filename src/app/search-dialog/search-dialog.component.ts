@@ -63,7 +63,7 @@ export class SearchDialogComponent {
     this.options = this.allOptions[this.radioSelection];
     this.searchControl.setValue('');
     // Disable the search input when 'Location' is selected, else enable it
-    if (this.radioSelection === 'option2') {
+    if (this.radioSelection === 'option4') {
       this.searchControl.disable();  // Disable the form control for Location
     } else {
       this.searchControl.enable();   // Enable the form control for other options

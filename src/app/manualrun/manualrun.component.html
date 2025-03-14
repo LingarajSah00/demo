@@ -33,21 +33,20 @@
         </mat-form-field>
       </div>
 
-      <div class="form-section">
+      <!-- <div class="form-section">
         <p>Test Mode (This will not trigger emails) </p>
         <mat-checkbox [(ngModel)]="formData.isTestRun"></mat-checkbox>
-      </div>
+      </div> -->
 
       <div class="button-container">
-        <button mat-button class="edit-btn" (click)="onClick()">Submit</button>
+        <button mat-button class="edit-btn" (click)="onClick()">Preview</button>
         <button mat-button class="cancel-btn">Cancel</button>
       </div>
 
       <!-- Display submitted data below the form if it exists -->
     <div *ngIf="submittedData">
-      <h3>Time Left to AutoTrigger The Manual Run: <span class="timer">{{ timeLeft }}</span></h3>
-
-      <h3>Jobs in pipeline</h3>
+      <h3 *ngIf="!showTimer">Jobs in Pipeline</h3>    
+      <h3 *ngIf="showTimer">Time Left toAutoTrigger Below Job:      <mat-icon>access_time</mat-icon><span class="timer">{{ timeLeft }}</span></h3> 
       <mat-table [dataSource]="[submittedData]">
         <ng-container matColumnDef="adminEmail">
           <mat-header-cell *matHeaderCellDef> Administrator Email(s) </mat-header-cell>
@@ -70,9 +69,9 @@
           </mat-cell>
         </ng-container>
 
-        <ng-container matColumnDef="isTestRun">
-          <mat-header-cell *matHeaderCellDef> Test Mode</mat-header-cell>
-          <mat-cell *matCellDef="let element">{{ element.isTestRun ? 'Yes' : 'No' }}</mat-cell>
+        <ng-container matColumnDef="learnerCount">
+          <mat-header-cell *matHeaderCellDef> Learner Impacted</mat-header-cell>
+          <mat-cell *matCellDef="let element">5000</mat-cell>
         </ng-container>
 
         <!-- Actions Column (with Abort Button) -->
@@ -80,11 +79,11 @@
     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <!-- Abort Button -->
-      <button mat-button class="create-button" >Abort</button>
+      <button mat-buttonclass="create-button"(click)="openConfirmationDialog(submittedData)">Stop</button>
     </mat-cell>
   </ng-container>
-        <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'isTestRun','actions']"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: ['adminEmail', 'targetAudience', 'campaigns', 'isTestRun','actions']"></mat-row>
+        <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','actions']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','actions']"></mat-row>
       </mat-table>
     </div>
     </div>

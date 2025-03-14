@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "demoapp": {
+    "compliance-notifications": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/demoapp",
+            "outputPath": "dist/compliance-notifications",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -75,10 +75,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "demoapp:build:production"
+              "buildTarget": "compliance-notifications:build:production"
             },
             "development": {
-              "buildTarget": "demoapp:build:development"
+              "buildTarget": "compliance-notifications:build:development"
             }
           },
           "defaultConfiguration": "development"
