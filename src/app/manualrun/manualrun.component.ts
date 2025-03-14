@@ -177,13 +177,32 @@ onEnter(event: KeyboardEvent): void {
           if (result) {
             // If confirmed, handle form submission
             //this.onSubmit(userData);  // Submit user data
-            this.submittedData = this.formData;  // Store the data in submittedData
+            
+            this.submittedData = { ...this.formData }; // Update submittedData with the latest form data
 
+        // Reset the form after submission
+        this.resetForm();
           }
         });
       
         
       }
+
+
+  // Reset form fields to their initial values
+  resetForm(): void {
+    this.formData = {
+      adminEmail: '',
+      targetAudience: [],
+      targetAudienceAll: false,
+      campaigns: [],
+      campaignsAll: false,
+      learnerCount: 5000
+    };
+
+    // Optionally, reset the search text as well
+    this.searchText = '';
+  }
       onSubmit(userData: any): void {
         // Logic to add the new user to the table or save to server
         const newUser: Run = {

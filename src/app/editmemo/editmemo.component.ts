@@ -131,11 +131,11 @@ textSnippets = [
   }
  
 
- // Method to export Quill content to Word without HTML tags but preserving formatting
+// Method to export Quill content to Word with formatting preserved
 exportToWord(): void {
   const content = this.editor.root.innerHTML; // Get the Quill content as HTML
 
-  // Create a new Word document using docx library
+  // Create a new Word document using the docx library
   const doc = new docx.Document({
     sections: [
       {
@@ -146,7 +146,7 @@ exportToWord(): void {
               new docx.TextRun("Generated content from Quill editor:"),
             ],
           }),
-          this.convertQuillToWordContent(content), // Insert Quill content with formatting
+          ...this.convertQuillToWordContent(content), // Convert the Quill content to Word format
         ],
       },
     ],
@@ -161,52 +161,73 @@ exportToWord(): void {
   });
 }
 
-// Method to convert Quill HTML content into Word's format (docx)
-convertQuillToWordContent(content: string): docx.Paragraph {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(content, 'text/html');
-  const paragraphs = Array.from(doc.body.children); // Get all paragraphs and elements
-  
-  const paragraphChildren = paragraphs.map((element: Element) => {
-    // Assert that the element is an HTMLElement
-    const htmlElement = element as HTMLElement; 
-    return this.convertHtmlElementToWordTextRun(htmlElement);
-  });
-  
+convertHtmlElementToWordParagraph(element: HTMLElement): docx.Paragraph {
+  const children = Array.from(element.childNodes).map((node: ChildNode) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      // Convert text node to Word TextRun
+      return this.convertTextNodeToWordTextRun(node as Text);
+    }
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      // Convert element node to Word TextRun
+      return this.convertHtmlElementToWordTextRun(node as HTMLElement);
+    }
+    return null; // If the node is neither text nor element, return null
+  }).filter(child => child !== null); // Filter out null values (non-text/element nodes)
+
+  // Return a Paragraph with the children (TextRuns)
   return new docx.Paragraph({
-    children: paragraphChildren,
+    children: children as docx.TextRun[], // Casting to TextRun[] as that is the expected type
   });
 }
 
+
+
+// Convert a TextNode to a TextRun with proper formatting
+convertTextNodeToWordTextRun(node: Text): docx.TextRun {
+  return new docx.TextRun({
+    text: node.textContent || '',
+  });
+}
+
+// Convert HTML element to a TextRun, considering formatting tags like <b>, <i>, <u>, etc.
 convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
-  let text = element.innerText || ''; // Get the text without HTML tags
+  const text = element.innerText || ''; // Get the text without HTML tags
+  let textRunOptions: any = { text: text }; // Default options
 
-  // Create a new TextRun and apply styles conditionally based on the element's tag
-  let textRunOptions: any = { text: text }; // Default options with text
-
-  // Apply styles based on the tag
-  if (element.tagName === 'STRONG' || element.tagName === 'B') {
-    textRunOptions.bold = true; // Apply bold formatting
+  // Apply styles based on the element's tag
+  switch (element.tagName.toLowerCase()) {
+    case 'b':
+    case 'strong':
+      textRunOptions.bold = true;
+      break;
+    case 'i':
+    case 'em':
+      textRunOptions.italic = true;
+      break;
+    case 'u':
+      textRunOptions.underline = true;
+      break;
+    case 'br':
+      return new docx.TextRun('\n'); // Handle line breaks as new lines in Word
+    case 'p':
+      // For <p> tags (paragraphs), they will be handled by the parent convertHtmlElementToWordParagraph method
+      return new docx.TextRun(text);
+    default:
+      break;
   }
 
-  if (element.tagName === 'EM' || element.tagName === 'I') {
-    textRunOptions.italic = true; // Apply italic formatting
-  }
-
-  if (element.tagName === 'U') {
-    textRunOptions.underline = true; // Apply underline formatting
-  }
-
-  if (element.tagName === 'BR') {
-    // Handle line breaks
-    return new docx.TextRun('\n');
-  }
-
-  // Create a new TextRun with the specified options
+  // Return the TextRun with the applied formatting
   return new docx.TextRun(textRunOptions);
 }
 
+// Convert Quill HTML content into Word's format (docx)
+convertQuillToWordContent(content: string): docx.Paragraph[] {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(content, 'text/html');
+  const elements = Array.from(doc.body.children); // Get all elements inside the Quill content
 
+  return elements.map((element: Element) => this.convertHtmlElementToWordParagraph(element as HTMLElement));
+}
   // Save changes to the editor content
   saveChanges() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
