@@ -151,3 +151,50 @@ mat-form-field {
   position: absolute !important;  /* Allow absolute positioning */
   z-index: 1000 !important;       /* Ensure it stays on top of other elements */
 }
+
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;  /* Align elements to the start of the container */
+  margin-bottom: 20px;  /* Add some space below the elements */
+}
+/* Customize the appearance of the toolbar buttons */
+.ql-power, .ql-help {
+  border: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.ql-power:hover, .ql-help:hover {
+  background-color: #f0f0f0;  /* Light background on hover */
+}
+/* Custom size definitions */
+.ql-size-12px {
+  font-size: 12px;
+}
+
+.ql-size-14px {
+  font-size: 14px;
+}
+
+.ql-size-16px {
+  font-size: 16px;
+}
+
+.ql-size-18px {
+  font-size: 18px;
+}
+
+.ql-size-20px {
+  font-size: 20px;
+}
+
+.ql-size-24px {
+  font-size: 24px;
+}
+
+.ql-size-32px {
+  font-size: 32px;
+}

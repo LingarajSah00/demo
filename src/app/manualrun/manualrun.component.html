@@ -44,10 +44,10 @@
       </div>
 
       <!-- Display submitted data below the form if it exists -->
-    <div *ngIf="submittedData">
-      <h3 *ngIf="!showTimer">Jobs in Pipeline</h3>    
+      <div *ngIf="submittedData.data.length > 0">  <!-- Access the 'data' property of MatTableDataSource -->
+        <h3 *ngIf="!showTimer">Jobs in Pipeline</h3>    
       <h3 *ngIf="showTimer">Time Left toAutoTrigger Below Job:      <mat-icon>access_time</mat-icon><span class="timer">{{ timeLeft }}</span></h3> 
-      <mat-table [dataSource]="[submittedData]">
+      <mat-table [dataSource]="submittedData">  <!-- Fix: Directly use submittedData -->
         <ng-container matColumnDef="adminEmail">
           <mat-header-cell *matHeaderCellDef> Administrator Email(s) </mat-header-cell>
           <mat-cell *matCellDef="let element"> {{ element.adminEmail }} </mat-cell>
@@ -57,7 +57,7 @@
           <mat-header-cell *matHeaderCellDef> Target Audience </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span *ngIf="element.targetAudienceAll">All</span>
-            <span *ngIf="!element.targetAudienceAll">{{ element.targetAudience.join(', ') }}</span>
+            <span *ngIf="!element.targetAudienceAll">{{ (element.targetAudience ?? []).join(', ') }}</span>
           </mat-cell>
         </ng-container>
 
@@ -65,7 +65,7 @@
           <mat-header-cell *matHeaderCellDef> Campaign(s) </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span *ngIf="element.campaignsAll">All</span>
-            <span *ngIf="!element.campaignsAll">{{ element.campaigns.join(', ') }}</span>
+            <span *ngIf="!element.campaignsAll">{{ (element.campaigns ?? []).join(', ') }}</span>
           </mat-cell>
         </ng-container>
 

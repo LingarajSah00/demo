@@ -92,12 +92,18 @@ angular-editor {
 
 /* Flexbox container for the dropdown and draggable text */
 .dropdown-container {
-  display: flex;
+  display: absolute;
   justify-content: space-between;
   align-items: flex-start;  /* Align elements to the start of the container */
   margin-bottom: 20px;  /* Add some space below the elements */
 }
 
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;  /* Align elements to the start of the container */
+  margin-bottom: 20px;  /* Add some space below the elements */
+}
 /* Dropdown Styling */
 mat-form-field {
   width: 45%;  /* Set the dropdown width to 45% of the parent container */

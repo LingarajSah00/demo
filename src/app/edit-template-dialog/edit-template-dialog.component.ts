@@ -135,10 +135,16 @@ textSnippets = [
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],  // Formatting options
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['clean'],                                         // remove formatting button
+                    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
+                    
                     ['image', 'code-block'],  // Code-block button included
-                    [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
+                    [{ 'size': ['12px', '14px', '16px', '18px', '20px', '24px', '32px'] }],  // Text sizes
                     [{ 'color': [] }, { 'background': [] }], // Text and background colors
                     [{ 'font': [] }],
                     ['blockquote']   ,           ['html']  // We will create this button
@@ -146,12 +152,11 @@ textSnippets = [
                     
       },
       formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
+        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
       ]
     });
 
-    this.addCustomFontFamilyDropdown();
-    this.addCustomFontSizeDropdown();
+    this.addCustomButtons();
 
       const content = `
       <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
@@ -183,6 +188,46 @@ textSnippets = [
 
     }
   }
+
+  addCustomButtons() {
+    const toolbar = this.editor.container.querySelector('.ql-toolbar');
+  
+    // Create X to Power 2 button (for exponentiation)
+    const powerButton = document.createElement('button');
+    powerButton.innerText = 'X²';  // You can use any symbol or text
+    powerButton.classList.add('ql-power');
+    powerButton.style.marginLeft = '10px';  // Add spacing if necessary
+    toolbar?.appendChild(powerButton);
+  
+    // Add event listener to handle exponentiation
+    powerButton.addEventListener('click', () => this.insertPower());
+  
+    // Create Help button (?)
+    const helpButton = document.createElement('button');
+    helpButton.innerText = '?';  // You can change this to any symbol
+    helpButton.classList.add('ql-help');
+    helpButton.style.marginLeft = '10px';  // Add spacing if necessary
+    toolbar?.appendChild(helpButton);
+  
+    // Add event listener for the Help button
+    helpButton.addEventListener('click', () => this.openHelp());
+  }
+  // Insert exponentiation (X²) at the current selection
+insertPower() {
+  const range = this.editor.getSelection();
+  if (range) {
+    // You can insert the text as X² or format it as superscript
+    this.editor.insertText(range.index, 'X');
+    this.editor.formatText(range.index, 1, 'superscript', true);  // Apply superscript formatting
+    this.editor.insertText(range.index + 1, '²');  // Insert the 2 character
+  }
+}
+
+// Open help (you can define a dialog or any custom action here)
+openHelp() {
+  alert('Help section is under construction.');  // This could be a modal/dialog
+}
+  
   // Add the custom font family dropdown to the toolbar
   addCustomFontFamilyDropdown() {
     const toolbar = this.editor.container.querySelector('.ql-toolbar');
@@ -372,4 +417,17 @@ convertToHTML(content: string): string {
   return htmlString;
 }
 
+sendEmail() {
+  // Get the content from the Quill editor
+  const content = this.editor.root.innerHTML; 
+
+  // Create the body of the email
+  const body = encodeURIComponent(content); // URL encode the content
+
+  // Mailto link, where the email body is added
+  const mailtoLink = `mailto:test@example.com?subject=Quill%20Editor%20Content&body=${body}`;
+
+  // Open the email client (this may depend on the user's browser and settings)
+  window.location.href = mailtoLink;  // This opens the default mail client
+}
 }

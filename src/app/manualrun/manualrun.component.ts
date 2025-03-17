@@ -17,6 +17,15 @@ interface Run {
   notificationType: string;
 }
 
+interface FormData {
+  adminEmail: string;
+  targetAudience: string[];
+  targetAudienceAll: boolean;
+  campaigns: string[];
+  campaignsAll: boolean;
+  learnerCount: number;
+}
+
 import { MatSelectModule } from '@angular/material/select';
 
 import { MatOptionModule } from '@angular/material/core';
@@ -48,7 +57,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
     { id: 2, email: 'user2@example.com', audience: 'Audience 2', campaigns: 'Campaign 2', dateRun: new Date() ,notificationType:'Manual',},
     { id: 3, email: 'user3@example.com', audience: 'Audience 3', campaigns: 'Campaign 3', dateRun: new Date() ,notificationType:'Manual',},
   ]);
-  submittedData: any = null;  // Variable to hold the submitted data
+  submittedData: MatTableDataSource<FormData> = new MatTableDataSource<FormData>([]);  // Use MatTableDataSource for dynamic updates
 
  // Define the model to store form values
  formData = {
@@ -175,10 +184,9 @@ onEnter(event: KeyboardEvent): void {
       
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
-            // If confirmed, handle form submission
-            //this.onSubmit(userData);  // Submit user data
-            
-            this.submittedData = { ...this.formData }; // Update submittedData with the latest form data
+    
+            this.submittedData.data.push({ ...this.formData });
+            this.submittedData._updateChangeSubscription();  // Manually trigger update for MatTableDataSource
 
         // Reset the form after submission
         this.resetForm();

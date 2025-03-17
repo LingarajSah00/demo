@@ -189,7 +189,7 @@ convertTextNodeToWordTextRun(node: Text): docx.TextRun {
   });
 }
 
-// Convert HTML element to a TextRun, considering formatting tags like <b>, <i>, <u>, etc.
+// Convert HTML element to a TextRun, considering formatting tags like <b>, <i>, <u>, <br>, etc.
 convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
   const text = element.innerText || ''; // Get the text without HTML tags
   let textRunOptions: any = { text: text }; // Default options
@@ -208,7 +208,8 @@ convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
       textRunOptions.underline = true;
       break;
     case 'br':
-      return new docx.TextRun('\n'); // Handle line breaks as new lines in Word
+      // For <br> tags, create a TextRun with a line break
+      return new docx.TextRun('\n'); // New line for Word document
     case 'p':
       // For <p> tags (paragraphs), they will be handled by the parent convertHtmlElementToWordParagraph method
       return new docx.TextRun(text);
@@ -220,7 +221,7 @@ convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
   return new docx.TextRun(textRunOptions);
 }
 
-// Convert Quill HTML content into Word's format (docx)
+
 convertQuillToWordContent(content: string): docx.Paragraph[] {
   const parser = new DOMParser();
   const doc = parser.parseFromString(content, 'text/html');
@@ -228,6 +229,7 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
 
   return elements.map((element: Element) => this.convertHtmlElementToWordParagraph(element as HTMLElement));
 }
+
   // Save changes to the editor content
   saveChanges() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
@@ -381,5 +383,20 @@ insertTextIntoEditor(text: string): void {
 
   // Insert the text at the current selection or the end of the document
   this.editor.insertText(range.index, text);
+}
+
+// Method to send an email
+sendEmail() {
+  // Get the content from the Quill editor
+  const content = this.editor.root.innerHTML; 
+
+  // Create the body of the email
+  const body = encodeURIComponent(content); // URL encode the content
+
+  // Mailto link, where the email body is added
+  const mailtoLink = `mailto:test@example.com?subject=Quill%20Editor%20Content&body=${body}`;
+
+  // Open the email client (this may depend on the user's browser and settings)
+  window.location.href = mailtoLink;  // This opens the default mail client
 }
 }
