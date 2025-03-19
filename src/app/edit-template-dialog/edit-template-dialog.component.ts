@@ -27,6 +27,7 @@ import Quill from 'quill';
 import 'quill-table';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
+import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 
 
 interface TemplateData {
@@ -417,17 +418,39 @@ convertToHTML(content: string): string {
   return htmlString;
 }
 
-sendEmail() {
-  // Get the content from the Quill editor
-  const content = this.editor.root.innerHTML; 
+openEmailDialog(): void {
+  const dialogRef = this.dialog.open(EmailDialogComponent, {
+    width: '400px',
+  });
 
-  // Create the body of the email
-  const body = encodeURIComponent(content); // URL encode the content
+  dialogRef.afterClosed().subscribe(result => {
+    console.log('Email dialog was closed');
+    if (result) {
+      this.sendEmail(result.email);  // Pass email address to sendEmail method
+    }
+    });
+}
+// Method to send an email
+// Method to send an email
+sendEmail(email: string): void {
+  if (email) {
+    console.log('Sending email to:', email);
 
-  // Mailto link, where the email body is added
-  const mailtoLink = `mailto:test@example.com?subject=Quill%20Editor%20Content&body=${body}`;
+    // Get the content from the Quill editor
+    const content = document.getElementById('editor')?.innerHTML;
 
-  // Open the email client (this may depend on the user's browser and settings)
-  window.location.href = mailtoLink;  // This opens the default mail client
+    if (content) {
+      // URL encode the content to be used in a mailto link
+      const encodedContent = encodeURIComponent(content);
+
+      // Create the mailto link with subject and body
+      const mailtoLink = `mailto:${email}?subject=Quill%20Editor%20Content&body=${encodedContent}`;
+
+      // Open the email client
+      window.location.href = mailtoLink;
+    }
+  } else {
+    console.error('Email is required!');
+  }
 }
 }

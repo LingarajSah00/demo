@@ -5,6 +5,11 @@
   
   <mat-dialog-content>
     <!-- Quill Editor Container -->
+    <div class="editor-footer">
+      <button (click)="openEmailDialog()" class="send-email-btn">
+        <mat-icon>email</mat-icon>  <!-- You can use an Angular Material icon here -->
+      </button>
+    </div>
     <div class="dropdown-container">
       <!-- Dropdown for Predefined Text Snippets -->
       <mat-form-field appearance="fill" style="width: 100%;">
@@ -30,11 +35,7 @@
 </div>  
 
 <button mat-button (click)="turnEntireContentIntoCodeBlock()">Turn Entire Content to Code Block</button>
-<div class="editor-footer">
-  <button (click)="sendEmail()" class="send-email-btn">
-    <mat-icon>email</mat-icon>  <!-- You can use an Angular Material icon here -->
-  </button>
-</div>
+
 </mat-dialog-content>
   
   <mat-dialog-actions>

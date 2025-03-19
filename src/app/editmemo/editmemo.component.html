@@ -5,7 +5,11 @@
   
   <mat-dialog-content>
     <button mat-button (click)="exportToWord()" class="export-btn">Export to Word</button>
-
+    <div class="editor-footer">
+      <button (click)="openEmailDialog()"  class="send-email-btn">
+        <mat-icon>email</mat-icon>  <!-- You can use an Angular Material icon here -->
+      </button>
+    </div>
     <!-- Quill Editor Container -->
     <div class="dropdown-container">
       <!-- Dropdown for Predefined Text Snippets -->
@@ -29,11 +33,7 @@
     (drop)="onDrop($event)" 
     (dragover)="onDragOver($event)">
 </div> 
-<div class="editor-footer">
-  <button (click)="sendEmail()" class="send-email-btn">
-    <mat-icon>email</mat-icon>  <!-- You can use an Angular Material icon here -->
-  </button>
-</div>
+
 </mat-dialog-content>
   
   <mat-dialog-actions>

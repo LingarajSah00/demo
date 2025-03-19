@@ -27,7 +27,6 @@ import Quill from 'quill';
 import 'quill-table';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
-import { jsPDF } from 'jspdf'; // Import jsPDF library
 import * as docx from 'docx';  // Import docx module
 import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloadwordpdfdialog.component';
 
@@ -123,27 +122,10 @@ textSnippets = [
 
     downloadData(format: string): void {
   
-      if (format === 'pdf') {
-        this.exportToPDF();
-      } else if (format === 'word') {
+   if (format === 'word') {
         this.exportToWord();
       }
     }
-  // Method to export Quill content to PDF
-  exportToPDF(): void {
-    const doc = new jsPDF(); // Create a new jsPDF instance
-    const content = this.editor.root.innerHTML; // Get Quill editor content as HTML
-
-    // Add HTML content to PDF (you can use additional options for customization)
-    doc.html(content, {
-      callback: (doc) => {
-        doc.save('memo.pdf'); // Save the PDF file with the desired name
-      },
-      margin: [10, 10, 10, 10], // Define margin for the PDF
-      x: 10,
-      y: 10,
-    });
-  }
  
 
   exportToWord(): void {
