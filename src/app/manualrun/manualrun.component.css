@@ -211,3 +211,50 @@ mat-table {
   background-color: darkred; /* Darker shade when hovering */
   color: white; /* White text on hover */
 }
+.message-box {
+  margin-top: 20px;
+}
+.large-width {
+  width: 100%; /* Adjust the width as needed */
+}
+
+mat-form-field textarea {
+  height: 150px; /* Adjust height as needed */
+  resize: vertical; /* Allows user to resize the field vertically */
+}
+/* In the component's CSS file */
+.message-cell {
+  white-space: normal; /* Allows text to wrap */
+  word-wrap: break-word; /* Breaks long words if necessary */
+  max-width: 250px; /* Set a maximum width for the message cell */
+  overflow: hidden;
+}
+
+/* Ensure all table columns have consistent width */
+mat-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+mat-header-cell, mat-cell {
+  padding: 8px;
+  text-align: left; /* Align text to the left */
+}
+
+mat-column-message {
+  width: 250px; /* Set a fixed width for the message column */
+  word-wrap: break-word; /* Ensure text wraps instead of overflowing */
+}
+
+.expandable-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit number of visible lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+button.expand-button {
+  font-size: 12px;
+  margin-top: 5px;
+  padding: 2px 6px;
+}

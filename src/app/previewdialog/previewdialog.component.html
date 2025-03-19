@@ -1,8 +1,10 @@
 <h2 mat-dialog-title style="text-align: center;">Preview</h2>
 <mat-dialog-content>
-  <p *ngIf="data.adminEmail"><strong>Administrator Email(s):</strong> {{ data.adminEmail }}</p>
+  <p *ngIf="data.adminEmail"><strong>Send Email:</strong> {{ data.adminEmail }}</p>
   <p *ngIf="data.targetAudience.length > 0"><strong>Target Audience:</strong> {{ data.targetAudience }}</p>
   <p *ngIf="data.campaigns.length > 0"><strong>Campaign(s):</strong> {{ data.campaigns }}</p>
+  <p *ngIf="data.message.length > 0"><strong>Message:</strong> {{ data.message }}</p>
+
   <!-- <p><strong>Chosen Option:</strong> {{ data.selectedOption }}</p> -->
 </mat-dialog-content>
 <mat-dialog-actions>

@@ -24,6 +24,7 @@ interface FormData {
   campaigns: string[];
   campaignsAll: boolean;
   learnerCount: number;
+  message: string;
 }
 
 import { MatSelectModule } from '@angular/material/select';
@@ -59,6 +60,11 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   ]);
   submittedData: MatTableDataSource<FormData> = new MatTableDataSource<FormData>([]);  // Use MatTableDataSource for dynamic updates
 
+  emailList: string[] = [
+    'ComplianceTraining@CVSHealth.com',
+    'David.Falkowski@CVSHealth.com',
+    'Ryan@CVSHealth.com',
+  ];
  // Define the model to store form values
  formData = {
   adminEmail: '',
@@ -66,7 +72,8 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   targetAudienceAll: false,  // Checkbox for 'All'
   campaigns: []as string[],  // For multiple select options
   campaignsAll: false,  // Checkbox for 'All'
-  learnerCount: 5000  // Checkbox for 'Test Run'
+  learnerCount: 5000 , // Checkbox for 'Test Run'
+  message: '', // Default message
 };
 
 
@@ -78,6 +85,8 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog) {}
   ngOnInit(): void {
     this.startTimer();
+    this.formData.adminEmail = this.emailList[0];  // Default to the first email in the list
+
   }
 
   ngOnDestroy(): void {
@@ -205,7 +214,8 @@ onEnter(event: KeyboardEvent): void {
       targetAudienceAll: false,
       campaigns: [],
       campaignsAll: false,
-      learnerCount: 5000
+      learnerCount: 5000,
+      message : ''
     };
 
     // Optionally, reset the search text as well
@@ -222,6 +232,8 @@ onEnter(event: KeyboardEvent): void {
           dateRun: userData.dateRun
         };
       }
-
+      toggleMessage(element: any): void {
+        element.expanded = !element.expanded;
+      }
       
 }
