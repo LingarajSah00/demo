@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';  // Import MatTabsModule for tabs
@@ -15,6 +15,7 @@ interface Run {
   campaigns: string;
   dateRun: Date;
   notificationType: string;
+
 }
 
 interface FormData {
@@ -25,6 +26,8 @@ interface FormData {
   campaignsAll: boolean;
   learnerCount: number;
   message: string;
+  inProgress?: boolean; // Add the inProgress flag to track status
+
 }
 
 import { MatSelectModule } from '@angular/material/select';
@@ -37,9 +40,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { PreviewdialogComponent } from '../previewdialog/previewdialog.component';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 @Component({
   selector: 'app-manualrun',
-  imports: [MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
+  imports: [MatPaginatorModule,MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
     , MatDatepickerModule,  // Import MatDatepicker module
     MatNativeDateModule,MatCheckboxModule,MatTableModule,MatButtonModule,FormsModule,CommonModule,MatIconModule
   ],
@@ -47,8 +51,9 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './manualrun.component.css'
 })
 export class ManualrunComponent implements OnInit, OnDestroy {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  countdown: number = 30 * 60;  // 30 minutes in seconds
+  countdown: number = 20;  // 30 minutes in seconds
   timerInterval: any;
   showTimer: boolean = true;  // Show the timer by default
 
@@ -74,6 +79,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   campaignsAll: false,  // Checkbox for 'All'
   learnerCount: 5000 , // Checkbox for 'Test Run'
   message: '', // Default message
+  inProgress: false, // Default to false
 };
 
 
@@ -86,6 +92,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.startTimer();
     this.formData.adminEmail = this.emailList[0];  // Default to the first email in the list
+    this.submittedData.paginator = this.paginator;
 
   }
 
@@ -109,10 +116,21 @@ export class ManualrunComponent implements OnInit, OnDestroy {
       } else {
         clearInterval(this.timerInterval); // Stop the timer once it reaches 0
         this.showTimer = false; // Hide the timer once it reaches
+
+        this.updateStatusToInProgress();
+
       }
     }, 1000);
   }
-
+  updateStatusToInProgress() {
+    this.submittedData.data.forEach((element) => {
+      if (!element.inProgress) {
+        element.inProgress = true; // Mark as In Progress
+      }
+    });
+    this.submittedData._updateChangeSubscription(); // Manually trigger table update
+  }
+  
   get timeLeft() {
     const minutes = Math.floor(this.countdown / 60);
     const seconds = this.countdown % 60;
@@ -215,7 +233,8 @@ onEnter(event: KeyboardEvent): void {
       campaigns: [],
       campaignsAll: false,
       learnerCount: 5000,
-      message : ''
+      message : '',
+      inProgress: false
     };
 
     // Optionally, reset the search text as well

@@ -145,10 +145,8 @@ textSnippets = [
                     [{ 'align': [] }], // Alignment options
                     
                     ['image', 'code-block'],  // Code-block button included
-                    [{ 'size': ['12px', '14px', '16px', '18px', '20px', '24px', '32px'] }],  // Text sizes
-                    [{ 'color': [] }, { 'background': [] }], // Text and background colors
-                    [{ 'font': [] }],
-                    ['blockquote']   ,           ['html']  // We will create this button
+                    [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
+                               ['html']  // We will create this button
                   ],
                     
       },

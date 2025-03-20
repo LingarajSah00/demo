@@ -250,21 +250,52 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],  // Formatting options
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
+                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                    ['clean'],                                         // remove formatting button
+                    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
-                    ['image', 'code-block'], // Image and code block buttons
-                    [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],  // Text sizes
-                    [{ 'color': [] }, { 'background': [] }], // Text and background colors
-                    [{ 'font': [] }],
-                    ['blockquote']        ],
+                    
+                    ['image', 'code-block'],  // Code-block button included
+                    [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
+                               ['html']  ,
+                    ['undo', 'redo'], // Add undo and redo buttons
+                    [{ 'line-height': '1.5' }, { 'line-height': '1.8' }, { 'line-height': '2' }], // Add line-height to toolbar
+
+
+                     ],
+                     history: {
+                      delay: 1000,  // Configurable undo/redo delay
+                      userOnly: true,  // Track only user-initiated changes
+                    },
       },
       formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
+        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background','code-block','blockquote','undo','redo','line-height'
       ]
     });
 
+     // Optional: Adding custom undo and redo buttons with icons
+     const toolbar = this.editor.container.querySelector('.ql-toolbar');
+    
+     // Undo button with Angular Material icon
+     const undoButton = document.createElement('button');
+     undoButton.classList.add('ql-undo');
+     undoButton.innerHTML = `<mat-icon>undo</mat-icon>`;  // Using Angular Material 'undo' icon
+     undoButton.addEventListener('click', () => this.editor.history.undo());
+     toolbar?.appendChild(undoButton);
+ 
+     // Redo button with Angular Material icon
+     const redoButton = document.createElement('button');
+     redoButton.classList.add('ql-redo');
+     redoButton.innerHTML = `<mat-icon>redo</mat-icon>`;  // Using Angular Material 'redo' icon
+     redoButton.addEventListener('click', () => this.editor.history.redo());
+     toolbar?.appendChild(redoButton);
+
     this.addCustomFontFamilyDropdown();
     this.addCustomFontSizeDropdown();
+    this.addLineHeightDropdown();
 
       const content = `
       <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
@@ -282,6 +313,29 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
       // Set default content in the editor
       this.editor.root.innerHTML =content;
     }
+  }
+
+  addLineHeightDropdown() {
+    const toolbar = this.editor.container.querySelector('.ql-toolbar');
+  
+    // Create a select element for line-height
+    const lineHeightSelect = document.createElement('select');
+    lineHeightSelect.classList.add('ql-line-height');
+    lineHeightSelect.innerHTML = `
+      <option value="1.5">1.5</option>
+      <option value="1.8">1.8</option>
+      <option value="2">2</option>
+      <option value="2.5">2.5</option>
+    `;
+  
+    // Listen to changes in the line-height dropdown
+    lineHeightSelect.addEventListener('change', (event) => {
+      const lineHeight = (event.target as HTMLSelectElement).value;
+      this.editor.format('line-height', lineHeight); // Apply line-height to the selected text
+    });
+  
+    // Append the select element to the toolbar
+    toolbar?.appendChild(lineHeightSelect);
   }
   // Add the custom font family dropdown to the toolbar
   addCustomFontFamilyDropdown() {

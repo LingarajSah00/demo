@@ -148,3 +148,35 @@ mat-form-field {
 .export-btn:hover {
   background-color: #303f9f; /* Change color on hover */
 }
+
+.ql-undo, .ql-redo {
+  background-color: #f1f1f1;  /* Background color */
+  border: 1px solid #ccc;  /* Border around buttons */
+  padding: 5px 10px;  /* Padding for better button size */
+  margin-right: 5px;  /* Space between buttons */
+  cursor: pointer;  /* Pointer cursor on hover */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ql-undo:hover, .ql-redo:hover {
+  background-color: #e0e0e0;  /* Background color on hover */
+}
+
+.mat-icon {
+  color: #333;  /* Color of the icon */
+  font-size: 20px;  /* Font size for the icon */
+}
+
+.ql-undo, .ql-redo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.ql-toolbar .ql-line-height {
+  margin-left: 10px; /* Space the dropdown out from the other options */
+  padding: 2px; /* Add some padding to make it look better */
+}

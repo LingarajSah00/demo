@@ -258,3 +258,7 @@ button.expand-button {
   margin-top: 5px;
   padding: 2px 6px;
 }
+.table-container {
+  max-height: 400px; /* Set a max-height */
+  overflow-y: auto;  /* Make the table scrollable */
+}
