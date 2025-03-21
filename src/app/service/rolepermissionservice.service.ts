@@ -29,6 +29,7 @@ export class RolepermissionserviceService {
   // Check if a user has the given permission
   hasPermission(user: UserData, permissionName: string): boolean {
     const userRole = this.getUserRole(user);
+    
     if (!userRole) {
       return false;
     }

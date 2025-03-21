@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLabel } from '@angular/material/form-field'; // mat-label is part of MatFormFieldModule
 import { MatIconModule } from '@angular/material/icon';  // Import MatIconModule
 import { MatButtonModule } from '@angular/material/button';
+import { UserData } from '../model/user.model';
 
 @Component({
   selector: 'app-login',
@@ -28,10 +29,26 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  currentUser: UserData = {
+      userId: 'emplo000000000137158',
+      username: '1468808',
+      fullName: 'Brian Kearney',
+      userStatus: 'Active',
+      securityRoles: [
+        'Admin',
+        //'Notifications Tool - Compliance User',
+        'Notifications Tool - View Only'
+      ],
+      email: 'abc@cvshealth.com',
+      jobName: 'Mgr,Corp Compliance (IC)',
+      orgName: 'Compliance / Industry Integrity Corp Compliance'
+    };
   
   //
   // This function will trigger the alert when the "Login to SSO" button is clicked
   onLoginSSO() {
+    localStorage.setItem('currentUserRole', JSON.stringify(this.currentUser));
+
     this.alertType = 'error';  // For error alert
   this.alertMessage = 'Sorry, you do not have access to the application at this moment. Please try again later!';
 
@@ -54,6 +71,8 @@ export class LoginComponent {
  if (isAuthenticated) {
    // Store token in localStorage and redirect to dashboard
    localStorage.setItem('authToken', 'isLoggedIn');
+   localStorage.setItem('currentUserRole', JSON.stringify(this.currentUser));
+
    this.router.navigateByUrl('/dashboard');
  } else {
    // Display error message if authentication fails

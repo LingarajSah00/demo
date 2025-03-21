@@ -20,6 +20,7 @@ import { UserserviceService } from '../service/userservice.service';
 import { HttpClient } from '@angular/common/http';
 import { UserData } from '../model/user.model';  // Import the UserData model
 import { CommonModule } from '@angular/common';
+import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 
 
 
@@ -45,7 +46,7 @@ import { CommonModule } from '@angular/common';
 })
 export class UsersComponent {
 
-  constructor(public dialog: MatDialog, private _snackBar: MatSnackBar,    private userService: UserserviceService // Inject the UserService
+  constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar,    private userService: UserserviceService // Inject the UserService
 ) {}
 
 // Paginator reference to connect to the mat-paginator in the template
@@ -71,6 +72,7 @@ export class UsersComponent {
     fullName: 'Brian Kearney',
     userStatus: 'Active',
     securityRoles: [
+      'Admin',
       //'Notifications Tool - Compliance User',
       'Notifications Tool - View Only'
     ],
@@ -258,5 +260,21 @@ openEditUserDialog(user: UserData): void {
    // Check if user has Admin role
    hasRole(user: UserData, role: string): boolean {
     return user.securityRoles.includes(role);
+  }
+
+  canDeleteUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'deleteUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
   }
 }

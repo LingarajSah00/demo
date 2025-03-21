@@ -13,6 +13,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 import { EditcampaignsdialogComponent } from '../editcampaignsdialog/editcampaignsdialog.component';
+import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
+import { CommonModule } from '@angular/common';
 
 interface UserData {
   id: number;
@@ -24,7 +26,7 @@ interface UserData {
 }
 @Component({
   selector: 'app-campaigns',
-  imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination
@@ -33,7 +35,7 @@ interface UserData {
   styleUrl: './campaigns.component.css'
 })
 export class CampaignsComponent {
-    constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+    constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
   
 // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -158,5 +160,21 @@ onSubmit(userData: any): void {
         console.log('Deletion canceled');
       }
     });
+  }
+
+  canDeleteUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'deleteUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
   }
 }
