@@ -262,3 +262,23 @@ button.expand-button {
   max-height: 400px; /* Set a max-height */
   overflow-y: auto;  /* Make the table scrollable */
 }
+.expandable-text {
+  white-space: normal; /* Allows text to wrap */
+  word-wrap: break-word; /* Breaks words if necessary */
+}
+
+.expandable-text.expanded {
+  white-space: pre-wrap; /* Keeps line breaks in place when expanded */
+}
+.expandable-text {
+  max-height: 80px; /* Set a limit for collapsed view */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.expandable-text.expanded {
+  max-height: none; /* Allow full text to show when expanded */
+  white-space: normal; /* Allow text to wrap */
+}

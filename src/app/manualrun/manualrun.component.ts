@@ -41,9 +41,10 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { PreviewdialogComponent } from '../previewdialog/previewdialog.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-manualrun',
-  imports: [MatPaginatorModule,MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
+  imports: [MatTooltipModule,MatPaginatorModule,MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
     , MatDatepickerModule,  // Import MatDatepicker module
     MatNativeDateModule,MatCheckboxModule,MatTableModule,MatButtonModule,FormsModule,CommonModule,MatIconModule
   ],
@@ -172,8 +173,9 @@ onEnter(event: KeyboardEvent): void {
 
   // Prepare the data to pass to the dialog
   const dialogRef = this.dialog.open(PreviewdialogComponent, {
-    width: '300px', 
-    height:'500px' ,// Adjust width as needed
+    width: '1300px', // Set a fixed width (you can adjust this value)
+      height: '800px', // Set a fixed height (you can adjust this value)
+      maxWidth: 'none', // Adjust width as needed
     data: this.formData  // Pass the formData to the dialog component
 
   });

@@ -346,13 +346,20 @@ turnEntireContentIntoCodeBlock() {
 
 toggleHTMLMode() {
   this.htmlMode = !this.htmlMode;
+  const editorElement = this.editorContainer.nativeElement;
 
   if (this.htmlMode) {
-    // Switch to HTML mode: convert the content to HTML and wrap it in <p> tags
+    // Switch to HTML mode: Convert the content to HTML and wrap it in <p> tags
     const htmlContent = this.convertToHTML(this.editor.root.innerHTML);
+
+    // Replace the editor content with a textarea for editing HTML
     this.editorContainer.nativeElement.innerHTML = `
-      <textarea id="html-editor" style="width: 100%; height: 100%;">${htmlContent}</textarea>
+      <textarea id="html-editor" style="width: 100%; height: 100%; background-color: black; color: white; border: none; resize: none;">${htmlContent}</textarea>
     `;
+    
+    // Change the background color of the editor container
+    editorElement.style.backgroundColor = 'black';
+    editorElement.style.color = 'white';
 
     // Listen for input changes in the textarea
     const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
@@ -366,35 +373,58 @@ toggleHTMLMode() {
     const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
     if (htmlEditor) {
       const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
-      this.editor.root.innerHTML = newHtml;  // Set it back to Quill editor
+
+      // Set the HTML content back to Quill editor without stripping it
+      this.editor.root.innerHTML = newHtml;
     }
 
-    // Reinitialize Quill editor with preserved formatting
-    this.editorContainer.nativeElement.innerHTML = '';
-    this.editor = new Quill(this.editorContainer.nativeElement, {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          ['link'],
-          [{ 'align': [] }],
-          ['image', 'code-block'],
-          [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
-          [{ 'color': [] }, { 'background': [] }],
-          [{ 'font': [] }],
-          ['blockquote'],
-          ['html']  // Add HTML button to the toolbar
-        ],
-      },
-      formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background', 'code-block', 'blockquote'
-      ]
-    });
+    // Do not clear the existing editor container (no need to reset it)
+    // Reinitialize Quill editor if necessary (if it’s not already initialized)
+    if (!this.editor) {
+      // Reinitialize Quill editor (preserve previous settings)
+      this.editor = new Quill(this.editorContainer.nativeElement, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+            ['link'],
+            [{ 'align': [] }],
+            ['image', 'code-block'],
+            [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'font': [] }],
+            ['blockquote'],
+            ['html']  // Add HTML button to the toolbar
+          ],
+        },
+        formats: [
+          'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background', 'code-block', 'blockquote'
+        ]
+      });
 
-    this.addHTMLButton();  // Re-add HTML button after reinitializing Quill
+      this.addHTMLButton();  // Re-add HTML button after reinitializing Quill
+    }
   }
+
+  // Reset the background color and text color to defaults when switching back to Quill mode
+  editorElement.style.backgroundColor = 'white';
+  editorElement.style.color = 'black';
 }
+
+
+
+
+
+// Helper function to strip HTML tags and get plain text
+stripHtmlTags(input: string): string {
+  const doc = new DOMParser().parseFromString(input, 'text/html');
+  return doc.body.textContent || "";
+}
+
+
+
+
 convertToHTML(content: string): string {
   // Wrap each block of content (in this case, assuming paragraphs) in <p> tags
   const tempDiv = document.createElement('div');

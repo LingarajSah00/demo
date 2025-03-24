@@ -59,7 +59,7 @@
       <mat-table [dataSource]="submittedData" class="mat-elevation-z8">  <!-- Fix: Directly use submittedData -->
         <ng-container matColumnDef="adminEmail">
           <mat-header-cell *matHeaderCellDef> Send Email : </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{ element.adminEmail }} </mat-cell>
+          <mat-cell *matCellDef="let element"> <span class="email-cell">{{ element.adminEmail }}</span></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="targetAudience">
@@ -85,11 +85,13 @@
         <ng-container matColumnDef="message">
           <mat-header-cell *matHeaderCellDef> Message </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <div class="expandable-text" [ngClass]="{'expanded': element.expanded}">
-              {{element.message}}
+            <div matTooltip="{{ element.message }}" class="expandable-text">
+              {{element.message | slice: 0:50}}...
             </div>
-    </mat-cell>
+          </mat-cell>
         </ng-container>
+        
+        
  <!-- In Progress Column -->
  <ng-container matColumnDef="inProgress">
   <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
@@ -109,7 +111,7 @@
         <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','message', 'inProgress', 'actions']"></mat-header-row>
         <mat-row *matRowDef="let row; columns: ['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','message','inProgress','actions']"></mat-row>
       </mat-table>
-      <mat-paginator [length]="submittedData.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <!-- <mat-paginator [length]="submittedData.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
 
     </div>
     </div>

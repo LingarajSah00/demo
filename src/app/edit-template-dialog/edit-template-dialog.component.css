@@ -200,3 +200,26 @@ mat-form-field {
 .ql-size-32px {
   font-size: 32px;
 }
+
+.html-mode {
+  background-color: black !important; /* Full background black */
+  color: white !important;            /* Text color white */
+  border: none !important;            /* Remove any borders */
+  height: 100vh;                      /* Make sure the container takes the full screen height */
+  width: 100%;                        /* Make sure the container takes full screen width */
+}
+
+/* Optional: If you want to adjust the editor text area to also have a black background in HTML mode */
+#html-editor {
+  background-color: black !important; /* Text area black background */
+  color: white !important;            /* Text color white */
+  border: none !important;            /* No border */
+  width: 100%;                        /* Full width of the parent container */
+  height: 100%;                       /* Full height of the parent container */
+  resize: none;                       /* Disable resize */
+}
+.left-align-btn {
+  text-align: left;
+  display: block;
+  margin: 0;
+}
