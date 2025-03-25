@@ -19,6 +19,7 @@ import * as XLSX from 'xlsx';
 import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.component';
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 import { CommonModule } from '@angular/common';
+import { UpdateToProductionDialogComponent } from '../update-to-production-dialog/update-to-production-dialog.component';
 
 interface UserData {
   id: number;
@@ -51,7 +52,7 @@ export class NotificationtemplateComponent {
   @ViewChild(MatSort) sort!: MatSort;
   templates: NotificationTemplate[] = [];  
 
-  displayedColumns: string[] = [ 'name', 'email','audience_group', 'status','actions']; // Define table column names
+  displayedColumns: string[] = [ 'name', 'email','audience_group', 'status','draft','actions']; // Define table column names
   dataSource = new MatTableDataSource<NotificationTemplate>([
     { id: 1, name: 'To Employee Compliance New Hire Due', abbrName: 'EMP_NH_DUE', status: 'active',audience_group:'Production',type:'EMP_AN_DUE',description:'To Employee Compliance Annual Due',subject:'Compliance Annual Due',body:'Compliance Annual Due',nmCreate:'',dtCreate:'',nmUpdate:'',dtUpdate:'' ,availableMergeFields: [
       {
@@ -287,4 +288,25 @@ loadTemplates(): void {
   
     return false;  // Return false if no user is found in localStorage
   }
+
+  openUpdateToProductionDialog(template: NotificationTemplate): void {
+    // Call an API to fetch the additional data you want to display in the dialog
+    //this.notificationService.getAdditionalData().subscribe(additionalData => {
+      const dialogRef = this.dialog.open(UpdateToProductionDialogComponent, {
+        width: '50%',  // 50% width of the screen
+        height: '50%', // Adjust height as necessary
+        data: { 
+          template: template, 
+          //additionalData: additionalData  // The second API response
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log('Dialog closed with result:', result);
+        }
+      });
+    //});
+  }
+  
 }
