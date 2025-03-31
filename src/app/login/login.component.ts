@@ -10,10 +10,11 @@ import { MatLabel } from '@angular/material/form-field'; // mat-label is part of
 import { MatIconModule } from '@angular/material/icon';  // Import MatIconModule
 import { MatButtonModule } from '@angular/material/button';
 import { UserData } from '../model/user.model';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,CommonModule,MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatIconModule,MatButtonModule],
+  imports: [MatSelectModule,CommonModule,FormsModule,CommonModule,MatInputModule,MatFormFieldModule,ReactiveFormsModule,MatIconModule,MatButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -25,6 +26,8 @@ export class LoginComponent {
   showAlert: boolean = false;
   alertType: string = 'error';  // Hardcoded alert type (error, success, etc.)
   alertMessage: string = 'Sorry, you do not have access to the application at this moment. Please try again later!';
+  selectedRole: string = '';  // Store selected role
+  roles: string[] = ['Admin', 'User', 'Viewer', 'Notifications Tool - View Only'];  // Define roles
 
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -35,9 +38,7 @@ export class LoginComponent {
       fullName: 'Brian Kearney',
       userStatus: 'Active',
       securityRoles: [
-        'Admin',
-        //'Notifications Tool - Compliance User',
-        'Notifications Tool - View Only'
+      
       ],
       email: 'abc@cvshealth.com',
       jobName: 'Mgr,Corp Compliance (IC)',
@@ -47,6 +48,8 @@ export class LoginComponent {
   //
   // This function will trigger the alert when the "Login to SSO" button is clicked
   onLoginSSO() {
+    this.currentUser.securityRoles = [this.selectedRole];  // Update securityRoles array
+
     localStorage.setItem('currentUserRole', JSON.stringify(this.currentUser));
 
     this.alertType = 'error';  // For error alert
@@ -66,9 +69,12 @@ export class LoginComponent {
     }, 1000);  // Delay the navigation by 1 second after showing the alert
   }
   onSubmit() {
+    this.currentUser.securityRoles = [this.selectedRole];  // Update securityRoles array
+
  // Check the username and password (this example uses hardcoded values)
  const isAuthenticated = this.authService.login(this.username, this.password);
  if (isAuthenticated) {
+
    // Store token in localStorage and redirect to dashboard
    localStorage.setItem('authToken', 'isLoggedIn');
    localStorage.setItem('currentUserRole', JSON.stringify(this.currentUser));
