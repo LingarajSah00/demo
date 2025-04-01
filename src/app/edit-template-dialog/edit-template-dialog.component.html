@@ -35,7 +35,9 @@
 </div>  
 
 <!-- <button mat-button (click)="turnEntireContentIntoCodeBlock()">Turn Entire Content to Code Block</button> -->
-<button mat-button (click)="toggleHTMLMode()" class="right-button" style="text-align: left; display: block; margin: 0;">Toggle HTML Mode</button>
+<button mat-icon-button (click)="toggleHTMLMode()" class="right-button" style="text-align: left; display: block; margin: 0;">
+  <mat-icon>{{ htmlMode ? 'code' : 'edit' }}</mat-icon> <!-- Change icon based on htmlMode -->
+</button>
 
 </mat-dialog-content>
   
