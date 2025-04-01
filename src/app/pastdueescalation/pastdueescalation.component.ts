@@ -11,6 +11,8 @@ import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.compon
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as XLSX from 'xlsx';
+import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
+import { CommonModule } from '@angular/common';
 
 interface UserData {
   id: number;
@@ -28,7 +30,7 @@ template: string;
 }
 @Component({
   selector: 'app-pastdueescalation',
-  imports: [ MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination
@@ -39,7 +41,7 @@ template: string;
 export class PastdueescalationComponent {
  // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-    constructor(public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+    constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
 
   // This is used for sorting (optional, if needed)
   @ViewChild(MatSort) sort!: MatSort;
@@ -117,4 +119,68 @@ export class PastdueescalationComponent {
         XLSX.utils.book_append_sheet(workbook, worksheet, 'Templates');
         XLSX.writeFile(workbook, 'escalations.xlsx');
       }
+
+
+  canDeleteUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'deleteUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
+
+  canEditUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'editUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
+  canCreateUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'createUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
+
+  canViewUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'viewUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
 }

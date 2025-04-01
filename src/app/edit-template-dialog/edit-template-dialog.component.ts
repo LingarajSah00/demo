@@ -345,43 +345,51 @@ turnEntireContentIntoCodeBlock() {
 }
 
 toggleHTMLMode() {
-  this.htmlMode = !this.htmlMode;
+  this.htmlMode = !this.htmlMode; // Toggle the mode between HTML and Quill editor
   const editorElement = this.editorContainer.nativeElement;
 
   if (this.htmlMode) {
-    // Switch to HTML mode: Convert the content to HTML and wrap it in <p> tags
-    const htmlContent = this.convertToHTML(this.editor.root.innerHTML);
+    // Switch to HTML mode: Convert the content to HTML
+    const htmlContent = this.convertToHTML(this.editor.root.innerHTML); // Convert Quill content to HTML
 
-    // Replace the editor content with a textarea for editing HTML
+    // Replace the Quill editor container with a textarea to edit raw HTML
     this.editorContainer.nativeElement.innerHTML = `
       <textarea id="html-editor" style="width: 100%; height: 100%; background-color: black; color: white; border: none; resize: none;">${htmlContent}</textarea>
     `;
     
-    // Change the background color of the editor container
+    // Change the background color and text color for the HTML mode
     editorElement.style.backgroundColor = 'black';
     editorElement.style.color = 'white';
 
     // Listen for input changes in the textarea
     const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
     htmlEditor.addEventListener('input', () => {
-      // Update Quill content when switching back to rich-text mode
+      // When the HTML content in the textarea changes, update the Quill editor's content
       this.editor.root.innerHTML = htmlEditor.value;
     });
 
   } else {
     // Switch back to Quill editor mode
     const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
+
     if (htmlEditor) {
+      editorElement.innerHTML = '';  // Clear the content in the editor container
       const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
+      editorElement.innerHTML =newHtml;
+      // Set the HTML content back into Quill
+      this.editor.root.innerHTML = this.data.body;
+      htmlEditor.value=this.data.body;
+      editorElement.innerHTML = htmlEditor.value;  // Clear the content in the editor container
 
-      // Set the HTML content back to Quill editor without stripping it
-      this.editor.root.innerHTML = newHtml;
+      editorElement.style.backgroundColor = 'white';
+      editorElement.style.color = 'black';
+
     }
+    
 
-    // Do not clear the existing editor container (no need to reset it)
-    // Reinitialize Quill editor if necessary (if it’s not already initialized)
+    // Re-initialize the Quill editor if it’s not already initialized
     if (!this.editor) {
-      // Reinitialize Quill editor (preserve previous settings)
+      // Initialize Quill editor with the required configuration
       this.editor = new Quill(this.editorContainer.nativeElement, {
         theme: 'snow',
         modules: {
@@ -395,22 +403,20 @@ toggleHTMLMode() {
             [{ 'color': [] }, { 'background': [] }],
             [{ 'font': [] }],
             ['blockquote'],
-            ['html']  // Add HTML button to the toolbar
           ],
         },
         formats: [
           'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background', 'code-block', 'blockquote'
         ]
       });
-
-      this.addHTMLButton();  // Re-add HTML button after reinitializing Quill
     }
-  }
 
-  // Reset the background color and text color to defaults when switching back to Quill mode
-  editorElement.style.backgroundColor = 'white';
-  editorElement.style.color = 'black';
+    // Reset the background and text color to default when switching back to Quill mode
+    editorElement.style.backgroundColor = 'white';
+    editorElement.style.color = 'black';
+  }
 }
+
 
 
 

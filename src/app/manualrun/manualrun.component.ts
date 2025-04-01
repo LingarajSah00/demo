@@ -42,6 +42,7 @@ import { PreviewdialogComponent } from '../previewdialog/previewdialog.component
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 @Component({
   selector: 'app-manualrun',
   imports: [MatTooltipModule,MatPaginatorModule,MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
@@ -89,7 +90,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   searchText: string = ''; // To store search text
   filteredData: Run[] = []; // Filtered data based on search text
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private rolePermissionService: RolepermissionserviceService,private dialog: MatDialog) {}
   ngOnInit(): void {
     this.startTimer();
     this.formData.adminEmail = this.emailList[0];  // Default to the first email in the list
@@ -257,4 +258,68 @@ onEnter(event: KeyboardEvent): void {
         element.expanded = !element.expanded;
       }
       
+
+
+  canDeleteUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'deleteUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
+
+  canEditUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'editUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
+  canCreateUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'createUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
+
+  canViewUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'viewUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
 }

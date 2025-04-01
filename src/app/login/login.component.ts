@@ -27,7 +27,7 @@ export class LoginComponent {
   alertType: string = 'error';  // Hardcoded alert type (error, success, etc.)
   alertMessage: string = 'Sorry, you do not have access to the application at this moment. Please try again later!';
   selectedRole: string = '';  // Store selected role
-  roles: string[] = ['Admin', 'User', 'Viewer', 'Notifications Tool - View Only'];  // Define roles
+  roles: string[] = ['comuser','viewonly','superuser'];  // Define roles
 
 
   constructor(private authService: AuthService, private router: Router) {}

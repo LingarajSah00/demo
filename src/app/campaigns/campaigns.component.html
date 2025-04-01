@@ -7,7 +7,7 @@
     </mat-form-field>
   
     <!-- Create Button at the top -->
-    <button mat-raised-button color="warn" class="create-button" (click)="openCreateUserDialog()">Create</button>
+    <button mat-raised-button color="warn" class="create-button" *ngIf="canCreateUser()"  (click)="openCreateUserDialog()">Create</button>
   
     <!-- Table -->
     <table mat-table [dataSource]="dataSource">
@@ -47,7 +47,7 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-button class="edit-btn" (click)="openEditUserDialog(element)">Edit</button>
+          <button mat-button class="edit-btn" *ngIf="canEditUser()" (click)="openEditUserDialog(element)">Edit</button>
           <button mat-button class="delete-btn" *ngIf="canDeleteUser()"  (click)="deleteRecord(element)">Delete</button>
         </td>
       </ng-container>

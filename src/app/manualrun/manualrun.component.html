@@ -1,4 +1,12 @@
-<mat-tab-group>
+
+<div *ngIf="!canEditUser()" class="no-permission-overlay">
+  <div class="no-permission-message">
+    <h2>You don't have any permission for this screen</h2>
+  </div>
+</div>
+<div [ngClass]="{ 'disabled-content': !canEditUser() }">
+
+<mat-tab-group >
   <!-- Manual Runs Tab -->
   <mat-tab label="Manual Runs">
    
@@ -234,3 +242,4 @@
 
   </mat-tab>
 </mat-tab-group>
+</div>
