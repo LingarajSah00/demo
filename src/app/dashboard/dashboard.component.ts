@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { PiechatComponent } from '../piechat/piechat.component';
 import { filter } from 'rxjs/operators';
+import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 
 // Explicitly register the necessary components for Chart.js
 Chart.register(ArcElement, Tooltip, Legend, Title, CategoryScale, LinearScale, PieController, LineController, LineElement, PointElement, Filler, BarElement, BarController);
@@ -79,7 +80,7 @@ export class DashboardComponent implements AfterViewInit {
   @ViewChild('completionRateCanvas') completionRateCanvas: ElementRef<HTMLCanvasElement> | undefined;
   @ViewChild('userComplianceCanvas') userComplianceCanvas: ElementRef<HTMLCanvasElement> | undefined;
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router) {}
+  constructor(private rolePermissionService: RolepermissionserviceService,@Inject(PLATFORM_ID) private platformId: Object, private router: Router) {}
 
   logout() {
     // Remove the token from localStorage to log out
@@ -191,5 +192,21 @@ export class DashboardComponent implements AfterViewInit {
         }
       });
     }
+  }
+
+  canCreateUser(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'createUser');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
   }
 }

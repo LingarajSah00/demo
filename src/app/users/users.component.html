@@ -9,6 +9,7 @@
     </mat-form-field>
      <!-- Create Button at the top -->
      <button mat-raised-button color="warn" class="create-button" *ngIf="canCreateUser()"  (click)="openCreateUserDialog()" >Create User</button>
+     <button mat-raised-button class="download-btn" (click)="openDownloadDialog()" ><mat-icon>file_download</mat-icon></button>
 
     <!-- Table -->
     <table mat-table [dataSource]="dataSource">

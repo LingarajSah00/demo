@@ -373,14 +373,19 @@ toggleHTMLMode() {
     const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
 
     if (htmlEditor) {
-      editorElement.innerHTML = '';  // Clear the content in the editor container
       const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
-      editorElement.innerHTML =newHtml;
+      //editorElement.innerHTML =newHtml;
+      editorElement.innerHTML = '';  // Clear the content in the editor container
+      this.editor.root.innerHTML = newHtml;
       // Set the HTML content back into Quill
-      this.editor.root.innerHTML = this.data.body;
-      htmlEditor.value=this.data.body;
+      //this.editor.root.innerHTML = this.data.body;
+      //htmlEditor.value=this.data.body;
       editorElement.innerHTML = htmlEditor.value;  // Clear the content in the editor container
+      const htmlContent = this.data.body; // Convert Quill content to HTML
 
+      this.editorContainer.nativeElement.innerHTML = `
+      <textarea id="html-editor" style="width: 100%; height: 100%; background-color: white; color: black; border: none; resize: none;">${htmlContent}</textarea>
+    `;
       editorElement.style.backgroundColor = 'white';
       editorElement.style.color = 'black';
 

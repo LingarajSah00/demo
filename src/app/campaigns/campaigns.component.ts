@@ -15,6 +15,8 @@ import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.compon
 import { EditcampaignsdialogComponent } from '../editcampaignsdialog/editcampaignsdialog.component';
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 import { CommonModule } from '@angular/common';
+import * as XLSX from 'xlsx';
+import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.component';
 
 interface UserData {
   id: number;
@@ -177,7 +179,21 @@ onSubmit(userData: any): void {
   
     return false;  // Return false if no user is found in localStorage
   }
-
+  canCreateUserForTemp(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'createUserForTemp');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
 
   canEditUser(): boolean {
     // Retrieve the current user's role information from localStorage
@@ -225,4 +241,59 @@ onSubmit(userData: any): void {
   
     return false;  // Return false if no user is found in localStorage
   }
+
+
+    // Open the download dialog
+    openDownloadDialog(): void {
+      const dialogRef = this.dialog.open(DownloaddialogComponent, {
+        width: '300px', // Adjust the width as needed
+      });
+  
+      // Handle the dialog close event to determine download type
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          this.downloadData(result); // Pass the selected format to download the data
+        }
+      });
+    }
+  
+    // Handle downloading data based on selected format
+    downloadData(format: string): void {
+      const data = this.dataSource.data; // Get data from the table
+  
+      if (format === 'csv') {
+        this.downloadCSV(data);
+      } else if (format === 'excel') {
+        this.downloadExcel(data);
+      }
+    }
+  
+    // Download the data as CSV
+    downloadCSV(data: any[]): void {
+      const csvData = this.convertToCSV(data);
+      const blob = new Blob([csvData], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'campaigns.csv';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    }
+  
+    // Convert the data to CSV format
+    convertToCSV(data: any[]): string {
+      const header = Object.keys(data[0]);
+      const rows = data.map((row) =>
+        header.map((field) => `"${row[field]}"`).join(',')
+      );
+      return [header.join(','), ...rows].join('\n');
+    }
+  
+    // Download the data as Excel (using a simple export approach)
+    downloadExcel(data: any[]): void {
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Templates');
+      XLSX.writeFile(workbook, 'campaigns.xlsx');
+    }
 }

@@ -341,6 +341,22 @@ loadTemplates(): void {
     return false;  // Return false if no user is found in localStorage
   }
 
+  canCreateUserForTemp(): boolean {
+    // Retrieve the current user's role information from localStorage
+    const currentUser = localStorage.getItem('currentUserRole');
+  
+    // Check if we have a valid currentUser and if they have permission to delete
+    if (currentUser) {
+      // Parse the string back to an object
+      const parsedUser = JSON.parse(currentUser);
+  
+      // Call the rolePermissionService to check if the user has the delete permission
+      return this.rolePermissionService.hasPermission(parsedUser, 'createUserForTemp');
+    }
+  
+    return false;  // Return false if no user is found in localStorage
+  }
+
   canViewUser(): boolean {
     // Retrieve the current user's role information from localStorage
     const currentUser = localStorage.getItem('currentUserRole');

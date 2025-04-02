@@ -15,11 +15,14 @@ export class RolepermissionserviceService {
       new Permission('createUser', 'Create new user'),
       new Permission('editUser', 'Edit user'),
       new Permission('deleteUser', 'Delete user'),
+      new Permission('createUserForTemp', 'Create new user'),
+
     ]),
     new Role('comuser', [
       new Permission('editUser', 'Edit user'),
       new Permission('viewUser', 'View user'),
       new Permission('createUser', 'Create new user'),
+      
 
 
     ]),
