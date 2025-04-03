@@ -18,7 +18,7 @@ export class RolepermissionserviceService {
       new Permission('createUserForTemp', 'Create new user'),
 
     ]),
-    new Role('comuser', [
+    new Role('compuser', [
       new Permission('editUser', 'Edit user'),
       new Permission('viewUser', 'View user'),
       new Permission('createUser', 'Create new user'),
