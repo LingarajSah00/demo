@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';  // Import MatDialogModule
 
 @Component({
@@ -9,10 +9,12 @@ import { MatDialogModule } from '@angular/material/dialog';  // Import MatDialog
   styleUrl: './confirmation-dialog.component.css'
 })
 export class ConfirmationDialogComponent {
-  constructor(
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<ConfirmationDialogComponent>
   ) { }
-
+  get message(): string {
+    return this.data?.message || 'Are you sure you want to proceed?';  // Default message
+  }
   onNoClick(): void {
     this.dialogRef.close(false);  // Close the dialog with a false result
   }

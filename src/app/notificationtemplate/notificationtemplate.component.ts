@@ -20,6 +20,7 @@ import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.compon
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 import { CommonModule } from '@angular/common';
 import { UpdateToProductionDialogComponent } from '../update-to-production-dialog/update-to-production-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface UserData {
   id: number;
@@ -29,7 +30,7 @@ interface UserData {
 }
 @Component({
   selector: 'app-notificationtemplate',
-  imports: [ CommonModule,   MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [ MatTooltipModule,CommonModule,   MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination
@@ -293,8 +294,9 @@ loadTemplates(): void {
     // Call an API to fetch the additional data you want to display in the dialog
     //this.notificationService.getAdditionalData().subscribe(additionalData => {
       const dialogRef = this.dialog.open(UpdateToProductionDialogComponent, {
-        width: '50%',  // 50% width of the screen
-        height: '50%', // Adjust height as necessary
+        width: '1300px', // Set a fixed width (you can adjust this value)
+        height: '800px', // Set a fixed height (you can adjust this value)
+        maxWidth: 'none', 
         data: { 
           template: template, 
           //additionalData: additionalData  // The second API response

@@ -64,6 +64,8 @@
       <div *ngIf="submittedData.data.length > 0">  <!-- Access the 'data' property of MatTableDataSource -->
         <h3 *ngIf="!showTimer">Jobs in Pipeline</h3>    
       <h3 *ngIf="showTimer">Time Left toAutoTrigger Below Job:      <mat-icon>access_time</mat-icon><span class="timer">{{ timeLeft }}</span></h3> 
+      <div class="table-container">
+
       <mat-table [dataSource]="submittedData" class="mat-elevation-z8">  <!-- Fix: Directly use submittedData -->
         <ng-container matColumnDef="adminEmail">
           <mat-header-cell *matHeaderCellDef> Send Email : </mat-header-cell>
@@ -113,14 +115,14 @@
     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <!-- Abort Button -->
-      <button mat-buttonclass="create-button"(click)="openConfirmationDialog(submittedData)">Stop</button>
+      <button mat-button  class="create-button"(click)="openConfirmationDialog(submittedData)">Stop</button>
     </mat-cell>
   </ng-container>
         <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','message', 'inProgress', 'actions']"></mat-header-row>
         <mat-row *matRowDef="let row; columns: ['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','message','inProgress','actions']"></mat-row>
       </mat-table>
       <!-- <mat-paginator [length]="submittedData.data.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> -->
-
+</div>
     </div>
     </div>
   </mat-tab>

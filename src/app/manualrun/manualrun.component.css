@@ -183,7 +183,9 @@ mat-header-row, mat-row {
   display: flex;
   align-items: center;  /* Align everything vertically in the center */
 }
-
+.mat-row {
+  height: 40px;  /* Adjust the height as necessary */
+}
 /* Adjust Action column specific styling */
 mat-cell.mat-cell:last-child, mat-header-cell.mat-header-cell:last-child {
   text-align: center;
@@ -261,4 +263,20 @@ button.expand-button {
 .table-container {
   max-height: 400px; /* Set a max-height */
   overflow-y: auto;  /* Make the table scrollable */
+}
+
+.mat-cell {
+  white-space: normal; /* Allows wrapping */
+  word-wrap: break-word; /* Ensures that long words break and wrap to the next line */
+}
+
+.email-cell {
+  max-width: 300px;  /* Adjust the max-width as needed */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.email-cell {
+  white-space: normal;
+  word-wrap: break-word;
 }

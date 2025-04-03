@@ -147,3 +147,25 @@ mat-dialog-actions {
   display: flex;
   justify-content: space-between;
 }
+.edit-btn {
+  position: relative;
+  padding: 10px; /* Ensure some padding to make space for the name above */
+}
+
+.name-on-hover {
+  position: absolute;
+  bottom: 100%;  /* Places the name above the button */
+  left: 50%;
+  transform: translateX(-50%);  /* Centers the name horizontally */
+  margin-bottom: 8px;  /* Adds space between the name and the button */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  white-space: nowrap;  /* Prevents the name from wrapping */
+  z-index: 10;  /* Ensure the name is on top of other elements */
+}
+
+.edit-btn:hover .name-on-hover {
+  opacity: 1;
+  visibility: visible;
+}
