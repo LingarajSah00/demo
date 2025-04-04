@@ -37,7 +37,7 @@
           <mat-icon *ngIf="canEditUser()" class="edit-icon" (click)="onRowClick(element)" matTooltip="edit" matTooltipPosition="above" matTooltipShowDelay="500">edit</mat-icon>
          
           <mat-icon *ngIf="canEditUser()" class="delete-icon" (click)="deleteRecord(element)" matTooltip="delete" matTooltipPosition="above" matTooltipShowDelay="500">delete</mat-icon>
-          <button mat-button  *ngIf="canEditUser()" class="delete-btn" (click)="onRowClick1(element)">Clone</button>
+         <mat-icon *ngIf="canEditUser()"  class="edit-icon" (click)="onRowClick1(element)" matTooltip="copy" matTooltipPosition="above" matTooltipShowDelay="500">file_copy</mat-icon>
 
         </td>
       </ng-container>
