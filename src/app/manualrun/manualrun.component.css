@@ -184,7 +184,7 @@ mat-header-row, mat-row {
   align-items: center;  /* Align everything vertically in the center */
 }
 .mat-row {
-  height: 40px;  /* Adjust the height as necessary */
+  height: auto;  /* Allow rows to expand based on content */
 }
 /* Adjust Action column specific styling */
 mat-cell.mat-cell:last-child, mat-header-cell.mat-header-cell:last-child {
@@ -239,13 +239,13 @@ mat-table {
 }
 
 mat-header-cell, mat-cell {
-  padding: 8px;
+  padding: 10px;
   text-align: left; /* Align text to the left */
 }
 
 mat-column-message {
-  width: 250px; /* Set a fixed width for the message column */
-  word-wrap: break-word; /* Ensure text wraps instead of overflowing */
+  width: auto; /* Allow this column to adjust based on content */
+  word-wrap: break-word;
 }
 
 .expandable-text {
@@ -279,4 +279,20 @@ button.expand-button {
 .email-cell {
   white-space: normal;
   word-wrap: break-word;
+}
+
+@media (max-width: 768px) {
+  mat-table {
+    width: 100%;
+  }
+  .mat-row {
+    display: block;
+    margin-bottom: 10px; /* Add spacing between rows */
+  }
+  .mat-cell {
+    display: block; /* Stack cells vertically */
+    width: 100%;
+    padding: 5px;
+    word-wrap: break-word;
+  }
 }

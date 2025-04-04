@@ -41,7 +41,7 @@
   
   <mat-dialog-actions>
     <button mat-icon-button (click)="toggleHTMLMode()" class="right-button" style="text-align: left; display: block; margin: 0;">
-      <mat-icon>{{ htmlMode ? 'code' : 'edit' }}</mat-icon> <!-- Change icon based on htmlMode -->
+      <mat-icon>{{ htmlMode ? 'edit'  : 'code'}}</mat-icon> <!-- Change icon based on htmlMode -->
     </button>
     <button mat-button class="right-button" (click)="cancel()">Cancel</button>
     <button mat-button class="right-button" color="primary" (click)="saveChanges()">Save</button>

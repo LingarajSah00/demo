@@ -126,6 +126,8 @@ export class NotificationtemplateComponent {
 
     deleteRecord(element: NotificationTemplate): void {
       const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+    
+
         data: {
           title: 'Confirm Deletion',
           message: `Are you sure you want to delete the record for ${element.name}?`

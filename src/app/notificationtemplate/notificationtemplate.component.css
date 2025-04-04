@@ -169,3 +169,15 @@ mat-dialog-actions {
   opacity: 1;
   visibility: visible;
 }
+
+.edit-icon, .delete-icon {
+  cursor: pointer;
+  font-size: 24px; /* Adjust the size of the icon */
+  margin-right: 8px; /* Space between icons */
+}
+.edit-icon:hover {
+  color: green; /* Change color on hover */
+}
+.delete-icon:hover {
+  color: red; /* Change color on hover */
+}

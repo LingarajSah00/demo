@@ -22,6 +22,7 @@ import { CreatememoComponent } from '../creatememo/creatememo.component';
 import { ClonememoComponent } from '../clonememo/clonememo.component';
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface MemoData {
   id: number;
@@ -31,7 +32,7 @@ interface MemoData {
 }
 @Component({
   selector: 'app-memos',
-  imports: [ CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [MatTooltipModule, CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination

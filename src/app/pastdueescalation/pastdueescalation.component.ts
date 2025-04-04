@@ -13,6 +13,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as XLSX from 'xlsx';
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface UserData {
   id: number;
@@ -30,7 +31,7 @@ template: string;
 }
 @Component({
   selector: 'app-pastdueescalation',
-  imports: [CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [MatTooltipModule,CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination

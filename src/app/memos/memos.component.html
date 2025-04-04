@@ -34,10 +34,9 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-button *ngIf="canEditUser()" class="edit-btn" (click)="onRowClick(element)" matTooltip="Click to edit" matTooltipPosition="above" matTooltipShowDelay="500"><mat-icon>edit</mat-icon>
-          </button>
-          <button mat-button *ngIf="canEditUser()" class="delete-btn" (click)="deleteRecord(element)" matTooltip="Click to delete" matTooltipPosition="above" matTooltipShowDelay="500"><mat-icon>delete</mat-icon>
-          </button>
+          <mat-icon *ngIf="canEditUser()" class="edit-icon" (click)="onRowClick(element)" matTooltip="edit" matTooltipPosition="above" matTooltipShowDelay="500">edit</mat-icon>
+         
+          <mat-icon *ngIf="canEditUser()" class="delete-icon" (click)="deleteRecord(element)" matTooltip="delete" matTooltipPosition="above" matTooltipShowDelay="500">delete</mat-icon>
           <button mat-button  *ngIf="canEditUser()" class="delete-btn" (click)="onRowClick1(element)">Clone</button>
 
         </td>

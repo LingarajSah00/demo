@@ -17,6 +17,7 @@ import { RolepermissionserviceService } from '../service/rolepermissionservice.s
 import { CommonModule } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 interface UserData {
   id: number;
@@ -28,7 +29,7 @@ interface UserData {
 }
 @Component({
   selector: 'app-campaigns',
-  imports: [CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [MatTooltipModule,CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination

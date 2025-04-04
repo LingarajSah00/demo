@@ -129,3 +129,15 @@ table td button.delete-btn:hover {
 table td button:active {
   background-color: #b30000; /* Darker red when the button is pressed */
 }
+
+.edit-icon, .delete-icon {
+  cursor: pointer;
+  font-size: 24px; /* Adjust the size of the icon */
+  margin-right: 8px; /* Space between icons */
+}
+.edit-icon:hover {
+  color: green; /* Change color on hover */
+}
+.delete-icon:hover {
+  color: red; /* Change color on hover */
+}

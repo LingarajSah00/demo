@@ -24,11 +24,12 @@ import { RolepermissionserviceService } from '../service/rolepermissionservice.s
 
 import * as XLSX from 'xlsx';
 import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
   selector: 'app-users',
-  imports: [ MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [ MatTooltipModule,MatTableModule  ,   // Import MatTableModule for Angular Material Table
       MatButtonModule,  // Optional: To add buttons or actions
       MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
       MatPaginatorModule, // For pagination
