@@ -239,12 +239,12 @@ mat-table {
 }
 
 mat-header-cell, mat-cell {
-  padding: 10px;
+  padding: 8px;
   text-align: left; /* Align text to the left */
 }
 
 mat-column-message {
-  width: auto; /* Allow this column to adjust based on content */
+  width: 250px; /* Allow this column to adjust based on content */
   word-wrap: break-word;
 }
 
@@ -296,3 +296,5 @@ button.expand-button {
     word-wrap: break-word;
   }
 }
+
+
