@@ -18,6 +18,7 @@ import { CommonModule } from '@angular/common';
 import * as XLSX from 'xlsx';
 import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CampaignService } from '../service/campaign.service';
 
 interface UserData {
   id: number;
@@ -38,7 +39,7 @@ interface UserData {
   styleUrl: './campaigns.component.css'
 })
 export class CampaignsComponent {
-    constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+    constructor( private campaignService: CampaignService,private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
   
 // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -98,6 +99,19 @@ onSubmit(userData: any): void {
   // Add the new user to the table
   this.dataSource.data = [...this.dataSource.data, newUser];
   this._snackBar.open('User created successfully!', 'Close', { duration: 2000 });
+
+   // Call the API to create the campaign
+   this.campaignService.createCampaign(userData).subscribe(
+    (response) => {
+      // Successfully created campaign
+      this.dataSource.data = [...this.dataSource.data, response]; // Update the table with the new campaign
+      this._snackBar.open('Campaign created successfully!', 'Close', { duration: 2000 });
+    },
+    (error) => {
+      // Handle error
+      this._snackBar.open('Error creating campaign!', 'Close', { duration: 2000 });
+    }
+  );
 }
 
   ngOnInit() {
@@ -131,6 +145,23 @@ onSubmit(userData: any): void {
           if (confirmResult) {
             // If confirmed, update the user status
             user.status = result;
+
+             // Call the API to update the campaign
+             this.campaignService.editCampaign(user).subscribe(
+              (updatedCampaign) => {
+                // Update the table with the new values
+                const index = this.dataSource.data.findIndex(campaign => campaign.id === updatedCampaign.id);
+                if (index > -1) {
+                  this.dataSource.data[index] = updatedCampaign; // Update the campaign in the table
+                  this.dataSource._updateChangeSubscription(); // Refresh the table view
+                  this._snackBar.open('Campaign updated successfully!', 'Close', { duration: 2000 });
+                }
+              },
+              (error) => {
+                // Handle error
+                this._snackBar.open('Error updating campaign!', 'Close', { duration: 2000 });
+              }
+            );
             this.dataSource._updateChangeSubscription(); // Refresh the table
             this._snackBar.open(`User status updated to ${user.status}`, 'Close', { duration: 3000 });
           } else {
@@ -159,6 +190,23 @@ onSubmit(userData: any): void {
           this.dataSource._updateChangeSubscription();  // Refresh table view
           this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
         }
+
+         // Proceed with deletion if confirmed
+         this.campaignService.deleteCampaign(element.id).subscribe(
+          () => {
+            // If deletion is successful, remove the record from the table
+            const index = this.dataSource.data.indexOf(element);
+            if (index > -1) {
+              this.dataSource.data.splice(index, 1);  // Remove the record from the dataSource
+              this.dataSource._updateChangeSubscription();  // Refresh table view
+              this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
+            }
+          },
+          (error) => {
+            // Handle error if the delete fails
+            this._snackBar.open('Error deleting record!', 'Close', { duration: 3000 });
+          }
+        );
       } else {
         console.log('Deletion canceled');
       }

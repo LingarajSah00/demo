@@ -33,7 +33,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
       MatButtonModule,  // Optional: To add buttons or actions
       MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
       MatPaginatorModule, // For pagination
-      MatInputModule,
       MatDialogModule,
       MatButtonModule,
       MatInputModule,
@@ -168,6 +167,18 @@ onSubmit(userData: any): void {
   // Add the new user to the table
   this.dataSource.data = [...this.dataSource.data, newUser];
   this._snackBar.open('User created successfully!', 'Close', { duration: 2000 });
+  this.userService.addUser(newUser).subscribe(
+    (response) => {
+      // On success, show a success message
+      this._snackBar.open('User created successfully!', 'Close', { duration: 2000 });
+    },
+    (error) => {
+      // On error, show an error message
+      this._snackBar.open('Failed to create user. Please try again.', 'Close', { duration: 2000 });
+      console.error('Error creating user:', error);
+    }
+  );
+  
 }
 
 
@@ -192,6 +203,31 @@ openEditUserDialog(user: UserData): void {
         if (confirmResult) {
           // If confirmed, update the user status
           user.userStatus = result;
+          const updatedUser = {
+            ...user,
+            userStatus: result.status,  // Update status
+            username: result.username,  // Update username
+            fullName: result.name,      // Update full name
+            email: result.email         // Update email
+          };
+
+          // Call the edit API to update the user
+          this.userService.editUser(updatedUser.userId, updatedUser).subscribe(
+            (response) => {
+              // Update the data source with the updated user
+              this.dataSource.data = this.dataSource.data.map(u =>
+                u.userId === updatedUser.userId ? updatedUser : u
+              );
+
+              // Show success message
+              this._snackBar.open('User updated successfully!', 'Close', { duration: 2000 });
+            },
+            (error) => {
+              // Handle error (e.g., show error message)
+              this._snackBar.open('Failed to update user. Please try again.', 'Close', { duration: 2000 });
+              console.error('Error updating user:', error);
+            }
+          );
           this.dataSource._updateChangeSubscription(); // Refresh the table
           this._snackBar.open(`User status updated to ${user.userStatus}`, 'Close', { duration: 3000 });
         } else {
@@ -254,6 +290,24 @@ openEditUserDialog(user: UserData): void {
           this.dataSource._updateChangeSubscription();  // Refresh table view
           this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
         }
+
+         // If confirmed, call the delete API
+         this.userService.deleteUser(element.userId).subscribe(
+          (response) => {
+            // Successfully deleted on the backend
+            const index = this.dataSource.data.indexOf(element);
+            if (index > -1) {
+              this.dataSource.data.splice(index, 1);  // Remove the user from the local dataSource
+              this.dataSource._updateChangeSubscription();  // Refresh table view
+              this._snackBar.open('User deleted successfully!', 'Close', { duration: 3000 });
+            }
+          },
+          (error) => {
+            // Handle any error that occurred during the delete operation
+            this._snackBar.open('Failed to delete user. Please try again.', 'Close', { duration: 3000 });
+            console.error('Error deleting user:', error);
+          }
+        );
       } else {
         console.log('Deletion canceled');
       }

@@ -25,4 +25,19 @@ export class UserserviceService {
     const searchUrl = `${this.apiUrl}/user/${pathVariable}`;  // Use the dynamic apiUrl
     return this.http.get<UserData[]>(searchUrl);
   }
+
+   // Method to add a new user via POST request
+   addUser(userData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/user/`, userData);
+  }
+
+   // Edit User (PUT)
+   editUser(userId: string, updatedData: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${userId}`, updatedData);
+  }
+
+  // Delete User (DELETE)
+  deleteUser(userId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${userId}`);
+  }
 }
