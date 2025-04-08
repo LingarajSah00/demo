@@ -438,6 +438,9 @@ toggleHTMLMode() {
     // Switch to HTML mode: Convert the content of the Quill editor to HTML
     const htmlContent = this.convertToHTML(this.editor.root.innerHTML);
 
+      // Remove previous list markers from HTML to prevent duplicate lists
+      const sanitizedHtml = this.removeDuplicateLists(htmlContent);
+
     // Replace the Quill editor with a textarea for editing raw HTML
     this.editorContainer.nativeElement.innerHTML = `
       <textarea id="html-editor" style="width: 100%; height: 100%; background-color: black; color: white; border: none; resize: none;">${htmlContent}</textarea>
@@ -476,19 +479,24 @@ toggleHTMLMode() {
         theme: 'snow',
         modules: {
           toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-            ['link'],
-            [{ 'align': [] }],
-            ['image', 'code-block'],
-            [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
-            [{ 'color': [] }, { 'background': [] }],
-            [{ 'font': [] }],
-            ['blockquote'],
-          ],
+            ['bold', 'italic', 'underline', 'strike'],  // Formatting options
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
+                      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                      ['clean'],                                         // remove formatting button
+                      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  
+                      ['link'], // Add link button
+                      [{ 'align': [] }], // Alignment options
+                      
+                      ['image', 'code-block'],  // Code-block button included
+                      [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
+                                 ['html']  // We will create this button
+                    ],
+                      
         },
         formats: [
-          'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background', 'code-block', 'blockquote'
+          'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
         ]
       });
 
@@ -503,6 +511,29 @@ toggleHTMLMode() {
 }
 
 
+// Helper function to remove duplicate ordered lists
+removeDuplicateLists(html: string): string {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  
+  const orderedLists = doc.querySelectorAll('ol');
+
+  // For each ordered list, make sure no duplicate list items exist
+  orderedLists.forEach(ol => {
+    const listItems = ol.querySelectorAll('li');
+    const seenText = new Set();
+    
+    listItems.forEach(li => {
+      if (seenText.has(li.textContent?.trim())) {
+        li.remove();  // Remove duplicate list item
+      } else {
+        seenText.add(li.textContent?.trim());
+      }
+    });
+  });
+
+  return doc.body.innerHTML;
+}
 stripHtmlTags(input: string): string {
   const doc = new DOMParser().parseFromString(input, 'text/html');
   return doc.body.textContent || "";

@@ -116,10 +116,28 @@ export class NotificationtemplateComponent {
       if (result) {
         // If dialog returns edited data, update the table data
         const index = this.dataSource.data.findIndex(item => item.id === result.id);
+
+          // Send the updated template to the server via API call
+          this.notificationService.updateTemplate(result).subscribe(
+            (response) => {
+              // Update the table after successful API response
+              const index = this.dataSource.data.findIndex(item => item.id === response.id);
+              if (index !== -1) {
+                this.dataSource.data[index] = response;
+                this.dataSource._updateChangeSubscription(); // Refresh the table view
+                this._snackBar.open('Template updated successfully!', 'Close', { duration: 3000 });
+              }
+            },
+            (error) => {
+              this._snackBar.open('Error updating template. Please try again.', 'Close', { duration: 3000 });
+            }
+          );
         if (index !== -1) {
           this.dataSource.data[index] = result; // Update the modified data
           this.dataSource._updateChangeSubscription(); // Refresh the table
         }
+
+        
       }
     });
   }
@@ -138,6 +156,22 @@ export class NotificationtemplateComponent {
         if (result) {
           // Proceed with deletion if confirmed
           const index = this.dataSource.data.indexOf(element);
+
+          // Call delete API method
+        this.notificationService.deleteTemplate(index).subscribe(
+          () => {
+            // Remove the deleted template from the data source
+            const index = this.dataSource.data.findIndex(item => item.id === index);
+            if (index !== -1) {
+              this.dataSource.data.splice(index, 1);  // Remove from array
+              this.dataSource._updateChangeSubscription(); // Refresh the table view
+              this._snackBar.open('Template deleted successfully!', 'Close', { duration: 3000 });
+            }
+          },
+          (error) => {
+            this._snackBar.open('Error deleting template. Please try again.', 'Close', { duration: 3000 });
+          }
+        );
           if (index > -1) {
             this.dataSource.data.splice(index, 1);  // Remove the record from the dataSource
             this.dataSource._updateChangeSubscription();  // Refresh table view
@@ -186,6 +220,18 @@ onSubmit(userData: any): void {
     email: userData.email,
     status: userData.status
   };
+
+  this.notificationService.createTemplate(userData).subscribe(
+    (response) => {
+      // Handle the response and update the table or show success message
+      this._snackBar.open('Template created successfully!', 'Close', { duration: 3000 });
+      this.loadTemplates(); // Reload templates to reflect the new one
+    },
+    (error) => {
+      // Handle any errors
+      this._snackBar.open('Error creating template. Please try again.', 'Close', { duration: 3000 });
+    }
+  );
 }
 
 // Load all templates from the backend

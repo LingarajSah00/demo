@@ -22,4 +22,20 @@ export class NotificationTemplateService {
   getTemplateById(id: number): Observable<NotificationTemplate> {
     return this.http.get<NotificationTemplate>(`${this.baseUrl}/${id}`);
   }
+
+   // POST request to create a new notification template
+   createTemplate(template: NotificationTemplate): Observable<NotificationTemplate> {
+    return this.http.post<NotificationTemplate>(this.baseUrl, template);
+  }
+
+   // Update a template
+   updateTemplate(template: NotificationTemplate): Observable<NotificationTemplate> {
+    // Assuming template.id is the identifier
+    return this.http.put<NotificationTemplate>(`${this.baseUrl}/${template.id}`, template);
+  }
+
+   // Delete a template
+   deleteTemplate(templateId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${templateId}`);
+  }
 }

@@ -23,6 +23,7 @@ import { ClonememoComponent } from '../clonememo/clonememo.component';
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MemoserviceService } from '../service/memoservice.service';
 
 interface MemoData {
   id: number;
@@ -43,7 +44,7 @@ interface MemoData {
 })
 export class MemosComponent {
 
-    constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
+    constructor(private memoserviceService :MemoserviceService ,private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
   
   // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -88,6 +89,18 @@ export class MemosComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        // this.memoserviceService.updateUser(result).subscribe(
+        //   (response) => {
+        //     console.log('User updated successfully', response);
+        //     this.dialog.closeAll();  // Close all open dialogs on success
+        //     this._snackBar.open('User updated successfully!', 'Close', { duration: 3000 });
+        //   },
+        //   (error) => {
+        //     console.error('Error updating user', error);
+        //     this._snackBar.open('Error updating user. Please try again.', 'Close', { duration: 3000 });
+        //   }
+        // );
+        
         // If dialog returns edited data, update the table data
         const index = this.dataSource.data.findIndex(item => item.id === result.id);
         if (index !== -1) {
@@ -132,6 +145,17 @@ export class MemosComponent {
         if (result) {
           // Proceed with deletion if confirmed
           const index = this.dataSource.data.indexOf(element);
+          // this.memoserviceService.deleteUser(result).subscribe(
+          //   (response) => {
+          //     this._snackBar.open('User deleted successfully!', 'Close', { duration: 3000 });
+          //    // this.loadUsers();
+          //   },
+          //   (error) => {
+          //     console.error('Error deleting user', error);
+          //     this._snackBar.open('Error deleting user. Please try again.', 'Close', { duration: 3000 });
+          //   }
+          // );
+          
           if (index > -1) {
             this.dataSource.data.splice(index, 1);  // Remove the record from the dataSource
             this.dataSource._updateChangeSubscription();  // Refresh table view
@@ -180,6 +204,18 @@ onSubmit(userData: any): void {
     email: userData.email,
     status: userData.status
   };
+
+  // this.memoserviceService.createUser(newUser).subscribe(
+  //   (response) => {
+  //     console.log('User created successfully', response);
+  //     // Handle success (e.g., close dialog, refresh user list)
+  //     this.dialog.closeAll();  // Close the dialog upon success
+  //   },
+  //   (error) => {
+  //     console.error('Error creating user', error);
+  //     // Handle error (e.g., show an error message)
+  //   }
+  // );
 }
 
 

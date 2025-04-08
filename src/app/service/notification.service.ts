@@ -5,6 +5,7 @@ import { ELTData } from '../model/elt.model';
 import { Setting } from '../model/setting.model';
 import { ListOption } from '../model/list-option.model';
 import { environment } from '../../environments/environment';  // Import environment
+import { NotificationTemplate } from '../model/notification.template.model';
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +57,7 @@ export class NotificationService {
     const url = `${this.apiUrl}/notification/listoption/${name}`;
     return this.http.get<ListOption>(url);
   }
+
+   
 
 }
