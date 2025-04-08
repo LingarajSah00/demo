@@ -141,6 +141,24 @@ deleteRecord(element: ELTData): void {
         this.dataSource._updateChangeSubscription();  // Refresh table view
         this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
       }
+
+      // this.maintenanceService.deleteMaintenance(id).subscribe(
+      //   () => {
+      //     this.loading = false; // Set loading state to false after the delete operation is done
+      //     // Remove the record from the dataSource after deletion
+      //     const index = this.dataSource.data.findIndex((item) => item.id === id);
+      //     if (index !== -1) {
+      //       this.dataSource.data.splice(index, 1); // Remove the record from the dataSource
+      //       this.dataSource._updateChangeSubscription(); // Refresh the table view
+      //     }
+      //     this._snackBar.open('Maintenance record deleted successfully!', 'Close', { duration: 3000 });
+      //   },
+      //   (error) => {
+      //     this.loading = false; // Stop loading state even if an error occurs
+      //     console.error('Error deleting maintenance record:', error);
+      //     this._snackBar.open('Failed to delete maintenance record', 'Close', { duration: 3000 });
+      //   }
+      // );
     } else {
       console.log('Deletion canceled');
     }
@@ -168,6 +186,24 @@ openEditUserDialog(user: ELTData): void {
         if (confirmResult) {
           // If confirmed, update the user status
           user.personExceptionStatus = result;
+
+          // this.maintenanceService.editMaintenance(id, maintenanceData).subscribe(
+          //   (response) => {
+          //     this.loading = false; // Set loading state to false
+          //     // Update the table data after the record is edited
+          //     const index = this.dataSource.data.findIndex((item) => item.id === id);
+          //     if (index !== -1) {
+          //       this.dataSource.data[index] = response; // Replace the old record with the updated one
+          //       this.dataSource._updateChangeSubscription(); // Refresh the table
+          //     }
+          //     this._snackBar.open('Maintenance record updated successfully!', 'Close', { duration: 3000 });
+          //   },
+          //   (error) => {
+          //     this.loading = false; // Set loading state to false
+          //     console.error('Error updating maintenance record:', error);
+          //     this._snackBar.open('Failed to update maintenance record', 'Close', { duration: 3000 });
+          //   }
+          // );
           this.dataSource._updateChangeSubscription(); // Refresh the table
           this._snackBar.open(`User status updated to ${user.personExceptionStatus}`, 'Close', { duration: 3000 });
         } else {

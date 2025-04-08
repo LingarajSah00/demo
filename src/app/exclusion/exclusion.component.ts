@@ -30,6 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.component';
 import * as XLSX from 'xlsx';
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
+import { ExclusionService } from '../service/exclusion.service';
 
 
 @Component({
@@ -46,13 +47,13 @@ import { RolepermissionserviceService } from '../service/rolepermissionservice.s
         MatSnackBarModule,
         MatSlideToggleModule,
         FormsModule, HttpClientModule,MatSelectModule,MatTooltipModule,CommonModule],
-    providers: [NotificationService],
+    providers: [NotificationService,ExclusionService],
     templateUrl: './exclusion.component.html',
     styleUrl: './exclusion.component.css'
 })
 export class ExclusionComponent {
     defaultOption: string = 'option1';
-    constructor(private rolePermissionService: RolepermissionserviceService,private notificationService: NotificationService,
+    constructor(private exclusionService : ExclusionService,private rolePermissionService: RolepermissionserviceService,private notificationService: NotificationService,
         public dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
 
@@ -146,6 +147,21 @@ export class ExclusionComponent {
                         this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
                     }
                 }
+
+                this.exclusionService.deleteRecord(element.id).subscribe(
+                  (response) => {
+                    // Handle success response
+                    console.log('Record deleted successfully:', response);
+                    this._snackBar.open('Record deleted successfully!', 'Close', { duration: 3000 });
+                    // Refresh the data (optional)
+                    // this.loadPersonExceptions();  // Or reload the data
+                  },
+                  (error) => {
+                    // Handle error response
+                    console.error('Error deleting record:', error);
+                    this._snackBar.open('Failed to delete record', 'Close', { duration: 3000 });
+                  }
+                );
             } else {
                 console.log('Deletion canceled');
             }
@@ -153,8 +169,25 @@ export class ExclusionComponent {
     }
     
 
+  // Call this method when editing an existing record
+  updateRecord(id: number, updatedData: ELTData): void {
+    this.exclusionService.updateRecord(id, updatedData).subscribe(
+      (response) => {
+        // Handle success response
+        console.log('Record updated successfully:', response);
+        this._snackBar.open('Record updated successfully!', 'Close', { duration: 3000 });
+      },
+      (error) => {
+        // Handle error response
+        console.error('Error updating record:', error);
+        this._snackBar.open('Failed to update record', 'Close', { duration: 3000 });
+      }
+    );
+  }
 
     openEditUserDialog(user: ELTData): void {
+      this.updateRecord(user.id, user); // Call the service to update the record
+
     }
 
 
@@ -210,6 +243,18 @@ export class ExclusionComponent {
       
         dialogRef.afterClosed().subscribe(result => {
           if (result) {
+            this.exclusionService.createRecord(result).subscribe(
+              (response) => {
+                // Handle success response
+                console.log('Record created successfully:', response);
+                this._snackBar.open('Record created successfully!', 'Close', { duration: 3000 });
+              },
+              (error) => {
+                // Handle error response
+                console.error('Error creating record:', error);
+                this._snackBar.open('Failed to create record', 'Close', { duration: 3000 });
+              }
+            );
             // If confirmed, handle form submission
            // this.onSubmit(userData);  // Submit user data
           }

@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { MaintenanceService } from '../service/maintenance.service';
 
 @Component({
   selector: 'app-create-maintenance-dialog',
@@ -35,7 +36,7 @@ export class CreateMaintenanceDialogComponent {
  receive: string = '';
  status: string = '';
 
- constructor(
+ constructor(private maintenanceService: MaintenanceService,
    private dialogRef: MatDialogRef<CreateMaintenanceDialogComponent>,
    private dialog: MatDialog
  ) {}
@@ -74,7 +75,17 @@ export class CreateMaintenanceDialogComponent {
          receive: this.receive,
          status: this.status
        };
+
+       this.maintenanceService.addMaintenance(newMaintenance).subscribe(
+        (response) => {
+         },
+        (error) => {
+          console.error('Error adding maintenance record:', error);
+        }
+      );
        this.dialogRef.close(newMaintenance); // Send data back to parent
+
+
      } else {
        console.log('Form submission canceled'); // Do nothing if canceled
      }
