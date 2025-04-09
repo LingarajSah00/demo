@@ -43,12 +43,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RolepermissionserviceService } from '../service/rolepermissionservice.service';
+import { ManualrunService } from '../service/manualrun.service';
+import { HttpClientModule } from '@angular/common/http';
 @Component({
   selector: 'app-manualrun',
-  imports: [MatTooltipModule,MatPaginatorModule,MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
+  imports: [HttpClientModule,MatTooltipModule,MatPaginatorModule,MatTabsModule,FormsModule,MatInputModule,CommonModule,MatFormFieldModule,MatSelectModule,MatOptionModule
     , MatDatepickerModule,  // Import MatDatepicker module
     MatNativeDateModule,MatCheckboxModule,MatTableModule,MatButtonModule,FormsModule,CommonModule,MatIconModule
   ],
+           providers: [ManualrunService], 
+  
   templateUrl: './manualrun.component.html',
   styleUrl: './manualrun.component.css'
 })
@@ -90,7 +94,7 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   searchText: string = ''; // To store search text
   filteredData: Run[] = []; // Filtered data based on search text
 
-  constructor(private rolePermissionService: RolepermissionserviceService,private dialog: MatDialog) {}
+  constructor(private manualrunService:ManualrunService, private rolePermissionService: RolepermissionserviceService,private dialog: MatDialog) {}
   ngOnInit(): void {
     this.startTimer();
     this.formData.adminEmail = this.emailList[0];  // Default to the first email in the list
@@ -126,9 +130,25 @@ export class ManualrunComponent implements OnInit, OnDestroy {
   }
   updateStatusToInProgress() {
     this.submittedData.data.forEach((element) => {
+
       if (!element.inProgress) {
         element.inProgress = true; // Mark as In Progress
       }
+
+      // Call the POST API via the service
+      this.manualrunService.postData(this.formData).subscribe(
+        (response) => {
+          console.log('API call successful:', response);
+          
+          // Handle the success response from the API
+          this.openConfirmationDialog(response); // Show the confirmation dialog with response data (optional)
+        },
+        (error) => {
+          console.error('API call failed:', error);
+          // Handle the error response (e.g., show an error message to the user)
+          //alert('Something went wrong! Please try again.');
+        }
+      );
     });
     this.submittedData._updateChangeSubscription(); // Manually trigger table update
   }
