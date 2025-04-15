@@ -20,6 +20,7 @@ import { DownloaddialogComponent } from '../downloaddialog/downloaddialog.compon
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CampaignService } from '../service/campaign.service';
 import { HttpClientModule } from '@angular/common/http';
+import { CampaignDetailsDialogComponent } from '../campaign-details-dialog/campaign-details-dialog.component';
 
 interface UserData {
   id: number;
@@ -58,6 +59,14 @@ export class CampaignsComponent {
     { id: 4, name: 'campaign1', type:'Course1' ,description:'couse details',template:'Template1',status: 'ACTIVE' },
     { id: 5, name: 'campaign1', type:'Course1' ,description:'couse details',template:'Template1',status: 'ACTIVE' },
   ]);
+
+
+openCampaignDetailsDialog(campaign: any): void {
+  this.dialog.open(CampaignDetailsDialogComponent, {
+    width: '400px',
+    data: campaign
+  });
+}
 
   openCreateUserDialog(): void {
     const dialogRef = this.dialog.open(CreateCampaignComponent, {

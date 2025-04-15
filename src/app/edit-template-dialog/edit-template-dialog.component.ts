@@ -501,7 +501,7 @@ toggleHTMLMode() {
       });
 
       // Update the Quill content with the latest HTML content
-      this.editor.root.innerHTML = newHtml;
+      this.editor.clipboard.dangerouslyPasteHTML(newHtml);
 
       // Reset the background color and text color
       editorElement.style.backgroundColor = 'white';
@@ -543,24 +543,33 @@ stripHtmlTags(input: string): string {
 
 
 convertToHTML(content: string): string {
-  // Wrap each block of content (in this case, assuming paragraphs) in <p> tags
+  // // Wrap each block of content (in this case, assuming paragraphs) in <p> tags
+  // const tempDiv = document.createElement('div');
+  // tempDiv.innerHTML = content;
+  // const paragraphs = tempDiv.querySelectorAll('p');
+
+  // // For each paragraph, wrap its text in <p> tags if it's not already
+  // let htmlString = '';
+  // paragraphs.forEach((p) => {
+  //   htmlString += `<p>${p.innerHTML}</p>`;
+  // });
+
+  // // If there's other block-level content, such as divs, lists, etc., handle it
+  // const divs = tempDiv.querySelectorAll('div, ul, ol, li');
+  // divs.forEach((div) => {
+  //   htmlString += div.outerHTML;  // Convert other elements to HTML
+  // });
+
+  // return htmlString;
+
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = content;
-  const paragraphs = tempDiv.querySelectorAll('p');
 
-  // For each paragraph, wrap its text in <p> tags if it's not already
-  let htmlString = '';
-  paragraphs.forEach((p) => {
-    htmlString += `<p>${p.innerHTML}</p>`;
-  });
+  // Optional cleanup: remove empty spans or Quill-specific classes
+  tempDiv.querySelectorAll('[class^="ql-"]').forEach(el => el.removeAttribute('class'));
 
-  // If there's other block-level content, such as divs, lists, etc., handle it
-  const divs = tempDiv.querySelectorAll('div, ul, ol, li');
-  divs.forEach((div) => {
-    htmlString += div.outerHTML;  // Convert other elements to HTML
-  });
-
-  return htmlString;
+  // Avoid double-wrapping or duplicating by returning the whole cleaned HTML
+  return tempDiv.innerHTML.trim();
 }
 
 openEmailDialog(): void {

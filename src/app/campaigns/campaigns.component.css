@@ -137,3 +137,9 @@ table td button:active {
   justify-content: center;      /* Center the icon horizontally */
   transition: background-color 0.3s ease;  /* Smooth transition on hover */
 }
+
+.campaign-link {
+  color: #3f51b5;
+  cursor: pointer;
+  text-decoration: underline;
+}
