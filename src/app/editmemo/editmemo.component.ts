@@ -57,6 +57,7 @@ export class EditmemoComponent {
   @ViewChild('editorContainer') editorContainer!: ElementRef;
 // Predefined text snippets for dropdown and drag-and-drop
 selectedText: string = '';
+htmlMode: boolean = false;  // Track if the editor is in HTML mode
 
 textSnippets = [
   '< accessLearningHubStoreText >',
@@ -457,5 +458,131 @@ sendEmail(email: string): void {
   } else {
     console.error('Email is required!');
   }
+}
+
+// Function to toggle between HTML and Quill editor modes
+toggleHTMLMode() {
+  this.htmlMode = !this.htmlMode;  // Toggle between HTML and Quill editor
+
+  const editorElement = this.editorContainer.nativeElement;
+
+  if (this.htmlMode) {
+    // Switch to HTML mode: Convert the content of the Quill editor to HTML
+    const htmlContent = this.convertToHTML(this.editor.root.innerHTML);
+
+      // Remove previous list markers from HTML to prevent duplicate lists
+      const sanitizedHtml = this.removeDuplicateLists(htmlContent);
+
+    // Replace the Quill editor with a textarea for editing raw HTML
+    this.editorContainer.nativeElement.innerHTML = `
+      <textarea id="html-editor" style="width: 100%; height: 100%; background-color: black; color: white; border: none; resize: none;">${htmlContent}</textarea>
+    `;
+
+    // Update the background color for the HTML editor
+    editorElement.style.backgroundColor = 'black';
+    editorElement.style.color = 'white';
+
+    // Listen for changes in the textarea and update Quill's content accordingly
+    const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
+    htmlEditor.addEventListener('input', () => {
+      // Update Quill's content whenever the HTML editor changes
+      this.editor.root.innerHTML = htmlEditor.value;
+    });
+  } else {
+    // Switch back to Quill editor mode
+    const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
+
+    if (htmlEditor) {
+      const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
+      editorElement.innerHTML = '';  // Clear the editor container
+
+
+ // Remove previous Quill toolbar after short delay to ensure removal
+ setTimeout(() => {
+  const existingToolbar = document.querySelector('.ql-toolbar.ql-snow');
+  if (existingToolbar) {
+    existingToolbar.remove();  // Remove the previous toolbar
+    console.log('Previous toolbar removed');
+  }
+}, 100);
+
+      // Restore the Quill editor with the updated HTML content
+      this.editor = new Quill(this.editorContainer.nativeElement, {
+        theme: 'snow',
+        modules: {
+          toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],  // Formatting options
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
+                      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                      ['clean'],                                         // remove formatting button
+                      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+                      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+  
+                      ['link'], // Add link button
+                      [{ 'align': [] }], // Alignment options
+                      
+                      ['image', 'code-block'],  // Code-block button included
+                      [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
+                                 ['html']  // We will create this button
+                    ],
+                      
+        },
+        formats: [
+          'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
+        ]
+      });
+
+      // Update the Quill content with the latest HTML content
+      this.editor.clipboard.dangerouslyPasteHTML(newHtml);
+
+      // Reset the background color and text color
+      editorElement.style.backgroundColor = 'white';
+      editorElement.style.color = 'black';
+    }
+  }
+}
+
+// Helper function to remove duplicate ordered lists
+removeDuplicateLists(html: string): string {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  
+  const orderedLists = doc.querySelectorAll('ol');
+
+  // For each ordered list, make sure no duplicate list items exist
+  orderedLists.forEach(ol => {
+    const listItems = ol.querySelectorAll('li');
+    const seenText = new Set();
+    
+    listItems.forEach(li => {
+      if (seenText.has(li.textContent?.trim())) {
+        li.remove();  // Remove duplicate list item
+      } else {
+        seenText.add(li.textContent?.trim());
+      }
+    });
+  });
+
+  return doc.body.innerHTML;
+}
+stripHtmlTags(input: string): string {
+  const doc = new DOMParser().parseFromString(input, 'text/html');
+  return doc.body.textContent || "";
+}
+
+
+
+
+convertToHTML(content: string): string {
+  
+
+  const tempDiv = document.createElement('div');
+  tempDiv.innerHTML = content;
+
+  // Optional cleanup: remove empty spans or Quill-specific classes
+  tempDiv.querySelectorAll('[class^="ql-"]').forEach(el => el.removeAttribute('class'));
+
+  // Avoid double-wrapping or duplicating by returning the whole cleaned HTML
+  return tempDiv.innerHTML.trim();
 }
 }

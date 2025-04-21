@@ -28,6 +28,7 @@ import 'quill-table';
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 interface TemplateData {
@@ -38,7 +39,7 @@ interface TemplateData {
 }
 @Component({
   selector: 'app-edit-template-dialog',
-  imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [MatNativeDateModule,MatTableModule  ,   // Import MatTableModule for Angular Material Table
         MatButtonModule,  // Optional: To add buttons or actions
         MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
         MatPaginatorModule, // For pagination
@@ -344,91 +345,8 @@ turnEntireContentIntoCodeBlock() {
   this.editor.formatText(0, this.editor.getLength(), 'code-block', true);
 }
 
-// toggleHTMLMode() {
-//   this.htmlMode = !this.htmlMode; // Toggle the mode between HTML and Quill editor
-//   const editorElement = this.editorContainer.nativeElement;
 
-//   if (this.htmlMode) {
-//     // Switch to HTML mode: Convert the content to HTML
-//     const htmlContent = this.convertToHTML(this.editor.root.innerHTML); // Convert Quill content to HTML
-
-//     // Replace the Quill editor container with a textarea to edit raw HTML
-//     this.editorContainer.nativeElement.innerHTML = `
-//       <textarea id="html-editor" style="width: 100%; height: 100%; background-color: black; color: white; border: none; resize: none;">${htmlContent}</textarea>
-//     `;
-    
-//     // Change the background color and text color for the HTML mode
-//     editorElement.style.backgroundColor = 'black';
-//     editorElement.style.color = 'white';
-
-//     // Listen for input changes in the textarea
-//     const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
-//     htmlEditor.addEventListener('input', () => {
-//       // When the HTML content in the textarea changes, update the Quill editor's content
-//       this.editor.root.innerHTML = htmlEditor.value;
-//     });
-
-//   } else {
-//     // Switch back to Quill editor mode
-//     const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
-
-//     if (htmlEditor) {
-//       const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
-//       //editorElement.innerHTML =newHtml;
-//       editorElement.innerHTML = '';  // Clear the content in the editor container
-//       this.editor.root.innerHTML = newHtml;
-//       // Set the HTML content back into Quill
-//       //this.editor.root.innerHTML = this.data.body;
-//       //htmlEditor.value=this.data.body;
-//       editorElement.innerHTML = htmlEditor.value;  // Clear the content in the editor container
-//       const htmlContent = this.data.body; // Convert Quill content to HTML
-
-//       this.editorContainer.nativeElement.innerHTML = `
-//       <textarea id="html-editor" style="width: 100%; height: 100%; background-color: white; color: black; border: none; resize: none;">${htmlContent}</textarea>
-//     `;
-//       editorElement.style.backgroundColor = 'white';
-//       editorElement.style.color = 'black';
-
-//     }
-    
-
-//     // Re-initialize the Quill editor if it’s not already initialized
-//     if (!this.editor) {
-//       // Initialize Quill editor with the required configuration
-//       this.editor = new Quill(this.editorContainer.nativeElement, {
-//         theme: 'snow',
-//         modules: {
-//           toolbar: [
-//             ['bold', 'italic', 'underline', 'strike'],
-//             [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-//             ['link'],
-//             [{ 'align': [] }],
-//             ['image', 'code-block'],
-//             [{ 'size': ['12px', '14px', '16px', '18px', '20px'] }],
-//             [{ 'color': [] }, { 'background': [] }],
-//             [{ 'font': [] }],
-//             ['blockquote'],
-//           ],
-//         },
-//         formats: [
-//           'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background', 'code-block', 'blockquote'
-//         ]
-//       });
-//     }
-
-//     // Reset the background and text color to default when switching back to Quill mode
-//     editorElement.style.backgroundColor = 'white';
-//     editorElement.style.color = 'black';
-//   }
-// }
-
-
-
-
-
-
-// Helper function to strip HTML tags and get plain text
-
+// Function to toggle between HTML and Quill editor modes
 toggleHTMLMode() {
   this.htmlMode = !this.htmlMode;  // Toggle between HTML and Quill editor
 
@@ -543,24 +461,7 @@ stripHtmlTags(input: string): string {
 
 
 convertToHTML(content: string): string {
-  // // Wrap each block of content (in this case, assuming paragraphs) in <p> tags
-  // const tempDiv = document.createElement('div');
-  // tempDiv.innerHTML = content;
-  // const paragraphs = tempDiv.querySelectorAll('p');
-
-  // // For each paragraph, wrap its text in <p> tags if it's not already
-  // let htmlString = '';
-  // paragraphs.forEach((p) => {
-  //   htmlString += `<p>${p.innerHTML}</p>`;
-  // });
-
-  // // If there's other block-level content, such as divs, lists, etc., handle it
-  // const divs = tempDiv.querySelectorAll('div, ul, ol, li');
-  // divs.forEach((div) => {
-  //   htmlString += div.outerHTML;  // Convert other elements to HTML
-  // });
-
-  // return htmlString;
+  
 
   const tempDiv = document.createElement('div');
   tempDiv.innerHTML = content;

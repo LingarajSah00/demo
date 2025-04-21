@@ -21,6 +21,8 @@ import { RolepermissionserviceService } from '../service/rolepermissionservice.s
 import { CommonModule } from '@angular/common';
 import { UpdateToProductionDialogComponent } from '../update-to-production-dialog/update-to-production-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 interface UserData {
   id: number;
@@ -30,7 +32,7 @@ interface UserData {
 }
 @Component({
   selector: 'app-notificationtemplate',
-  imports: [ MatTooltipModule,CommonModule,   MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  imports: [ MatNativeDateModule,MatDatepickerModule,MatTooltipModule,CommonModule,   MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination

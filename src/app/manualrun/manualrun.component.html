@@ -1,10 +1,4 @@
 
-<!-- <div *ngIf="!canEditUser()" class="no-permission-overlay">
-  <div class="no-permission-message">
-    <h2>You don't have any permission for this screen</h2>
-  </div>
-</div> -->
-<!-- <div [ngClass]="{ 'disabled-content': !canEditUser() }"> -->
 
 <mat-tab-group >
   <!-- Manual Runs Tab -->
@@ -50,10 +44,7 @@
         </mat-form-field>
       </div>
 
-      <!-- <div class="form-section">
-        <p>Test Mode (This will not trigger emails) </p>
-        <mat-checkbox [(ngModel)]="formData.isTestRun"></mat-checkbox>
-      </div> -->
+     
 
       <div class="button-container">
         <button mat-button class="edit-btn" (click)="onClick()">Preview</button>
@@ -115,7 +106,7 @@
     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <!-- Abort Button -->
-      <button mat-button  class="create-button"(click)="openConfirmationDialog(submittedData)">Stop</button>
+      <button mat-button  class="create-button">Stop</button>
     </mat-cell>
   </ng-container>
         <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','message', 'inProgress', 'actions']"></mat-header-row>

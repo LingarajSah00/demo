@@ -4,8 +4,12 @@
   </h8>
   
   <mat-dialog-content>
+    
     <button mat-button (click)="exportToWord()" class="export-btn">Export to Word</button>
     <div class="editor-footer">
+      <button mat-icon-button (click)="toggleHTMLMode()" class="right-button1" >
+        <mat-icon>{{ htmlMode ? 'edit'  : 'code'}}</mat-icon> <!-- Change icon based on htmlMode -->
+      </button>
       <button (click)="openEmailDialog()"  class="send-email-btn">
         <mat-icon>email</mat-icon>  <!-- You can use an Angular Material icon here -->
       </button>

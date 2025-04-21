@@ -32,32 +32,7 @@
         <a mat-list-item routerLink="/dashboard/template" routerLinkActive="active">
           <mat-icon>edit</mat-icon>Templates
         </a>
-        <!-- <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-icon mat-expansion-panel-header>edit</mat-icon>
-            <mat-panel-title>Templates</mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="/dashboard/template">Notification Templates</a>
-            <a mat-list-item routerLink="/development">Annual Course/Certification Memos</a>
-            <a mat-list-item routerLink="/seo">Notification Helper Text Snippets</a>
-          </mat-nav-list>
-        </mat-expansion-panel> -->
-        <!-- <a mat-list-item routerLink="/dashboard/compliance" routerLinkActive="active">
-          <mat-icon>grid_on</mat-icon>Compliance Courses
-        </a> -->
-        <!-- <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-icon mat-expansion-panel-header>grid_on</mat-icon>
-            <mat-panel-title>Compliance Courses</mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <a mat-list-item routerLink="/web-design">Shut Off</a>
-            <a mat-list-item routerLink="/development">New Hire</a>
-            <a mat-list-item routerLink="/seo">Annual</a>
-            <a mat-list-item routerLink="/seo">All</a>
-          </mat-nav-list>
-        </mat-expansion-panel> -->
+       
   
         <a mat-list-item routerLink="/dashboard/memo" routerLinkActive="active">
           <mat-icon>description</mat-icon>Memos
@@ -76,12 +51,7 @@
             <a mat-list-item routerLink="/dashboard/exclusion">Exclusions</a>
           </mat-nav-list>
         </mat-expansion-panel>
-        <!-- <a mat-list-item routerLink="/dashboard/maintenance" routerLinkActive="active">
-          <mat-icon>build</mat-icon>Maintenance
-        </a> -->
-        <!-- <a mat-list-item routerLink="/dashboard/diagnostics" routerLinkActive="active">
-          <mat-icon>error_outline</mat-icon>Diagnostics
-        </a> -->
+       
         <a mat-list-item *ngIf="canCreateUser()" routerLink="/dashboard/manualrun" routerLinkActive="active">
           <mat-icon>error_outline</mat-icon>Manual Run
         </a>

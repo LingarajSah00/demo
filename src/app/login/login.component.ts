@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';  // <-- Import FormsModule here
@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';  // Import MatIconModule
 import { MatButtonModule } from '@angular/material/button';
 import { UserData } from '../model/user.model';
 import { MatSelectModule } from '@angular/material/select';
+import { error } from 'console';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,7 @@ export class LoginComponent {
   roles: string[] = ['compuser','viewonly','superuser'];  // Define roles
 
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private aRouter:ActivatedRoute, private authService: AuthService, private router: Router) {}
 
   currentUser: UserData = {
       userId: 'emplo000000000137158',
@@ -85,4 +86,48 @@ export class LoginComponent {
    this.errorMessage = 'Invalid username or password';
  }
   }
+
+  // generateSAMLRequest() {
+  //   // Generate a SAML request (this is a placeholder, replace with actual SAML request generation)
+  //   //this.loaded = true;
+  //   this.rest.subscribe(
+  //     {
+  //       next:(res:{authN:string})=>{
+  //         this.redirectToIdp  (res.authN)
+  //       },
+  //       error()=>{
+  //         this.router.navigateByUrl('/error')
+  //     }
+  // }
+  
+
+  createSAMLForm(actionUrl: string, samlRequest: string): HTMLFormElement {
+    // Create a SAML form dynamically
+    const form = document.createElement('form');
+    form.setAttribute('method', 'POST');
+    form.setAttribute('action', ''); // Replace with your SAML endpoint 
+    form.setAttribute('enctyp', 'application/x-www-form-urlencoded'); // Hide the form
+
+    const input = document.createElement('input');
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'SAMLRequest');
+    input.setAttribute('value', 'SAMLRequestValue'); // Replace with actual SAML request value
+    form.appendChild(input);
+    return form;
+  }
+
+  redirectToIdp(authNRequest: string) {
+   console.log('Redirecting to IDP with request:', authNRequest);
+   const samlRequest=authNRequest;  
+   const idpSSOUrl = ''; // Replace with your IDP SSO URL
+   const form = this.createSAMLForm(idpSSOUrl, samlRequest);
+    document.body.appendChild(form);
+
+    setTimeout(() => {
+      form.submit();
+    }
+    , 100); // Delay the form submission by 1 second
+    // Optionally, remove the form from the DOM after submission
+  }
+
 }

@@ -21,12 +21,13 @@
   </mat-form-field>
 
   <!-- Needed Date Picker -->
-  <mat-form-field appearance="fill" style="width: 100%;">
+  <mat-form-field appearance="fill">
     <mat-label>Needed By</mat-label>
-    <input matInput [matDatepicker]="picker" [(ngModel)]="neededDate">
+    <input matInput [matDatepicker]="picker" [(ngModel)]="neededDate" />
     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
+  
 
   <!-- Checkbox for Terms -->
   <mat-checkbox [(ngModel)]="termsAccepted">SHUT OFF Conditions Reached?</mat-checkbox>

@@ -6,6 +6,9 @@
   <mat-dialog-content>
     <!-- Quill Editor Container -->
     <div class="editor-footer">
+      <button mat-icon-button (click)="toggleHTMLMode()" class="right-button1" >
+        <mat-icon>{{ htmlMode ? 'edit'  : 'code'}}</mat-icon> <!-- Change icon based on htmlMode -->
+      </button>
       <button (click)="openEmailDialog()" class="send-email-btn">
         <mat-icon>email</mat-icon>  <!-- You can use an Angular Material icon here -->
       </button>
@@ -34,15 +37,12 @@
     (dragover)="onDragOver($event)">
 </div>  
 
-<!-- <button mat-button (click)="turnEntireContentIntoCodeBlock()">Turn Entire Content to Code Block</button> -->
 
 
 </mat-dialog-content>
   
   <mat-dialog-actions>
-    <button mat-icon-button (click)="toggleHTMLMode()" class="right-button" style="text-align: left; display: block; margin: 0;">
-      <mat-icon>{{ htmlMode ? 'edit'  : 'code'}}</mat-icon> <!-- Change icon based on htmlMode -->
-    </button>
+   
     <button mat-button class="right-button" (click)="cancel()">Cancel</button>
     <button mat-button class="right-button" color="primary" (click)="saveChanges()">Save</button>
   </mat-dialog-actions>

@@ -17,6 +17,11 @@ angular-editor {
     color: white; /* Black text */
   }
   
+  .right-button1 {
+    border-radius: 5px;
+    
+
+  }
   .right-button:hover {
     background-color: darkred; /* Darker shade when hovering */
     color: white; /* White text on hover */

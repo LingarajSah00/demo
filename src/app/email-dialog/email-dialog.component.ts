@@ -11,10 +11,13 @@ import { MatNativeDateModule } from '@angular/material/core';  // Required for t
 import { NativeDateAdapter } from '@angular/material/core';  // Import the NativeDateAdapter
 import { CommonModule } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
 @Component({
   selector: 'app-email-dialog',
-  imports: [MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatDialogModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatFormFieldModule,FormsModule,CommonModule,MatCheckboxModule],
+  imports: [MatDatepickerModule,MatNativeDateModule,MatDatepickerModule,MatSelectModule,MatDialogModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatFormFieldModule,FormsModule,CommonModule,MatCheckboxModule],
+  
+  providers: [
+    MatNativeDateModule // 👈 add this if you're still seeing the error
+  ],
   templateUrl: './email-dialog.component.html',
   styleUrl: './email-dialog.component.css'
 })
