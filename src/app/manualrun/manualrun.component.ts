@@ -225,7 +225,21 @@ onEnter(event: KeyboardEvent): void {
   }
 }
 
+  // Open Confirmation Dialog when user clicks Submit
+  openConfirmationDialog1(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '300px'
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
 
+   
+      }
+    });
+  
+    
+  }
      // Open Confirmation Dialog when user clicks Submit
       openConfirmationDialog(userData: any): void {
         const dialogRef = this.dialog.open(ConfirmationDialogComponent, {

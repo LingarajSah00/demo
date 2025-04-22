@@ -106,7 +106,7 @@
     <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <!-- Abort Button -->
-      <button mat-button  class="create-button">Stop</button>
+      <button mat-button  class="create-button" (click)="openConfirmationDialog1()">Stop</button>
     </mat-cell>
   </ng-container>
         <mat-header-row *matHeaderRowDef="['adminEmail', 'targetAudience', 'campaigns', 'learnerCount','message', 'inProgress', 'actions']"></mat-header-row>

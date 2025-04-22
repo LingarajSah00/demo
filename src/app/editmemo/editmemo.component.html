@@ -4,9 +4,10 @@
   </h8>
   
   <mat-dialog-content>
-    
-    <button mat-button (click)="exportToWord()" class="export-btn">Export to Word</button>
-    <div class="editor-footer">
+
+    <div class="fixed-button-group">
+      <button mat-button (click)="exportToWord()" class="export-btn">Export to Word</button>
+
       <button mat-icon-button (click)="toggleHTMLMode()" class="right-button1" >
         <mat-icon>{{ htmlMode ? 'edit'  : 'code'}}</mat-icon> <!-- Change icon based on htmlMode -->
       </button>
