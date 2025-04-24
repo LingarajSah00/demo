@@ -3,9 +3,9 @@
   
   <mat-card class="dashboard-card">
     <mat-card-header>
-      <mat-card-title>Compliance Processes Status For:
+      <mat-card-title [ngClass]="{ 'status-green': allCompleted, 'status-red': !allCompleted }">Compliance Processes Status For:
       </mat-card-title>
-      <p class="today-date"> {{ today | date:'fullDate' }}</p>
+      <p class="today-date" [ngClass]="{ 'status-green': allCompleted, 'status-red': !allCompleted }"> {{ today | date:'fullDate' }}</p>
   
     </mat-card-header>
     <mat-card-content>
@@ -30,8 +30,8 @@
           <td mat-cell *matCellDef="let element"> {{element.progress}} </td>
         </ng-container>
   
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [ngClass]="{ 'status-green': row.status === 'Completed', 'status-red': row.status !== 'Completed' }"></tr>
       </table>
   
     </mat-card-content>

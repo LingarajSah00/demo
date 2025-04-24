@@ -49,13 +49,15 @@ export class HomeComponent  implements OnInit{
 
   displayedColumns: string[] = ['campaign', 'status', 'progress'];
   dataSource = [
-    { campaign: 'STATUS of NIGHTLY LOAD', status: 'loading', progress: '2025-01-23 11:07:28' },
-    { campaign: 'Compliance Training Due Notification', status: 'incomplete', progress: '2025-01-23 11:07:28' },
-    { campaign: 'Compliance Notification Process', status: 'Incomplete', progress: '2025-01-23 11:07:28' },
+    { campaign: 'STATUS of NIGHTLY LOAD', status: 'Completed', progress: '2025-01-23 11:07:28' },
+    { campaign: 'Compliance Training Due Notification', status: 'Completed', progress: '2025-01-23 11:07:28' },
+    { campaign: 'Compliance Notification Process', status: 'Completed', progress: '2025-01-23 11:07:28' },
   ];
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router,private datePipe: DatePipe) {}
-
+  get allCompleted(): boolean {
+    return this.dataSource.every(item => item.status === 'Completed');
+  }
   // Canvas references
   @ViewChild('completionRateCanvas') completionRateCanvas: ElementRef<HTMLCanvasElement> | undefined;
   @ViewChild('userComplianceCanvas') userComplianceCanvas: ElementRef<HTMLCanvasElement> | undefined;
