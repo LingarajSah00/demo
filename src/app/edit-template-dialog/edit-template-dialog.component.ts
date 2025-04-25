@@ -429,6 +429,7 @@ toggleHTMLMode() {
                       [{ 'align': [] }], // Alignment options
                       
                       ['image', 'code-block'],  // Code-block button included
+                      [{ 'color': [] }, { 'background': [] }],
                       [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
                                  ['html']  // We will create this button
                     ],
