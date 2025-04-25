@@ -261,10 +261,11 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
                     
                     ['image', 'code-block'],  // Code-block button included
                     [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
+                    [{ 'color': [] }, { 'background': [] }], // Color and background options
                                ['html']  ,
                     ['undo', 'redo'], // Add undo and redo buttons
                     [{ 'line-height': '1.5' }, { 'line-height': '1.8' }, { 'line-height': '2' }], // Add line-height to toolbar
-                    [{ 'color': [] }, { 'background': [] }]
+                    
 
                      ],
                      history: {

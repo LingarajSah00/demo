@@ -169,7 +169,9 @@ export class MemosComponent {
 
     openCreateUserDialog(): void {
         const dialogRef = this.dialog.open(CreatememoComponent, {
-          width: '400px'
+          width: '1300px', // Set a fixed width (you can adjust this value)
+      height: '800px', // Set a fixed height (you can adjust this value)
+      maxWidth: 'none',   // Allow the dialog to take up 100% of the screen width
         });
       
         dialogRef.afterClosed().subscribe(result => {
