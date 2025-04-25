@@ -128,7 +128,7 @@ exportToWord(): void {
         children: [
           new docx.Paragraph({
             children: [
-              new docx.TextRun("Generated content from Quill editor:"),
+              new docx.TextRun(""),
             ],
           }),
           ...this.convertQuillToWordContent(content), // Convert the Quill content to Word format
