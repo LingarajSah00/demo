@@ -207,13 +207,15 @@ mat-form-field {
   display: inline-flex; /* Keeps button content inline */
   align-items: center; /* Vertically centers text */
   justify-content: center; /* Horizontally centers content */
-  background-color: #cc0000;
-  color: white;
+  background-color: #e0e0e0;
+  color: black;
   padding: 10px 20px;
   border-radius: 5px;
   font-size: 14px; /* Adjust as needed */
   line-height: 1.2;
   right: 102px;
+    transition: background-color 0.2s ease;
+
 }
 
 .export-btn:hover {

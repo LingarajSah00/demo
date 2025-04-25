@@ -264,7 +264,7 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
                                ['html']  ,
                     ['undo', 'redo'], // Add undo and redo buttons
                     [{ 'line-height': '1.5' }, { 'line-height': '1.8' }, { 'line-height': '2' }], // Add line-height to toolbar
-
+                    [{ 'color': [] }, { 'background': [] }]
 
                      ],
                      history: {

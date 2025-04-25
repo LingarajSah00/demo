@@ -145,14 +145,16 @@ textSnippets = [
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
                     
-                    ['image', 'code-block'],  // Code-block button included
+                    ['image'],  // Code-block button included
                     [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
-                               ['html']  // We will create this button
+                               ['html'] , // We will create this button
+                               [{ 'color': [] }, { 'background': [] }]
+
                   ],
                     
       },
       formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
+        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','blockquote'
       ]
     });
 
@@ -180,6 +182,7 @@ textSnippets = [
       if (this.data.body) {
         this.editor.root.innerHTML = this.data.body;
       } 
+      
       // Store available merge fields from parent data
       if (this.data.availableMergeFields && this.data.availableMergeFields.length > 0) {
         this.textSnippets = this.data.availableMergeFields;
@@ -188,10 +191,28 @@ textSnippets = [
 
     }
   }
-
+  insertHorizontalRule(): void {
+    const range = this.editor.getSelection();
+    if (range) {
+      // Insert an <hr> element as raw HTML
+      this.editor.clipboard.dangerouslyPasteHTML(range.index, '<hr>');
+      console.log('Horizontal rule inserted at index', range.index);
+    }
+  }
+  
   addCustomButtons() {
     const toolbar = this.editor.container.querySelector('.ql-toolbar');
   
+    // Horizontal Rule (HR) Button
+const hrButton = document.createElement('button');
+hrButton.innerText = 'HR'; // or use '─' or icon
+hrButton.classList.add('ql-hr');
+hrButton.style.marginLeft = '10px';
+toolbar?.appendChild(hrButton);
+
+// Add click handler to insert <hr>
+hrButton.addEventListener('click', () => this.insertHorizontalRule());
+
     // Create X to Power 2 button (for exponentiation)
     const powerButton = document.createElement('button');
     powerButton.innerText = 'X²';  // You can use any symbol or text
