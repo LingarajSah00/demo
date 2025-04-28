@@ -200,36 +200,61 @@ return new docx.TextRun({
 });
 }
 
-// Convert HTML element to a TextRun, considering formatting tags like <b>, <i>, <u>, <br>, etc.
+
+// Convert HTML element to a TextRun, considering formatting tags like <b>, <i>, <u>, <br>, <a> (for hyperlinks), and text color
 convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
-const text = element.innerText || ''; // Get the text without HTML tags
-let textRunOptions: any = { text: text }; // Default options
+  const text = element.innerText || ''; // Get the text without HTML tags
+  let textRunOptions: any = { text: text }; // Default options
 
-// Apply styles based on the element's tag
-switch (element.tagName.toLowerCase()) {
-  case 'b':
-  case 'strong':
-    textRunOptions.bold = true;
-    break;
-  case 'i':
-  case 'em':
-    textRunOptions.italic = true;
-    break;
-  case 'u':
-    textRunOptions.underline = true;
-    break;
-  case 'br':
-    // For <br> tags, create a TextRun with a line break
-    return new docx.TextRun('\n'); // New line for Word document
-  case 'p':
-    // For <p> tags (paragraphs), they will be handled by the parent convertHtmlElementToWordParagraph method
-    return new docx.TextRun(text);
-  default:
-    break;
+  // Apply styles based on the element's tag
+  switch (element.tagName.toLowerCase()) {
+    case 'b':
+    case 'strong':
+      textRunOptions.bold = true;
+      break;
+    case 'i':
+    case 'em':
+      textRunOptions.italic = true;
+      break;
+    case 'u':
+      textRunOptions.underline = true;
+      break;
+    case 'a':
+      // Handle hyperlink (e.g., <a href="https://example.com">Text</a>)
+      textRunOptions.hyperlink = element.getAttribute('href') || '';
+      break;
+    case 'br':
+      // For <br> tags, create a TextRun with a line break
+      return new docx.TextRun('\n'); // New line for Word document
+    case 'p':
+      // For <p> tags (paragraphs), they will be handled by the parent convertHtmlElementToWordParagraph method
+      return new docx.TextRun(text);
+    default:
+      break;
+  }
+
+  // Check if the element has inline styles (like text color)
+  const color = element.style.color;
+  if (color) {
+    const hexColor = color.startsWith('rgb') ? this.rgbToHex(color) : color;
+    textRunOptions.color = hexColor; // Apply color to the text
+  }
+
+  // Return the TextRun with the applied formatting
+  return new docx.TextRun(textRunOptions);
 }
+// Function to convert RGB to Hex
+ rgbToHex(rgb: string): string {
+  const result = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(rgb);
+  if (!result) return rgb; // If not a valid rgb format, return as is
 
-// Return the TextRun with the applied formatting
-return new docx.TextRun(textRunOptions);
+  // Convert the RGB components to hex
+  const r = parseInt(result[1], 10).toString(16).padStart(2, '0');
+  const g = parseInt(result[2], 10).toString(16).padStart(2, '0');
+  const b = parseInt(result[3], 10).toString(16).padStart(2, '0');
+
+  // Return the hex value
+  return `#${r}${g}${b}`;
 }
 
 

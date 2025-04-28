@@ -33,6 +33,10 @@ export const routes: Routes = [
             loadComponent: () => import('./pastdueescalation/pastdueescalation.component').then(m => m.PastdueescalationComponent),
           },
           {
+            path: 'empleyeecomplience',
+            loadComponent: () => import('./employeecomplience/employeecomplience.component').then(m => m.EmployeecomplienceComponent),
+          },
+          {
             path: 'users',
             loadComponent: () => import('./users/users.component').then(m => m.UsersComponent),
           },

@@ -16,6 +16,8 @@ import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
 interface UserData {
   id: number;
   name: string;
@@ -31,17 +33,17 @@ template: string;
 
 }
 @Component({
-  selector: 'app-pastdueescalation',
-  imports: [MatNativeDateModule,MatDatepickerModule,MatTooltipModule,CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
+  selector: 'app-employeecomplience',
+  imports: [MatSelectModule,FormsModule,MatNativeDateModule,MatDatepickerModule,MatTooltipModule,CommonModule, MatTableModule  ,   // Import MatTableModule for Angular Material Table
     MatButtonModule,  // Optional: To add buttons or actions
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination
     MatInputModule],
-  templateUrl: './pastdueescalation.component.html',
-  styleUrl: './pastdueescalation.component.css'
+  templateUrl: './employeecomplience.component.html',
+  styleUrl: './employeecomplience.component.css'
 })
-export class PastdueescalationComponent {
- // Paginator reference to connect to the mat-paginator in the template
+export class EmployeecomplienceComponent {
+// Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
     constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}
 

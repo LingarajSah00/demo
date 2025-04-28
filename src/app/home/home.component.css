@@ -251,3 +251,23 @@ table {
   color: red;
   font-weight: bold;
 }
+/* Container for the icon and text in the table cell */
+.status-container {
+  display: flex;               /* Use flexbox to arrange icon and text in a row */
+  align-items: center;         /* Align icon and text vertically in the center */
+  justify-content: flex-start; /* Align them to the left */
+}
+
+/* Adjust the icon size and space between the icon and the text */
+.status-container mat-icon {
+  margin-right: 8px;  /* Space between icon and text */
+  font-size: 20px;    /* Set a consistent icon size */
+  color: inherit;     /* Inherit the color from the surrounding text */
+}
+
+/* Adjust the text size to match icon size */
+.status-container .campaign-text {
+  font-size: 16px;    /* Adjust text size */
+  color: #333;        /* Default text color */
+  white-space: nowrap;/* Prevent text from wrapping to the next line */
+}

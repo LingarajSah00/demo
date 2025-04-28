@@ -46,12 +46,25 @@ export class HomeComponent  implements OnInit{
     const currentDate = new Date();
     this.today = this.datePipe.transform(currentDate, 'fullDate')!;
   }
-
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'Completed':
+        return 'check_circle';
+      case 'Loading':
+        return 'settings';
+      case 'InCompleted':
+        return 'warning';
+      case 'Failed':
+      default:
+        return 'error';
+    }
+  }
+  
   displayedColumns: string[] = ['campaign', 'status', 'progress'];
   dataSource = [
     { campaign: 'STATUS of NIGHTLY LOAD', status: 'Completed', progress: '2025-01-23 11:07:28' },
-    { campaign: 'Compliance Training Due Notification', status: 'Completed', progress: '2025-01-23 11:07:28' },
-    { campaign: 'Compliance Notification Process', status: 'Completed', progress: '2025-01-23 11:07:28' },
+    { campaign: 'Compliance Training Due Notification', status: 'InCompleted', progress: '2025-01-23 11:07:28' },
+    { campaign: 'Compliance Notification Process', status: 'Loading', progress: '2025-01-23 11:07:28' },
   ];
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private router: Router,private datePipe: DatePipe) {}

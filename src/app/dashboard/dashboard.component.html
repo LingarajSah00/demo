@@ -37,10 +37,19 @@
         <a mat-list-item routerLink="/dashboard/memo" routerLinkActive="active">
           <mat-icon>description</mat-icon>Memos
         </a>
-  
-        <a mat-list-item routerLink="/dashboard/pastdueescalation" routerLinkActive="active">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-icon mat-expansion-panel-header>insert_chart</mat-icon>
+            <mat-panel-title>Reporting</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <a mat-list-item routerLink="/dashboard/empleyeecomplience">Employee Compliance</a>
+            <a mat-list-item routerLink="/dashboard/pastdueescalation">Employee Past Due Escalation</a>
+          </mat-nav-list>
+        </mat-expansion-panel>
+        <!-- <a mat-list-item routerLink="/dashboard/pastdueescalation" routerLinkActive="active">
           <mat-icon>insert_chart</mat-icon>Reporting
-        </a>
+        </a> -->
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-icon mat-expansion-panel-header>build</mat-icon>
