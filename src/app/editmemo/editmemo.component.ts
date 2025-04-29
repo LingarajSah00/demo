@@ -282,7 +282,7 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
                     
-                    ['image', 'code-block'],  // Code-block button included
+                    ['image'],  // Code-block button included
                     [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
                     [{ 'color': [] }, { 'background': [] }], // Color and background options
                                ['html']  ,
@@ -546,7 +546,7 @@ toggleHTMLMode() {
                       [{ 'align': [] }], // Alignment options
                       [{ 'color': [] }, { 'background': [] }], // Color and background options
                       
-                      ['image', 'code-block'],  // Code-block button included
+                      ['image'],  // Code-block button included
                       [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
                                  ['html']  // We will create this button
                     ],

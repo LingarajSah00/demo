@@ -39,10 +39,10 @@ template: string;
     MatIconModule,     // Optional: For adding icons (e.g., edit, delete)
     MatPaginatorModule, // For pagination
     MatInputModule],
-  templateUrl: './employeecomplience.component.html',
-  styleUrl: './employeecomplience.component.css'
+  templateUrl: './employeecompliance.component.html',
+  styleUrl: './employeecompliance.component.css'
 })
-export class EmployeecomplienceComponent {
+export class EmployeecomplianceComponent {
 // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
     constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar) {}

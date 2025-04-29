@@ -33,8 +33,8 @@ export const routes: Routes = [
             loadComponent: () => import('./pastdueescalation/pastdueescalation.component').then(m => m.PastdueescalationComponent),
           },
           {
-            path: 'empleyeecomplience',
-            loadComponent: () => import('./employeecomplience/employeecomplience.component').then(m => m.EmployeecomplienceComponent),
+            path: 'empleyeecompliance',
+            loadComponent: () => import('./employeecompliance/employeecompliance.component').then(m => m.EmployeecomplianceComponent),
           },
           {
             path: 'users',
