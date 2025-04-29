@@ -1,3 +1,5 @@
+<h3>Employee Compliance</h3>
+
 <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem;">
     <!-- First Text Box -->
     <mat-form-field appearance="fill">
@@ -53,21 +55,26 @@
     <button mat-icon-button color="primary"  matTooltip="Search">
       <mat-icon>search</mat-icon>
     </button>
+    <div class="button-row">
+
+    <button mat-raised-button class="download-btn" (click)="openDownloadDialog()" ><mat-icon>file_download</mat-icon></button>
+    <button mat-raised-button color="warn" *ngIf="canCreateUser()" class="create-button" >Create</button>
+</div>
+
   </div>
   
   
   <div class="mat-elevation-z8">
-      <h3>Employee Compliance</h3>
       <!-- Search Box -->
-      <button mat-raised-button class="download-btn" (click)="openDownloadDialog()" ><mat-icon>file_download</mat-icon></button>
+      <!-- <button mat-raised-button class="download-btn" (click)="openDownloadDialog()" ><mat-icon>file_download</mat-icon></button> -->
   
-      <mat-form-field appearance="fill">
+      <!-- <mat-form-field appearance="fill">
         <mat-label>Search</mat-label>
         <input matInput (keyup)="applyFilter($event)" placeholder="Search by Name or Email" />
       </mat-form-field>
-    
+     -->
         <!-- Create Button at the top -->
-        <button mat-raised-button color="warn" *ngIf="canCreateUser()" class="create-button" >Create</button>
+        <!-- <button mat-raised-button color="warn" *ngIf="canCreateUser()" class="create-button" >Create</button> -->
     
       <!-- Table -->
       <table mat-table [dataSource]="dataSource">

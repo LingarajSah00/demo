@@ -248,7 +248,7 @@ table {
 }
 
 .status-red {
-  color: red;
+  color: #cc0000;
   font-weight: bold;
 }
 /* Container for the icon and text in the table cell */

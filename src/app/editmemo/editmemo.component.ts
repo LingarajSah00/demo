@@ -209,26 +209,48 @@ convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
   // Check if the element has inline styles (like text color)
   const color = element.style.color;
   if (color) {
-    const hexColor = color.startsWith('rgb') ? this.rgbToHex(color) : color;
-    textRunOptions.color = hexColor; // Apply color to the text
+    const hexColor = color.startsWith('rgb') 
+    ? this.rgbToHex(color) 
+    : this.namedColorToHex(color);
+        textRunOptions.color = hexColor; // Apply color to the text
   }
 
   // Return the TextRun with the applied formatting
   return new docx.TextRun(textRunOptions);
 }
-// Function to convert RGB to Hex
- rgbToHex(rgb: string): string {
-  const result = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(rgb);
-  if (!result) return rgb; // If not a valid rgb format, return as is
 
-  // Convert the RGB components to hex
+rgbToHex(rgb: string): string {
+  const result = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(rgb);
+  if (!result) return '#000000'; // default fallback
+
   const r = parseInt(result[1], 10).toString(16).padStart(2, '0');
   const g = parseInt(result[2], 10).toString(16).padStart(2, '0');
   const b = parseInt(result[3], 10).toString(16).padStart(2, '0');
 
-  // Return the hex value
   return `#${r}${g}${b}`;
 }
+
+namedColorToHex(colorName: string): string {
+  const colorMap: { [key: string]: string } = {
+    black: '#000000',
+    white: '#ffffff',
+    red: '#ff0000',
+    green: '#008000',
+    blue: '#0000ff',
+    yellow: '#ffff00',
+    gray: '#808080',
+    maroon: '#800000',
+    purple: '#800080',
+    teal: '#008080',
+    navy: '#000080',
+    silver: '#c0c0c0',
+    lime: '#00ff00',
+    // Add more as needed
+  };
+
+  return colorMap[colorName.toLowerCase()] || '#000000'; // fallback to black
+}
+
 
 convertQuillToWordContent(content: string): docx.Paragraph[] {
   const parser = new DOMParser();

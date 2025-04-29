@@ -20,7 +20,7 @@ table {
   /* Responsive Design */
   .download-btn {
     position: absolute;
-    top: 10px; /* Adjust distance from top */
+    top: 86px; /* Adjust distance from top */
     right: 10px; /* Adjust distance from right */
     z-index: 10; /* Ensure it stays above other elements */
   }
@@ -66,7 +66,7 @@ table {
   
   .create-button {
     position: absolute;
-    top: 10px;    /* Distance from the top of the container */
+    top: 86px;    /* Distance from the top of the container */
     right: -60px;  /* Distance from the right of the container */
     z-index: 10;  /* Ensure it stays above other elements */
   }
@@ -158,4 +158,10 @@ table td button:active {
   align-items: center;          /* Center the icon vertically */
   justify-content: center;      /* Center the icon horizontally */
   transition: background-color 0.3s ease;  /* Smooth transition on hover */
+}
+.button-row {
+  display: flex;
+  justify-content: flex-start; /* Align to left */
+  gap: 1rem;
+  margin-bottom: 1rem;
 }
