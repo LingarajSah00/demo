@@ -428,7 +428,7 @@ toggleHTMLMode() {
                       ['link'], // Add link button
                       [{ 'align': [] }], // Alignment options
                       
-                      ['image', 'code-block'],  // Code-block button included
+                      ['image'],  // Code-block button included
                       [{ 'color': [] }, { 'background': [] }],
                       [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
                                  ['html']  // We will create this button

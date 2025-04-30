@@ -55,10 +55,7 @@ table {
       padding: 15px; /* Add some padding on smaller screens for better spacing */
     }
   }
-  .create-button {
-    margin-bottom: 155px;  /* Space between button and table */
-    margin-right: 145px;   /* Space on the right */
-  }
+ 
   .mat-elevation-z8 {
     position: relative; /* Ensures the button is positioned relative to this container */
   }
@@ -162,4 +159,37 @@ table td button:active {
   justify-content: flex-start; /* Align to left */
   gap: 1rem;
   margin-bottom: 1rem;
+}
+.button-row {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.download-btn,
+.create-button {
+  background-color: #cc0000;
+  color: white;
+  position: relative; /* Allows stacking without absolute chaos */
+}
+
+.download-btn:hover,
+.create-button:hover {
+  background-color: darkred;
+}
+
+/* Responsive layout for small screens */
+@media screen and (max-width: 768px) {
+  .button-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .download-btn,
+  .create-button {
+    width: 100%; /* full width on mobile for better touch targets */
+  }
 }

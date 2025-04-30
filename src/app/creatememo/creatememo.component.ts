@@ -31,10 +31,10 @@ import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the mod
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
 import 'quill-table';
+import { ExternalHyperlink, TextRun } from 'docx';
 
 import * as docx from 'docx';  // Import docx module
 import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloadwordpdfdialog.component';
-import { TextRun } from 'docx'; // Ensure you're importing TextRun from docx
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 
 interface Campaign {
@@ -187,11 +187,21 @@ const children = Array.from(element.childNodes).map((node: ChildNode) => {
 
 // Return a Paragraph with the children (TextRuns)
 return new docx.Paragraph({
-  children: children as docx.TextRun[], // Casting to TextRun[] as that is the expected type
+  children: children as (docx.TextRun | docx.ExternalHyperlink)[],
 });
 }
 
-
+createHyperlink(text: string, url: string): ExternalHyperlink {
+  return new docx.ExternalHyperlink({
+    children: [
+      new TextRun({
+        text: text,
+        style: "Hyperlink", // Word built-in hyperlink style
+      }),
+    ],
+    link: url,
+  });
+}
 
 // Convert a TextNode to a TextRun with proper formatting
 convertTextNodeToWordTextRun(node: Text): docx.TextRun {
@@ -202,7 +212,7 @@ return new docx.TextRun({
 
 
 // Convert HTML element to a TextRun, considering formatting tags like <b>, <i>, <u>, <br>, <a> (for hyperlinks), and text color
-convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
+convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun |  docx.ExternalHyperlink {
   const text = element.innerText || ''; // Get the text without HTML tags
   let textRunOptions: any = { text: text }; // Default options
 
@@ -219,10 +229,23 @@ convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
     case 'u':
       textRunOptions.underline = true;
       break;
-    case 'a':
-      // Handle hyperlink (e.g., <a href="https://example.com">Text</a>)
-      textRunOptions.hyperlink = element.getAttribute('href') || '';
-      break;
+      case 'a': {
+        const link = element.getAttribute('href');
+        const text = element.innerText || '';
+      
+        if (link) {
+          return new docx.ExternalHyperlink({
+            link: link,
+            children: [
+              new docx.TextRun({
+                text: text,
+                style: 'Hyperlink', // Applies default hyperlink style
+              }),
+            ],
+          });
+        }
+        break;
+      }
     case 'br':
       // For <br> tags, create a TextRun with a line break
       return new docx.TextRun('\n'); // New line for Word document
@@ -585,7 +608,8 @@ if (existingToolbar) {
 
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
-                    
+                    [{ 'color': [] }, { 'background': [] }],
+
                     ['image'],  // Code-block button included
                     [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
                                ['html']  // We will create this button
