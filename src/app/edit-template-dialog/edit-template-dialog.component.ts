@@ -30,7 +30,21 @@ import { CommonModule } from '@angular/common';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 
+// Register the table module
+const BlockEmbed = Quill.import('blots/block/embed');
 
+class HrBlot extends BlockEmbed {
+  static blotName = 'hr';
+  static tagName = 'hr';
+
+  static create() {
+    const node = super.create();
+    node.setAttribute('class', 'custom-hr');
+    return node;
+  }
+}
+
+Quill.register(HrBlot);
 interface TemplateData {
   id: number;
   name: string;
@@ -97,7 +111,7 @@ textSnippets = [
     this.textSnippets = this.data.availableMergeFields || [];
 
   }
- 
+  
 
    
 
@@ -141,20 +155,20 @@ textSnippets = [
                     ['clean'],                                         // remove formatting button
                     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
                     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+                    ['table'], // Table button
 
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
-                    
                     ['image'],  // Code-block button included
                     [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
                                ['html'] , // We will create this button
                                [{ 'color': [] }, { 'background': [] }]
 
                   ],
-                    
+
       },
       formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','blockquote'
+        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','blockquote','table'
       ]
     });
 
@@ -191,14 +205,21 @@ textSnippets = [
 
     }
   }
-  insertHorizontalRule(): void {
-    const range = this.editor.getSelection();
-    if (range) {
-      // Insert an <hr> element as raw HTML
-      this.editor.clipboard.dangerouslyPasteHTML(range.index, '<hr>');
-      console.log('Horizontal rule inserted at index', range.index);
+  insertHorizontalRule() {
+    const selection = this.editor.getSelection();
+    if (selection) {
+      this.editor.insertEmbed(selection.index, 'hr', true);
+      console.log('Inserted <hr> at index:', selection.index);
+      console.log('Editor HTML:', this.editor.root.innerHTML);
+      this.editor.root.innerHTML += '<hr>';
+
+    } else {
+      console.warn('No selection in editor.');
     }
   }
+  
+  
+  
   
   addCustomButtons() {
     const toolbar = this.editor.container.querySelector('.ql-toolbar');
