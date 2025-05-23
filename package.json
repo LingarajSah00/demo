@@ -37,6 +37,8 @@
     "ngx-quill": "^16.2.1",
     "quill": "^1.3.7",
     "quill-better-table": "^1.2.10",
+    "quill-better-table-plus": "^0.1.2",
+    "quill-delta": "^5.1.0",
     "quill-table": "^1.0.0",
     "rxjs": "~7.8.0",
     "summernote": "^0.9.1",

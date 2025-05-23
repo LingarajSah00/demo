@@ -19,7 +19,11 @@ export class UserserviceService {
   getUsers(): Observable<UserData[]> {
     return this.http.get<UserData[]>(`${this.apiUrl}/user/`);  // Use the dynamic apiUrl
   }
-
+  
+  getUsersPaginated(page: number, size: number): Observable<any> {
+    return this.http.get<any>(`/api/users?page=${page}&size=${size}`);
+  }
+  
   // Search users based on path variable
   searchUser(pathVariable: string): Observable<UserData[]> {
     const searchUrl = `${this.apiUrl}/user/${pathVariable}`;  // Use the dynamic apiUrl

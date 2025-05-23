@@ -67,6 +67,8 @@
     <!-- Pagination Controls -->
     <mat-paginator [length]="dataSource.data.length"
                    [pageSize]="10"
+                   [pageIndex]="currentPage"
+
                    [pageSizeOptions]="[ 10, 20,30]"
                    showFirstLastButtons>
     </mat-paginator>

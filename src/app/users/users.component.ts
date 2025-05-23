@@ -50,7 +50,9 @@ export class UsersComponent {
 
   constructor(private rolePermissionService: RolepermissionserviceService,public dialog: MatDialog, private _snackBar: MatSnackBar,    private userService: UserserviceService // Inject the UserService
 ) {}
-
+totalItems = 0;
+pageSize = 10;
+currentPage = 0;
 // Paginator reference to connect to the mat-paginator in the template
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -90,7 +92,11 @@ export class UsersComponent {
     this.loadUsers(); // Fetch users when component is initialized
 
   }
-
+  ngAfterViewInit(): void {
+    this.paginator.page.subscribe(() => {
+      this.loadUsers1(this.paginator.pageIndex, this.paginator.pageSize);
+    });
+  }
   // Filter the table based on the input search text
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();
@@ -253,7 +259,25 @@ openEditUserDialog(user: UserData): void {
         this._snackBar.open('Error fetching users', 'Close', { duration: 3000 });
       }
     );
+
+    
   }
+
+    // Fetch all users
+    loadUsers1(pageIndex: number = 0, pageSize: number = 10): void {
+      this.userService.getUsersPaginated(pageIndex, pageSize).subscribe(
+        response => {
+          this.dataSource.data = response.data.content;
+          this.totalItems = response.data.totalElements;
+          this.pageSize = response.data.size;
+          this.currentPage = response.data.number;
+        },
+        error => {
+          console.error('Error loading users', error);
+          this._snackBar.open('Failed to load users', 'Close', { duration: 3000 });
+        }
+      );
+    }
 
   // Search for users based on path variable
   searchUser(event: Event): void {

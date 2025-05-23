@@ -30,6 +30,10 @@ import { CommonModule } from '@angular/common';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 
+import QuillBetterTablePlus from 'quill-better-table-plus';
+
+Quill.register('modules/better-table', QuillBetterTablePlus);
+
 // Register the table module
 const BlockEmbed = Quill.import('blots/block/embed');
 
@@ -142,6 +146,7 @@ textSnippets = [
   }
 
   ngAfterViewInit(): void {
+    
     if (this.editorContainer) {
 
       // Initialize Quill once the view has been initialized
@@ -165,6 +170,7 @@ textSnippets = [
                                [{ 'color': [] }, { 'background': [] }]
 
                   ],
+              
 
       },
       formats: [
@@ -204,6 +210,7 @@ textSnippets = [
       }
 
     }
+    
   }
   insertHorizontalRule() {
     const selection = this.editor.getSelection();
@@ -330,6 +337,38 @@ openHelp() {
     toolbar?.appendChild(fontSizeDropdown);  // Append to toolbar
   }
  
+addTableButton() {
+  const toolbar = this.editor.container.querySelector('.ql-toolbar');
+
+  const button = document.createElement('button');
+  button.innerHTML = '🧮';  // or text like "Table"
+  button.classList.add('ql-insertTable');
+  toolbar?.appendChild(button);
+
+  button.addEventListener('click', () => {
+    const table = this.editor.getModule('better-table');
+    if (table) {
+      table.insertTable(3, 3);
+    } else {
+      console.warn('Better table module not found.');
+    }
+  });
+}
+insertTable(): void {
+  if (!this.editor) {
+    console.error('Editor not initialized');
+    return;
+  }
+
+  const tableModule = this.editor.getModule('better-table');
+
+  if (tableModule && tableModule.insertTable) {
+    tableModule.insertTable(3, 3);
+  } else {
+    console.error('Better Table module is not loaded properly.');
+  }
+}
+
 
 // Handle the dragstart event for the selected snippet
 onDragStart(event: any, text: string): void {
