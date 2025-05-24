@@ -284,3 +284,7 @@ hr.custom-hr {
   border-top: 2px solid #888;  /* Make the line visible */
   margin: 16px 0;
 }
+.ql-toolbar button {
+  pointer-events: auto !important;
+  overflow: visible !important;
+}

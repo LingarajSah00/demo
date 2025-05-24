@@ -177,6 +177,7 @@ textSnippets = [
         'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','blockquote','table'
       ]
     });
+    
 
     this.addCustomButtons();
 
@@ -210,8 +211,67 @@ textSnippets = [
       }
 
     }
+
+   
+      setTimeout(() => this.addTooltips(), 200);
     
+
   }
+  waitForToolbarAndAddTooltips(retries = 10) {
+    const toolbar = this.editor?.container?.querySelector('.ql-toolbar');
+    if (toolbar) {
+      this.addTooltips(); // Safe to call
+    } else if (retries > 0) {
+      setTimeout(() => this.waitForToolbarAndAddTooltips(retries - 1), 200);
+    } else {
+      console.error('Failed to find Quill toolbar after multiple attempts.');
+    }
+  }
+  
+  addTooltips() {
+    //const toolbar = this.editor.container.querySelector('.ql-toolbar');
+    const toolbar = document.querySelector('.ql-toolbar.ql-snow');
+
+    if (!toolbar) {
+      console.warn('Toolbar not found');
+      return;
+    }
+  
+    const buttonMap: { [selector: string]: string } = {
+      '.ql-bold': 'Bold',
+      '.ql-italic': 'Italic',
+      '.ql-underline': 'Underline',
+      '.ql-strike': 'Strikethrough',
+      '.ql-list[value="ordered"]': 'Ordered List',
+      '.ql-list[value="bullet"]': 'Bullet List',
+      '.ql-link': 'Insert Link',
+      '.ql-image': 'Insert Image',
+      '.ql-script[value="sub"]': 'SubScript',
+      '.ql-script[value="super"]': 'SuperScript',
+
+      '.ql-picker-label':'Header Size',
+      '.ql-clean': 'Clear Formatting',
+      '.ql-color': 'Text Color',
+      '.ql-background': 'Background Color',
+      '.ql-size': 'Font Size',
+      '.ql-align': 'Text Alignment',
+      '.ql-hr': 'Insert Horizontal Line',
+      '.ql-power': 'Insert X²',
+      '.ql-help': 'Help',
+      '.ql-html': 'Toggle HTML Mode'
+    };
+  
+    Object.entries(buttonMap).forEach(([selector, title]) => {
+      const btn = toolbar.querySelector(selector);
+      if (btn) {
+        btn.setAttribute('title', title);
+        console.log(`Added tooltip: ${title} -> ${selector}`);
+      } else {
+        console.warn(`Button not found: ${selector}`);
+      }
+    });
+  }
+  
   insertHorizontalRule() {
     const selection = this.editor.getSelection();
     if (selection) {
