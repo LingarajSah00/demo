@@ -14,6 +14,12 @@
       <button (click)="openEmailDialog()"  class="send-email-btn">
         <mat-icon>email</mat-icon>  <!-- You can use an Angular Material icon here -->
       </button>
+      <button mat-icon-button (click)="insertHorizontalRule()" matTooltip="Insert Horizontal Line">
+        <mat-icon>horizontal_rule</mat-icon>
+      </button>
+      <button mat-icon-button (click)="insertTable()" id="insert-table-button" matTooltip="Insert Table">
+        <mat-icon>grid_on</mat-icon>
+      </button>
     </div>
     <!-- Quill Editor Container -->
     <div class="dropdown-container">

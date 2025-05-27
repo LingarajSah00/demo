@@ -24,7 +24,7 @@ import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
-import 'quill-table';
+
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 
@@ -33,6 +33,22 @@ import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloa
 import { TextRun } from 'docx'; // Ensure you're importing TextRun from docx
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 
+
+// Register the table module
+const BlockEmbed = Quill.import('blots/block/embed');
+
+class HrBlot extends BlockEmbed {
+  static blotName = 'hr';
+  static tagName = 'hr';
+
+  static create() {
+    const node = super.create();
+    node.setAttribute('class', 'custom-hr');
+    return node;
+  }
+}
+
+Quill.register(HrBlot);
 @Component({
   selector: 'app-editmemo',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
@@ -93,7 +109,50 @@ textSnippets = [
 
   }
 
+  insertHorizontalRule() {
+    const selection = this.editor.getSelection();
+    if (selection) {
+      this.editor.insertEmbed(selection.index, 'hr', true);
+      console.log('Inserted <hr> at index:', selection.index);
+      console.log('Editor HTML:', this.editor.root.innerHTML);
+      this.editor.root.innerHTML += '<hr>';
 
+    } else {
+      console.warn('No selection in editor.');
+    }
+  }
+  insertTable(): void {
+    const selection = this.editor.getSelection();
+    this.insertHTMLTable();
+  }
+  insertHTMLTable(rows = 3, cols = 3): void {
+    if (!this.editor) return;
+  
+    const range = this.editor.getSelection(true);
+    const headerCells = Array.from({ length: cols }, (_, i) => `Header ${i + 1}`);
+    const separator = Array.from({ length: cols }, () => '----------');
+    const emptyRow = Array.from({ length: cols }, () => '‹value›');
+  
+    let tableText = '';
+  
+    // Header row
+    tableText += '| ' + headerCells.join(' | ') + ' |\n';
+    // Separator
+    tableText += '| ' + separator.join(' | ') + ' |\n';
+    // Body rows
+    for (let r = 0; r < rows; r++) {
+      tableText += '| ' + emptyRow.join(' | ') + ' |\n';
+    }
+  
+    // Insert as code block for consistent formatting
+    this.editor.insertText(range.index, tableText, { 'code-block': true });
+  
+    // Move cursor after the inserted table
+    this.editor.setSelection(range.index + tableText.length); 
+  
+    
+  }
+  
   // Open the download dialog
     openDownloadDialog(): void {
       const dialogRef = this.dialog.open(DownloadwordpdfdialogComponent, {
@@ -360,8 +419,54 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
       // Set default content in the editor
       this.editor.root.innerHTML =content;
     }
-  }
+    setTimeout(() => this.addTooltips(), 200);
 
+  }
+  addTooltips() {
+    //const toolbar = this.editor.container.querySelector('.ql-toolbar');
+    const toolbar = document.querySelector('.ql-toolbar.ql-snow');
+
+    if (!toolbar) {
+      console.warn('Toolbar not found');
+      return;
+    }
+  
+    const buttonMap: { [selector: string]: string } = {
+      '.ql-bold': 'Bold',
+      '.ql-italic': 'Italic',
+      '.ql-underline': 'Underline',
+      '.ql-strike': 'Strikethrough',
+      '.ql-list[value="ordered"]': 'Ordered List',
+      '.ql-list[value="bullet"]': 'Bullet List',
+      '.ql-link': 'Insert Link',
+      '.ql-image': 'Insert Image',
+      '.ql-script[value="sub"]': 'SubScript',
+      '.ql-script[value="super"]': 'SuperScript',
+
+      '.ql-indent[value="+1"]':'Indent Right',
+      '.ql-indent[value="-1"]':'Indent Left',
+      '.ql-picker-label':'Header Size',
+      '.ql-clean': 'Clear Formatting',
+      '.ql-color': 'Text Color',
+      '.ql-background': 'Background Color',
+      '.ql-size': 'Font Size',
+      '.ql-align': 'Text Alignment',
+      '.ql-hr': 'Insert Horizontal Line',
+      '.ql-power': 'Insert X²',
+      '.ql-help': 'Help',
+      '.ql-html': 'Toggle HTML Mode'
+    };
+  
+    Object.entries(buttonMap).forEach(([selector, title]) => {
+      const btn = toolbar.querySelector(selector);
+      if (btn) {
+        btn.setAttribute('title', title);
+        //console.log(`Added tooltip: ${title} -> ${selector}`);
+      } else {
+       // console.warn(`Button not found: ${selector}`);
+      }
+    });
+  }
   addLineHeightDropdown() {
     const toolbar = this.editor.container.querySelector('.ql-toolbar');
   
@@ -585,6 +690,8 @@ toggleHTMLMode() {
       // Reset the background color and text color
       editorElement.style.backgroundColor = 'white';
       editorElement.style.color = 'black';
+      setTimeout(() => this.addTooltips(), 200);
+
     }
   }
 }

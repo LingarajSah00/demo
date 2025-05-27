@@ -24,15 +24,16 @@ import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
-import 'quill-table';
+
+
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 
-import QuillBetterTablePlus from 'quill-better-table-plus';
+import QuillTableUI from 'quill-table-ui';
 
-Quill.register('modules/better-table', QuillBetterTablePlus);
+Quill.register('modules/tableUI', QuillTableUI);
 
 // Register the table module
 const BlockEmbed = Quill.import('blots/block/embed');
@@ -153,6 +154,8 @@ textSnippets = [
     this.editor = new Quill(this.editorContainer.nativeElement, {
       theme: 'snow',
       modules: {
+        tableUI: true,
+        
         toolbar: [
           ['bold', 'italic', 'underline', 'strike'],  // Formatting options
                     [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
@@ -160,8 +163,7 @@ textSnippets = [
                     ['clean'],                                         // remove formatting button
                     [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
                     [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-                    ['table'], // Table button
-
+                    ['table'],
                     ['link'], // Add link button
                     [{ 'align': [] }], // Alignment options
                     ['image'],  // Code-block button included
@@ -170,7 +172,8 @@ textSnippets = [
                                [{ 'color': [] }, { 'background': [] }]
 
                   ],
-              
+     
+   
 
       },
       formats: [
@@ -181,18 +184,7 @@ textSnippets = [
 
     this.addCustomButtons();
 
-      const content = `
-      <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
-      <br>
-      <p>The Following colleague(s) in your store must complete their Compliance Training within 21 days of assignment date.</p>
-      <br>
-      <p>&lt; employeeList &gt;<br>
-      Since your colleague(s) do not have access to email , it is important to notify them as soon as possible so they can complete their required training on time. <b>Colleague that fail to complete certain courses by the due date will result in their access being suspended </b></p>
-
-      <br>
-      <p>&lt; accessLearningHubStoreText &gt;
-      <br>Compliance Training Team</p>
-    `;
+      
  
     this.addHTMLButton();
 
@@ -217,16 +209,7 @@ textSnippets = [
     
 
   }
-  waitForToolbarAndAddTooltips(retries = 10) {
-    const toolbar = this.editor?.container?.querySelector('.ql-toolbar');
-    if (toolbar) {
-      this.addTooltips(); // Safe to call
-    } else if (retries > 0) {
-      setTimeout(() => this.waitForToolbarAndAddTooltips(retries - 1), 200);
-    } else {
-      console.error('Failed to find Quill toolbar after multiple attempts.');
-    }
-  }
+ 
   
   addTooltips() {
     //const toolbar = this.editor.container.querySelector('.ql-toolbar');
@@ -249,6 +232,8 @@ textSnippets = [
       '.ql-script[value="sub"]': 'SubScript',
       '.ql-script[value="super"]': 'SuperScript',
 
+      '.ql-indent[value="+1"]':'Indent Right',
+      '.ql-indent[value="-1"]':'Indent Left',
       '.ql-picker-label':'Header Size',
       '.ql-clean': 'Clear Formatting',
       '.ql-color': 'Text Color',
@@ -265,9 +250,9 @@ textSnippets = [
       const btn = toolbar.querySelector(selector);
       if (btn) {
         btn.setAttribute('title', title);
-        console.log(`Added tooltip: ${title} -> ${selector}`);
+        //console.log(`Added tooltip: ${title} -> ${selector}`);
       } else {
-        console.warn(`Button not found: ${selector}`);
+       // console.warn(`Button not found: ${selector}`);
       }
     });
   }
@@ -415,19 +400,38 @@ addTableButton() {
   });
 }
 insertTable(): void {
-  if (!this.editor) {
-    console.error('Editor not initialized');
-    return;
-  }
-
-  const tableModule = this.editor.getModule('better-table');
-
-  if (tableModule && tableModule.insertTable) {
-    tableModule.insertTable(3, 3);
-  } else {
-    console.error('Better Table module is not loaded properly.');
-  }
+  const selection = this.editor.getSelection();
+  this.insertHTMLTable();
 }
+insertHTMLTable(rows = 3, cols = 3): void {
+  if (!this.editor) return;
+
+  const range = this.editor.getSelection(true);
+  const headerCells = Array.from({ length: cols }, (_, i) => `Header ${i + 1}`);
+  const separator = Array.from({ length: cols }, () => '----------');
+  const emptyRow = Array.from({ length: cols }, () => '‹value›');
+
+  let tableText = '';
+
+  // Header row
+  tableText += '| ' + headerCells.join(' | ') + ' |\n';
+  // Separator
+  tableText += '| ' + separator.join(' | ') + ' |\n';
+  // Body rows
+  for (let r = 0; r < rows; r++) {
+    tableText += '| ' + emptyRow.join(' | ') + ' |\n';
+  }
+
+  // Insert as code block for consistent formatting
+  this.editor.insertText(range.index, tableText, { 'code-block': true });
+
+  // Move cursor after the inserted table
+  this.editor.setSelection(range.index + tableText.length); 
+
+  
+}
+
+
 
 
 // Handle the dragstart event for the selected snippet
@@ -566,6 +570,8 @@ toggleHTMLMode() {
       // Reset the background color and text color
       editorElement.style.backgroundColor = 'white';
       editorElement.style.color = 'black';
+      setTimeout(() => this.addTooltips(), 200);
+
     }
   }
 }
