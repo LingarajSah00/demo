@@ -9,9 +9,6 @@ import { RouterModule, Routes } from '@angular/router';
 export const routes: Routes = [
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    //{ path: 'dashboard', component: DashboardComponent },
-    //{ path: 'campaigns', component: CampaignsComponent },
-    //{ path: 'campaigns', component: CampaignsComponent }
     {
         path: 'dashboard',
         loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),

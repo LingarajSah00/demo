@@ -7,9 +7,6 @@ import { MatOptionModule } from '@angular/material/core';
 import { Component, AfterViewInit,Inject,ViewChild, ElementRef ,importProvidersFrom } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -21,14 +18,9 @@ import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dia
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
-import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Import CUSTOM_ELEMENTS_SCHEMA if needed
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
-import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
-import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
+
 import Quill from 'quill';
 
 import { ExternalHyperlink, TextRun } from 'docx';
@@ -36,6 +28,8 @@ import { ExternalHyperlink, TextRun } from 'docx';
 import * as docx from 'docx';  // Import docx module
 import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloadwordpdfdialog.component';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 interface Campaign {
   name: string;
@@ -374,27 +368,7 @@ ngAfterViewInit(): void {
     ]
   });
 
-   // Optional: Adding custom undo and redo buttons with icons
-   const toolbar = this.editor.container.querySelector('.ql-toolbar');
-  
-   // Undo button with Angular Material icon
-   const undoButton = document.createElement('button');
-   undoButton.classList.add('ql-undo');
-   undoButton.innerHTML = `<mat-icon>undo</mat-icon>`;  // Using Angular Material 'undo' icon
-   undoButton.addEventListener('click', () => this.editor.history.undo());
-   toolbar?.appendChild(undoButton);
-
-   // Redo button with Angular Material icon
-   const redoButton = document.createElement('button');
-   redoButton.classList.add('ql-redo');
-   redoButton.innerHTML = `<mat-icon>redo</mat-icon>`;  // Using Angular Material 'redo' icon
-   redoButton.addEventListener('click', () => this.editor.history.redo());
-   toolbar?.appendChild(redoButton);
-
-  this.addCustomFontFamilyDropdown();
-  this.addCustomFontSizeDropdown();
-  this.addLineHeightDropdown();
-
+   
     const content = `
    
   `;
@@ -472,48 +446,7 @@ addLineHeightDropdown() {
 
   // Append the select element to the toolbar
   toolbar?.appendChild(lineHeightSelect);
-}
-// Add the custom font family dropdown to the toolbar
-addCustomFontFamilyDropdown() {
-  const toolbar = this.editor.container.querySelector('.ql-toolbar');
-  const fontFamilyDropdown = document.createElement('select');
-  fontFamilyDropdown.classList.add('ql-font');
-  fontFamilyDropdown.innerHTML = `
-    <option value="arial">Arial</option>
-    <option value="times">Times New Roman</option>
-    <option value="courier">Courier New</option>
-    <option value="verdana">Verdana</option>
-  `;
-
-  // Add event listener to change font family
-  fontFamilyDropdown.addEventListener('change', (event) => {
-    const font = (event.target as HTMLSelectElement).value;
-    this.editor.format('font', font); // Apply font family to selected text
-  });
-
-  toolbar?.appendChild(fontFamilyDropdown);  // Append to toolbar
-}
-
-// Add the custom font size dropdown to the toolbar
-addCustomFontSizeDropdown() {
-  const toolbar = this.editor.container.querySelector('.ql-toolbar');
-  const fontSizeDropdown = document.createElement('select');
-  fontSizeDropdown.classList.add('ql-size');
-  fontSizeDropdown.innerHTML = `
-    <option value="12px">12px</option>
-    <option value="14px">14px</option>
-    <option value="16px">16px</option>
-    <option value="18px">18px</option>
-  `;
-
-  // Add event listener to change font size
-  fontSizeDropdown.addEventListener('change', (event) => {
-    const size = (event.target as HTMLSelectElement).value;
-    this.editor.format('size', size); // Apply font size to selected text
-  });
-
-  toolbar?.appendChild(fontSizeDropdown);  // Append to toolbar
-}
+ }
 
 
 // Handle the dragstart event for the selected snippet

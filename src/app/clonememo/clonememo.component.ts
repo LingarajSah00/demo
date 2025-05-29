@@ -211,9 +211,7 @@ textSnippets = [
       ]
     });
 
-    this.addCustomFontFamilyDropdown();
-    this.addCustomFontSizeDropdown();
-
+   
       const content = `
       <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
       <br>
@@ -280,48 +278,7 @@ textSnippets = [
     });
   }
   
-  // Add the custom font family dropdown to the toolbar
-  addCustomFontFamilyDropdown() {
-    const toolbar = this.editor.container.querySelector('.ql-toolbar');
-    const fontFamilyDropdown = document.createElement('select');
-    fontFamilyDropdown.classList.add('ql-font');
-    fontFamilyDropdown.innerHTML = `
-      <option value="arial">Arial</option>
-      <option value="times">Times New Roman</option>
-      <option value="courier">Courier New</option>
-      <option value="verdana">Verdana</option>
-    `;
 
-    // Add event listener to change font family
-    fontFamilyDropdown.addEventListener('change', (event) => {
-      const font = (event.target as HTMLSelectElement).value;
-      this.editor.format('font', font); // Apply font family to selected text
-    });
-
-    toolbar?.appendChild(fontFamilyDropdown);  // Append to toolbar
-  }
-
-  // Add the custom font size dropdown to the toolbar
-  addCustomFontSizeDropdown() {
-    const toolbar = this.editor.container.querySelector('.ql-toolbar');
-    const fontSizeDropdown = document.createElement('select');
-    fontSizeDropdown.classList.add('ql-size');
-    fontSizeDropdown.innerHTML = `
-      <option value="12px">12px</option>
-      <option value="14px">14px</option>
-      <option value="16px">16px</option>
-      <option value="18px">18px</option>
-    `;
-
-    // Add event listener to change font size
-    fontSizeDropdown.addEventListener('change', (event) => {
-      const size = (event.target as HTMLSelectElement).value;
-      this.editor.format('size', size); // Apply font size to selected text
-    });
-
-    toolbar?.appendChild(fontSizeDropdown);  // Append to toolbar
-  }
- 
 
 // Handle the dragstart event for the selected snippet
 onDragStart(event: any, text: string): void {

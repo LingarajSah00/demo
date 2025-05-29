@@ -1,26 +1,22 @@
 import { Component, AfterViewInit,Inject,ViewChild, ElementRef ,importProvidersFrom } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import {  MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
+
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
 import { FormsModule } from '@angular/forms';  // Import FormsModule here
-import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Import CUSTOM_ELEMENTS_SCHEMA if needed
-import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
+
 import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
@@ -182,12 +178,7 @@ textSnippets = [
     });
     
 
-    this.addCustomButtons();
-
-      
- 
-    this.addHTMLButton();
-
+   
 
       // Set default content in the editor
       
@@ -273,39 +264,7 @@ textSnippets = [
   
   
   
-  addCustomButtons() {
-    const toolbar = this.editor.container.querySelector('.ql-toolbar');
-  
-    // Horizontal Rule (HR) Button
-const hrButton = document.createElement('button');
-hrButton.innerText = 'HR'; // or use '─' or icon
-hrButton.classList.add('ql-hr');
-hrButton.style.marginLeft = '10px';
-toolbar?.appendChild(hrButton);
-
-// Add click handler to insert <hr>
-hrButton.addEventListener('click', () => this.insertHorizontalRule());
-
-    // Create X to Power 2 button (for exponentiation)
-    const powerButton = document.createElement('button');
-    powerButton.innerText = 'X²';  // You can use any symbol or text
-    powerButton.classList.add('ql-power');
-    powerButton.style.marginLeft = '10px';  // Add spacing if necessary
-    toolbar?.appendChild(powerButton);
-  
-    // Add event listener to handle exponentiation
-    powerButton.addEventListener('click', () => this.insertPower());
-  
-    // Create Help button (?)
-    const helpButton = document.createElement('button');
-    helpButton.innerText = '?';  // You can change this to any symbol
-    helpButton.classList.add('ql-help');
-    helpButton.style.marginLeft = '10px';  // Add spacing if necessary
-    toolbar?.appendChild(helpButton);
-  
-    // Add event listener for the Help button
-    helpButton.addEventListener('click', () => this.openHelp());
-  }
+ 
   // Insert exponentiation (X²) at the current selection
 insertPower() {
   const range = this.editor.getSelection();
@@ -322,65 +281,7 @@ openHelp() {
   alert('Help section is under construction.');  // This could be a modal/dialog
 }
   
-  // Add the custom font family dropdown to the toolbar
-  addCustomFontFamilyDropdown() {
-    const toolbar = this.editor.container.querySelector('.ql-toolbar');
-    const fontFamilyDropdown = document.createElement('select');
-    fontFamilyDropdown.classList.add('ql-font');
-    fontFamilyDropdown.innerHTML = `
-      <option value="arial">Arial</option>
-      <option value="times">Times New Roman</option>
-      <option value="courier">Courier New</option>
-      <option value="verdana">Verdana</option>
-    `;
-
-    // Add event listener to change font family
-    fontFamilyDropdown.addEventListener('change', (event) => {
-      const font = (event.target as HTMLSelectElement).value;
-      this.editor.format('font', font); // Apply font family to selected text
-    });
-
-    toolbar?.appendChild(fontFamilyDropdown);  // Append to toolbar
-  }
-
-   // Add the custom HTML button to the toolbar
-   addHTMLButton() {
-    const toolbar = this.editor.container.querySelector('.ql-toolbar');
-    if (toolbar) {
-      // Create the HTML button
-      const htmlButton = document.createElement('button');
-      htmlButton.innerText = 'HTML';
-      htmlButton.classList.add('ql-html');
-      htmlButton.style.marginLeft = '10px'; // Add some spacing if needed
-
-      // Append the button to the toolbar
-      toolbar.appendChild(htmlButton);
-
-      // Bind click event for HTML toggle button
-      htmlButton.addEventListener('click', () => this.toggleHTMLMode());
-    }
-  }
-
-  // Add the custom font size dropdown to the toolbar
-  addCustomFontSizeDropdown() {
-    const toolbar = this.editor.container.querySelector('.ql-toolbar');
-    const fontSizeDropdown = document.createElement('select');
-    fontSizeDropdown.classList.add('ql-size');
-    fontSizeDropdown.innerHTML = `
-      <option value="12px">12px</option>
-      <option value="14px">14px</option>
-      <option value="16px">16px</option>
-      <option value="18px">18px</option>
-    `;
-
-    // Add event listener to change font size
-    fontSizeDropdown.addEventListener('change', (event) => {
-      const size = (event.target as HTMLSelectElement).value;
-      this.editor.format('size', size); // Apply font size to selected text
-    });
-
-    toolbar?.appendChild(fontSizeDropdown);  // Append to toolbar
-  }
+  
  
 addTableButton() {
   const toolbar = this.editor.container.querySelector('.ql-toolbar');
