@@ -1,0 +1,70 @@
+<div class="mat-elevation-z8">
+    <h3>Notification Helper Text Snippets</h3>
+    <!-- Search Box -->
+    <mat-form-field appearance="fill">
+      <mat-label>Search</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search by Name or Email" />
+    </mat-form-field>
+  
+    <!-- Create Button at the top -->
+    <!-- <button mat-raised-button color="warn" class="create-button" *ngIf="canCreateUserForTemp()"  >Create</button>
+    <button mat-raised-button class="download-btn" (click)="openDownloadDialog()" ><mat-icon>file_download</mat-icon></button> -->
+
+    <!-- Table -->
+    <table mat-table [dataSource]="dataSource">
+      <!-- ID Column -->
+      <ng-container matColumnDef="helperTextNode">
+        <th mat-header-cell *matHeaderCellDef> HelperTextNode </th>
+        <td mat-cell *matCellDef="let element"> {{element.helperTextNode}} </td>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="accessLearningHUBSDCText">
+        <th mat-header-cell *matHeaderCellDef> AccessLearningHUBSDCText </th>
+        <td mat-cell *matCellDef="let element">
+            {{ element.accessLearningHUBSDCText }}
+        </td>
+      </ng-container>
+       <!-- Name Column -->
+       <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+      <ng-container matColumnDef="audiences">
+        <th mat-header-cell *matHeaderCellDef> Audiences </th>
+        <td mat-cell *matCellDef="let element"> {{element.audiences}} </td>
+      </ng-container>
+      <ng-container matColumnDef="template">
+        <th mat-header-cell *matHeaderCellDef> Template </th>
+        <td mat-cell *matCellDef="let element"> {{element.template}} </td>
+      </ng-container>
+     
+  
+      <!-- Status Column -->
+      <ng-container matColumnDef="conditions">
+        <th mat-header-cell *matHeaderCellDef> Conditions </th>
+        <td mat-cell *matCellDef="let element"> {{element.conditions}} </td>
+      </ng-container>
+  
+      <!-- Action Column (Create and Edit Buttons) -->
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-icon class="edit-icon" *ngIf="canCreateUserForTemp()" (click)="onRowClick(element)" matTooltip="edit" matTooltipPosition="above" matTooltipShowDelay="500">edit</mat-icon>
+          <mat-icon class="delete-icon"*ngIf="canDeleteUser()"  (click)="deleteRecord(element)" matTooltip="delete" matTooltipPosition="above" matTooltipShowDelay="500">delete</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- Header and Row definitions -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <!-- Pagination Controls -->
+    <mat-paginator [length]="dataSource.data.length"
+                   [pageSize]="10"
+                   [pageSizeOptions]="[10, 20,30]"
+                   showFirstLastButtons>
+    </mat-paginator>
+  </div>
+  

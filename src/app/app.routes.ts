@@ -22,6 +22,10 @@ export const routes: Routes = [
             loadComponent: () => import('./campaigns/campaigns.component').then(m => m.CampaignsComponent),
           },
           {
+            path: 'snippets',
+            loadComponent: () => import('./snippets/snippets.component').then(m => m.SnippetsComponent),
+          },
+          {
             path: 'template',
             loadComponent: () => import('./notificationtemplate/notificationtemplate.component').then(m => m.NotificationtemplateComponent),
           },
