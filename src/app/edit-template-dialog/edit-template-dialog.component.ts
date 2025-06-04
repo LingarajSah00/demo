@@ -20,38 +20,66 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
-
+import 'quill-table-up/index.css';
+import 'quill-table-up/table-creator.css';
+import TableUp, {
+  defaultCustomSelect,
+  TableMenuSelect,
+  TableResizeLine,
+  TableResizeScale,
+  TableSelection,
+  TableVirtualScrollbar,
+} from 'quill-table-up';
 
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
+import 'quill-table-up/index.css';
 
-import QuillTableUI from 'quill-table-ui';
+Quill.register({ 'modules/tableUp': TableUp }, true);
+const Parchment = Quill.import('parchment');
 
-Quill.register('modules/tableUI', QuillTableUI);
+// Ensure BlockEmbed is declared before usage
+const BlockEmbed = Quill.import('blots/block/embed') as typeof Parchment.EmbedBlot;
 
-// Register the table module
-const BlockEmbed = Quill.import('blots/block/embed');
+class TableUpColBlot extends BlockEmbed {
+  static override blotName = 'table-up-col';
+  static override  tagName = 'td';
 
-class HrBlot extends BlockEmbed {
-  static blotName = 'hr';
-  static tagName = 'hr';
-
-  static create() {
-    const node = super.create();
-    node.setAttribute('class', 'custom-hr');
+  static override  create(value: any): HTMLElement {
+    const node = super.create(value) as HTMLElement; // cast Node to HTMLElement
+    node.setAttribute('data-row', value);
     return node;
   }
 }
 
-Quill.register(HrBlot);
-interface TemplateData {
-  id: number;
-  name: string;
-  email: string;
-  status: string;
-}
+
+
+TableUpColBlot.blotName = 'table-up-col';
+TableUpColBlot.tagName = 'td';
+
+Quill.register(TableUpColBlot);
+// Register the table module
+
+// class HrBlot extends BlockEmbed {
+//   static blotName = 'hr';
+//   static tagName = 'hr';
+
+//   static create() {
+//     const node = super.create();
+//     node.setAttribute('class', 'custom-hr');
+//     return node;
+//   }
+// }
+
+// Quill.register(HrBlot);
+// interface TemplateData {
+//   id: number;
+//   name: string;
+//   email: string;
+//   status: string;
+// }
 @Component({
   selector: 'app-edit-template-dialog',
   imports: [MatNativeDateModule,MatTableModule  ,   // Import MatTableModule for Angular Material Table
@@ -169,7 +197,16 @@ textSnippets = [
 
                   ],
      
-   
+                  tableUp: {
+                    scrollbar: TableVirtualScrollbar,
+      resize: TableResizeLine,
+      resizeScale: TableResizeScale,
+      customSelect: defaultCustomSelect,
+      selection: TableSelection,
+      selectionOptions: {
+        tableMenu: TableMenuSelect,
+      },
+                  },
 
       },
       formats: [
@@ -449,7 +486,7 @@ toggleHTMLMode() {
                       ['clean'],                                         // remove formatting button
                       [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
                       [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-  
+                      ['table'],
                       ['link'], // Add link button
                       [{ 'align': [] }], // Alignment options
                       
@@ -458,13 +495,24 @@ toggleHTMLMode() {
                       [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
                                  ['html']  // We will create this button
                     ],
-                      
+                    tableUp: {scrollbar: TableVirtualScrollbar,
+                      resize: TableResizeLine,
+                      resizeScale: TableResizeScale,
+                      customSelect: defaultCustomSelect,
+                      selection: TableSelection,
+                      selectionOptions: {
+                        tableMenu: TableMenuSelect,
+                      },},
         },
         formats: [
-          'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
+          'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'table','color', 'background','code-block','blockquote'
         ]
       });
-
+      let htmlContent = '<table><tr><td>Cell 1</td></tr></table>';
+      // Process the HTML content as needed
+      // For example, you can add custom attributes or classes
+      htmlContent = htmlContent.replace('<table>', '<table class="custom-table">');
+      
       // Update the Quill content with the latest HTML content
       this.editor.clipboard.dangerouslyPasteHTML(newHtml);
 

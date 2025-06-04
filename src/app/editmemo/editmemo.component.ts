@@ -37,18 +37,18 @@ import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 // Register the table module
 const BlockEmbed = Quill.import('blots/block/embed');
 
-class HrBlot extends BlockEmbed {
-  static blotName = 'hr';
-  static tagName = 'hr';
+// class HrBlot extends BlockEmbed {
+//   static blotName = 'hr';
+//   static tagName = 'hr';
 
-  static create() {
-    const node = super.create();
-    node.setAttribute('class', 'custom-hr');
-    return node;
-  }
-}
+//   static create() {
+//     const node = super.create();
+//     node.setAttribute('class', 'custom-hr');
+//     return node;
+//   }
+// }
 
-Quill.register(HrBlot);
+// Quill.register(HrBlot);
 @Component({
   selector: 'app-editmemo',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table

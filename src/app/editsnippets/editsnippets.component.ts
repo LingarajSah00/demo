@@ -27,31 +27,28 @@ import { CommonModule } from '@angular/common';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 
-import QuillTableUI from 'quill-table-ui';
-
-Quill.register('modules/tableUI', QuillTableUI);
 
 // Register the table module
 const BlockEmbed = Quill.import('blots/block/embed');
 
-class HrBlot extends BlockEmbed {
-  static blotName = 'hr';
-  static tagName = 'hr';
+// class HrBlot extends BlockEmbed {
+//   static blotName = 'hr';
+//   static tagName = 'hr';
 
-  static create() {
-    const node = super.create();
-    node.setAttribute('class', 'custom-hr');
-    return node;
-  }
-}
+//   static create() {
+//     const node = super.create();
+//     node.setAttribute('class', 'custom-hr');
+//     return node;
+//   }
+// }
 
-Quill.register(HrBlot);
-interface TemplateData {
-  id: number;
-  name: string;
-  email: string;
-  status: string;
-}
+// Quill.register(HrBlot);
+// interface TemplateData {
+//   id: number;
+//   name: string;
+//   email: string;
+//   status: string;
+// }
 @Component({
   selector: 'app-editsnippets',
   imports: [MatNativeDateModule,MatTableModule  ,   // Import MatTableModule for Angular Material Table
