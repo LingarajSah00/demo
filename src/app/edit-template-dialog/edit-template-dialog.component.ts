@@ -60,6 +60,32 @@ TableUpColBlot.blotName = 'table-up-col';
 TableUpColBlot.tagName = 'td';
 
 Quill.register(TableUpColBlot);
+
+const Clipboard = Quill.import('modules/clipboard');
+const Delta = Quill.import('delta');
+
+// class CustomClipboard extends Clipboard {
+//   onPaste(event) {
+//     const clipboardData = event.clipboardData || window.clipboardData;
+//     const html = clipboardData.getData('text/html');
+//     if (html) {
+//       event.preventDefault();
+//       const delta = this.convertHtmlToDelta(html);
+//       this.quill.updateContents(delta, 'user');
+//     } else {
+//       super.onPaste(event);
+//     }
+//   }
+
+//   convertHtmlToDelta(html) {
+//     // Implement conversion logic here
+//     // Ensure that <td> elements are converted to your custom TableUpColBlot
+//     return new Delta().insert(html);
+//   }
+// }
+
+// Quill.register('modules/clipboard', CustomClipboard, true);
+
 // Register the table module
 
 // class HrBlot extends BlockEmbed {
@@ -508,14 +534,13 @@ toggleHTMLMode() {
           'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'table','color', 'background','code-block','blockquote'
         ]
       });
-      let htmlContent = '<table><tr><td>Cell 1</td></tr></table>';
+      //let htmlContent = '<table><tr><td>Cell 1</td></tr></table>';
       // Process the HTML content as needed
       // For example, you can add custom attributes or classes
-      htmlContent = htmlContent.replace('<table>', '<table class="custom-table">');
-      
-      // Update the Quill content with the latest HTML content
-      this.editor.clipboard.dangerouslyPasteHTML(newHtml);
+      const htmlContent = htmlEditor.value;
+      this.editor.clipboard.dangerouslyPasteHTML(0, htmlContent);
 
+      
       // Reset the background color and text color
       editorElement.style.backgroundColor = 'white';
       editorElement.style.color = 'black';
