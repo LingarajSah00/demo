@@ -288,3 +288,9 @@ hr.custom-hr {
   pointer-events: auto !important;
   overflow: visible !important;
 }
+
+.ql-editor img {
+  width: auto !important;
+  height: auto !important;
+  display: inline-block !important;
+}

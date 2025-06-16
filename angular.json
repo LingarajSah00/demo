@@ -31,6 +31,7 @@
             "styles": [
                 "src/assets/fonts/material-icons/material-icons.css",
                 "node_modules/material-icons/iconfont/material-icons.css",
+                "node_modules/quill-table-better/dist/quill-table-better.css",
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css",
               "node_modules/quill/dist/quill.snow.css",

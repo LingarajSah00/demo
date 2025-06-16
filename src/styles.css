@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 /* src/styles.css */
 @import 'quill/dist/quill.snow.css';  /* Quill default theme */
+@import "quill-table-better/dist/quill-table-better.css";
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
