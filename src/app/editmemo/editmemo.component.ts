@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
-import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { FormsModule ,FormControl,ReactiveFormsModule} from '@angular/forms';  // Import FormsModule here
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Import CUSTOM_ELEMENTS_SCHEMA if needed
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -32,23 +32,36 @@ import * as docx from 'docx';  // Import docx module
 import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloadwordpdfdialog.component';
 import { TextRun } from 'docx'; // Ensure you're importing TextRun from docx
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
+import QuillTableBetter from "quill-table-better";
+import { QuillModule } from "ngx-quill";
+
+Quill.register(
+  {
+    "modules/table-better": QuillTableBetter,
+  },
+  true
+);
 
 
-// Register the table module
 const BlockEmbed = Quill.import('blots/block/embed');
 
-// class HrBlot extends BlockEmbed {
-//   static blotName = 'hr';
-//   static tagName = 'hr';
+class HrBlot extends (BlockEmbed as any) {
+  static blotName = 'hr';
+  static tagName = 'hr';
+  static className = 'custom-hr';
+  static scope = Quill.import('parchment').Scope.BLOCK;
 
-//   static create() {
-//     const node = super.create();
-//     node.setAttribute('class', 'custom-hr');
-//     return node;
-//   }
-// }
+  static create(value: any) {
+    return super.create();
+  }
+}
 
-// Quill.register(HrBlot);
+
+HrBlot.blotName = 'hr';
+HrBlot.tagName = 'hr';
+HrBlot.className = 'custom-hr';
+
+Quill.register('formats/hr', HrBlot);
 @Component({
   selector: 'app-editmemo',
   imports: [MatTableModule  ,   // Import MatTableModule for Angular Material Table
@@ -62,7 +75,7 @@ const BlockEmbed = Quill.import('blots/block/embed');
           MatFormFieldModule,
           MatSnackBarModule,
           MatSlideToggleModule,
-          FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule 
+          FormsModule ,ReactiveFormsModule,QuillModule ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule 
             // Import QuillModule
   ],
   templateUrl: './editmemo.component.html',
@@ -91,7 +104,100 @@ textSnippets = [
     placeholder: 'Enter your content here...',
   };
 
+
+// Predefined text snippets for dropdown and drag-and-drop
+ quillEditorInstance: Quill | null = null;
+  showCode = false;
+  contentCtrl = new FormControl("");
+  modules = {
+    toolbar: {
+      container: [
+        [{ header: 1 }, { header: 2 }],
+        ["bold", "italic", "underline", "strike"],
+        ["link", "image"],
+        [{ list: "bullet" }],
+        [{ indent: "-1" }, { indent: "+1" }],
+        [{ direction: "rtl" }],
+        [{ size: ["small", false, "large", "huge"] }],
+        [{ color: [] }, { background: [] }],
+        [{ font: [] }],
+        [{ align: [] }],
+        ["table-better"],
+      ],
+    },
+    table: false,
+    "table-better": {
+      language: "en_US",
+      menus: [
+        "column",
+        "row",
+        "merge",
+        "table",
+        "cell",
+        "wrap",
+        "copy",
+        "delete",
+      ],
+      toolbarTable: true,
+    },
+    keyboard: {
+      bindings: QuillTableBetter.keyboardBindings,
+    },
+  };
+
+
+
+   onContentChanged(event: any) {
+    this.htmlContent = event.html;
+  }
+
+  EditorCreated = (quill: Quill) => {
+    this.quillEditorInstance = quill;
+    this.editor = quill; // <--- Make sure this line exists
+ setTimeout(() => {
+    if (this.htmlContent) {
+      const sanitizedText = this.sanitizeHTML(this.htmlContent);
+      this.editor.setContents([{ insert: '\n' }], 'silent');
+      this.editor.clipboard.dangerouslyPasteHTML(0, sanitizedText, 'silent');
+    }
+  }, 100); // or 200ms if needed
+  };
   
+  sanitizeHTML(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    // ❌ Remove quill-table-better's temporary helper elements
+    doc
+      .querySelectorAll('temporary, [class*="ql-table-temporary"]')
+      .forEach((el) => el.remove());
+
+    return doc.body.innerHTML;
+  }
+updateTable(html: string) {
+  console.log("udpated table", this.htmlContent);
+
+  if (this.editor) {
+    const sanitizedHtml = html.replace(/<\/?temporary[^>]*>/g, "");
+
+    console.log(sanitizedHtml);
+
+    // Convert the cleaned HTML to Quill Delta
+    const delta = this.editor.clipboard.convert({
+      html: sanitizedHtml,
+    });
+
+    console.log(delta);
+    console.log(this.editor);
+
+    // this.quillEditorInstance.setContents(delta, "silent");
+    // this.editor.setText("", "silent");
+    // this.editor.clipboard.dangerouslyPasteHTML(0,sanitizedHtml,"silent");
+    this.editor.setText('');
+    this.editor.clipboard.dangerouslyPasteHTML(sanitizedHtml);
+
+  }
+}
   // You can log the content or save it as needed
   saveContent() {
     
@@ -108,7 +214,9 @@ textSnippets = [
     this.htmlContent = '<p>Editor is ready!</p>';
 
   }
-
+ createCode(): void {
+    this.htmlContent = this.quillEditorInstance?.root.outerHTML || "";
+  }
   insertHorizontalRule() {
     const selection = this.editor.getSelection();
     if (selection) {
@@ -346,79 +454,7 @@ convertQuillToWordContent(content: string): docx.Paragraph[] {
   }
 
   ngAfterViewInit(): void {
-    if (this.editorContainer) {
-
-      // Initialize Quill once the view has been initialized
-    this.editor = new Quill(this.editorContainer.nativeElement, {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],  // Formatting options
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ['clean'],                                         // remove formatting button
-                    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-
-                    ['link'], // Add link button
-                    [{ 'align': [] }], // Alignment options
-                    
-                    ['image'],  // Code-block button included
-                    [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
-                    [{ 'color': [] }, { 'background': [] }], // Color and background options
-                               ['html']  ,
-                    ['undo', 'redo'], // Add undo and redo buttons
-                    [{ 'line-height': '1.5' }, { 'line-height': '1.8' }, { 'line-height': '2' }], // Add line-height to toolbar
-                    
-
-                     ],
-                     history: {
-                      delay: 1000,  // Configurable undo/redo delay
-                      userOnly: true,  // Track only user-initiated changes
-                    },
-      },
-      formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list', 'align', 'link', 'image', 'color', 'background','code-block','blockquote','undo','redo','line-height'
-      ]
-    });
-
-     // Optional: Adding custom undo and redo buttons with icons
-     const toolbar = this.editor.container.querySelector('.ql-toolbar');
-    
-     // Undo button with Angular Material icon
-     const undoButton = document.createElement('button');
-     undoButton.classList.add('ql-undo');
-     undoButton.innerHTML = `<mat-icon>undo</mat-icon>`;  // Using Angular Material 'undo' icon
-     undoButton.addEventListener('click', () => this.editor.history.undo());
-     toolbar?.appendChild(undoButton);
- 
-     // Redo button with Angular Material icon
-     const redoButton = document.createElement('button');
-     redoButton.classList.add('ql-redo');
-     redoButton.innerHTML = `<mat-icon>redo</mat-icon>`;  // Using Angular Material 'redo' icon
-     redoButton.addEventListener('click', () => this.editor.history.redo());
-     toolbar?.appendChild(redoButton);
-
-    this.addCustomFontFamilyDropdown();
-    this.addCustomFontSizeDropdown();
-    this.addLineHeightDropdown();
-
-      const content = `
-      <p>your colleague(s) must complete mandatory Complance Training. This ensure our organization's obligation to be compliant with government and/or regulatory agencies.Adherence to completion of mandatory training will help CVS Health reduce finacial and legal risks.</p>
-      <br>
-      <p>The Following colleague(s) in your store must complete their Compliance Training within 21 days of assignment date.</p>
-      <br>
-      <p>&lt; employeeList &gt;<br>
-      Since your colleague(s) do not have access to email , it is important to notify them as soon as possible so they can complete their required training on time. <b>Colleague that fail to complete certain courses by the due date will result in their access being suspended </b></p>
-
-      <br>
-      <p>&lt; accessLearningHubStoreText &gt;
-      <br>Compliance Training Team</p>
-    `;
-    
-      // Set default content in the editor
-      this.editor.root.innerHTML =content;
-    }
+   
     setTimeout(() => this.addTooltips(), 200);
 
   }

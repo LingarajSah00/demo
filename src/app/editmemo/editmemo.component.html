@@ -23,27 +23,64 @@
     </div>
     <!-- Quill Editor Container -->
     <div class="dropdown-container">
-      <!-- Dropdown for Predefined Text Snippets -->
-      <mat-form-field appearance="fill" style="width: 100%;">
-        <mat-label>Dynamic Merge Tags</mat-label>
-        <mat-select [(value)]="selectedText" (selectionChange)="onSnippetSelect($event)">
-            <mat-option *ngFor="let snippet of textSnippets" [value]="snippet" matTooltip="{{'<employeeList1>'}}" matTooltipPosition="above">
-                {{ snippet }}
-            </mat-option>
-        </mat-select>
+    <!-- Dropdown for Predefined Text Snippets -->
+    <mat-form-field appearance="fill" style="width: 100%">
+      <mat-label>Dynamic Merge Tags</mat-label>
+      <mat-select
+        [(value)]="selectedText"
+        (selectionChange)="onSnippetSelect($event)"
+      >
+        <mat-option
+          *ngFor="let snippet of textSnippets"
+          [value]="snippet"
+          [matTooltip]="snippet"
+          matTooltipClass="dynamic-tooltip"
+          aria-label="Button with dynamic tooltip"
+        >
+          {{ snippet }}
+        </mat-option>
+      </mat-select>
     </mat-form-field>
 
     <!-- Drag-and-drop text container that updates based on selected snippet -->
-    <div *ngIf="selectedText" class="draggable-text" 
-         [draggable]="true" (dragstart)="onDragStart($event, selectedText)">
-        {{ selectedText }}
+    <div
+      *ngIf="selectedText"
+      class="draggable-text"
+      [draggable]="true"
+      (dragstart)="onDragStart($event, selectedText)"
+    >
+      {{ selectedText }}
     </div>
   </div>
-    <div #editorContainer id="editor" 
-    style="height: 700px; width: 100%;" 
-    (drop)="onDrop($event)" 
-    (dragover)="onDragOver($event)">
-</div> 
+    <div (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+    <!-- HTML Mode: Show textarea -->
+    <textarea
+      *ngIf="htmlMode"
+      [(ngModel)]="htmlContent"
+      style="
+        width: 100%;
+        height: 700px;
+        background-color: black;
+        color: white;
+        border: none;
+        resize: none;
+      "
+    ></textarea>
+
+    <!-- Quill Editor Mode -->
+    <quill-editor
+      *ngIf="!htmlMode"
+      (onEditorCreated)="EditorCreated($event)"
+        (onContentChanged)="onContentChanged($event)"
+
+      (input)="createCode()"
+      [formControl]="contentCtrl"
+      [modules]="modules"
+      [theme]="'snow'"
+       style="width: 100%; max-width: 1250px;" 
+    >
+    </quill-editor>
+  </div> 
 
 </mat-dialog-content>
   

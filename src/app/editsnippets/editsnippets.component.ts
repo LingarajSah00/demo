@@ -12,7 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
-import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { FormsModule ,FormControl,ReactiveFormsModule} from '@angular/forms';  // Import FormsModule here
 
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -27,28 +27,36 @@ import { CommonModule } from '@angular/common';
 import { EmailDialogComponent } from '../email-dialog/email-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 
+import QuillTableBetter from "quill-table-better";
+import { QuillModule } from "ngx-quill";
 
-// Register the table module
+Quill.register(
+  {
+    "modules/table-better": QuillTableBetter,
+  },
+  true
+);
+
+
 const BlockEmbed = Quill.import('blots/block/embed');
 
-// class HrBlot extends BlockEmbed {
-//   static blotName = 'hr';
-//   static tagName = 'hr';
+class HrBlot extends (BlockEmbed as any) {
+  static blotName = 'hr';
+  static tagName = 'hr';
+  static className = 'custom-hr';
+  static scope = Quill.import('parchment').Scope.BLOCK;
 
-//   static create() {
-//     const node = super.create();
-//     node.setAttribute('class', 'custom-hr');
-//     return node;
-//   }
-// }
+  static create(value: any) {
+    return super.create();
+  }
+}
 
-// Quill.register(HrBlot);
-// interface TemplateData {
-//   id: number;
-//   name: string;
-//   email: string;
-//   status: string;
-// }
+
+HrBlot.blotName = 'hr';
+HrBlot.tagName = 'hr';
+HrBlot.className = 'custom-hr';
+
+Quill.register('formats/hr', HrBlot);
 @Component({
   selector: 'app-editsnippets',
   imports: [MatNativeDateModule,MatTableModule  ,   // Import MatTableModule for Angular Material Table
@@ -62,7 +70,7 @@ const BlockEmbed = Quill.import('blots/block/embed');
     MatFormFieldModule,
     MatSnackBarModule,
     MatSlideToggleModule,
-    FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule ],
+    FormsModule ,ReactiveFormsModule,QuillModule ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule ],
   templateUrl: './editsnippets.component.html',
   styleUrl: './editsnippets.component.css'
 })
@@ -88,6 +96,76 @@ textSnippets = [
   };
 
   
+// Predefined text snippets for dropdown and drag-and-drop
+ quillEditorInstance: Quill | null = null;
+  showCode = false;
+  contentCtrl = new FormControl("");
+  modules = {
+    toolbar: {
+      container: [
+        [{ header: 1 }, { header: 2 }],
+        ["bold", "italic", "underline", "strike"],
+        ["link", "image"],
+        [{ list: "bullet" }],
+        [{ indent: "-1" }, { indent: "+1" }],
+        [{ direction: "rtl" }],
+        [{ size: ["small", false, "large", "huge"] }],
+        [{ color: [] }, { background: [] }],
+        [{ font: [] }],
+        [{ align: [] }],
+        ["table-better"],
+      ],
+    },
+    table: false,
+    "table-better": {
+      language: "en_US",
+      menus: [
+        "column",
+        "row",
+        "merge",
+        "table",
+        "cell",
+        "wrap",
+        "copy",
+        "delete",
+      ],
+      toolbarTable: true,
+    },
+    keyboard: {
+      bindings: QuillTableBetter.keyboardBindings,
+    },
+  };
+
+
+
+   onContentChanged(event: any) {
+    this.htmlContent = event.html;
+  }
+
+  EditorCreated = (quill: Quill) => {
+    this.quillEditorInstance = quill;
+    this.editor = quill; // <--- Make sure this line exists
+ setTimeout(() => {
+    if (this.htmlContent) {
+      const sanitizedText = this.sanitizeHTML(this.htmlContent);
+      this.editor.setContents([{ insert: '\n' }], 'silent');
+      this.editor.clipboard.dangerouslyPasteHTML(0, sanitizedText, 'silent');
+    }
+  }, 100); // or 200ms if needed
+  };
+  
+  sanitizeHTML(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+    // ❌ Remove quill-table-better's temporary helper elements
+    doc
+      .querySelectorAll('temporary, [class*="ql-table-temporary"]')
+      .forEach((el) => el.remove());
+
+    return doc.body.innerHTML;
+  }
+  
   // You can log the content or save it as needed
   saveContent() {
     
@@ -108,7 +186,9 @@ textSnippets = [
   
 
    
-
+createCode(): void {
+    this.htmlContent = this.quillEditorInstance?.root.outerHTML || "";
+  }
   // Save changes to the editor content
   saveChanges() {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
