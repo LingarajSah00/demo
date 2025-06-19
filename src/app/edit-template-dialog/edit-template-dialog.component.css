@@ -294,3 +294,8 @@ hr.custom-hr {
   height: auto !important;
   display: inline-block !important;
 }
+.ql-editor td {
+  text-align: inherit; /* or center/left/right */
+  border: 1px solid #ccc;
+  padding: 4px;
+}

@@ -423,9 +423,25 @@ turnEntireContentIntoCodeBlock() {
     this.htmlContent = this.quillEditorInstance?.root.outerHTML || "";
   }
 
-  sanitizeHTML(html: string): string {
+sanitizeHTML(html: string): string {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
+
+ doc.querySelectorAll('table').forEach(table => {
+  const parent = table.parentElement;
+
+  // Check if align=center or parent is a centered div
+  if (table.getAttribute('align') === 'center' || 
+      (parent && parent.tagName === 'DIV' && parent.getAttribute('align') === 'center')) {
+
+    table.style.marginLeft = 'auto';
+    table.style.marginRight = 'auto';
+
+    // Optional: remove deprecated align attributes
+    table.removeAttribute('align');
+    if (parent && parent.getAttribute('align') === 'center') parent.removeAttribute('align');
+  }
+});
 
     // ❌ Remove quill-table-better's temporary helper elements
     doc
