@@ -257,7 +257,6 @@ textSnippets = [
       this.editor.insertEmbed(selection.index, 'hr', true);
       console.log('Inserted <hr> at index:', selection.index);
       console.log('Editor HTML:', this.editor.root.innerHTML);
-      this.editor.root.innerHTML += '<hr>';
 
     } else {
       console.warn('No selection in editor.');

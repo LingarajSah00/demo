@@ -17,11 +17,20 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
-import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import { FormControl, FormsModule, ReactiveFormsModule  } from '@angular/forms';  // Import FormsModule here
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import Quill from 'quill';
+import QuillTableBetter from "quill-table-better";
+import { QuillModule } from "ngx-quill";
+
+Quill.register(
+  {
+    "modules/table-better": QuillTableBetter,
+  },
+  true
+);
 
 import { ExternalHyperlink, TextRun } from 'docx';
 
@@ -51,7 +60,9 @@ interface Campaign {
             MatSnackBarModule,
             MatSlideToggleModule,
             FormsModule,
+            ReactiveFormsModule,
           CommonModule,
+          QuillModule,
           MatSelectModule,
           MatOptionModule,MatTooltipModule],
   templateUrl: './creatememo.component.html',
@@ -88,6 +99,45 @@ export class CreatememoComponent {
 // Campaign statuses
 statuses = ['ACTIVE', 'INACTIVE'];
 
+// Predefined text snippets for dropdown and drag-and-drop
+ quillEditorInstance: Quill | null = null;
+  showCode = false;
+  contentCtrl = new FormControl("");
+  modules = {
+    toolbar: {
+      container: [
+        [{ header: 1 }, { header: 2 }],
+        ["bold", "italic", "underline", "strike"],
+        ["link", "image"],
+        [{ list: "bullet" }],
+        [{ indent: "-1" }, { indent: "+1" }],
+        [{ direction: "rtl" }],
+        [{ size: ["small", false, "large", "huge"] }],
+        [{ color: [] }, { background: [] }],
+        [{ font: [] }],
+        [{ align: [] }],
+        ["table-better"],
+      ],
+    },
+    table: false,
+    "table-better": {
+      language: "en_US",
+      menus: [
+        "column",
+        "row",
+        "merge",
+        "table",
+        "cell",
+        "wrap",
+        "copy",
+        "delete",
+      ],
+      toolbarTable: true,
+    },
+    keyboard: {
+      bindings: QuillTableBetter.keyboardBindings,
+    },
+  };
 constructor( 
   @Inject(MAT_DIALOG_DATA) public data: any,private dialog: MatDialog,private router: Router,public dialogRef: MatDialogRef<CreateUserDialogComponent>) {}
 
@@ -136,6 +186,98 @@ ngOnInit(): void {
   }
 
 
+  onContentChanged(event: any) {
+    this.htmlContent = event.html;
+  }
+
+  EditorCreated = (quill: Quill) => {
+    this.quillEditorInstance = quill;
+    this.editor = quill; // <--- Make sure this line exists
+ setTimeout(() => {
+    if (this.htmlContent) {
+      const sanitizedText = this.sanitizeHTML(this.htmlContent);
+      this.editor.setContents([{ insert: '\n' }], 'silent');
+      this.editor.clipboard.dangerouslyPasteHTML(0, sanitizedText, 'silent');
+    }
+  }, 100); // or 200ms if needed
+  };
+
+   toggleHTMLMode1(): void {
+    this.htmlMode = !this.htmlMode;
+    if (!this.htmlMode) {
+      console.log("ORIGINAL", this.htmlContent);
+      // this.contentCtrl.setValue("");
+
+      const santizedText = this.sanitizeHTML(this.htmlContent);
+      console.log("SANITIZED", santizedText);
+      setTimeout(() => {
+        if (this.quillEditorInstance && this.htmlContent) {
+          this.quillEditorInstance.setContents([{ insert: "\n" }], "silent"); // clear
+          this.quillEditorInstance.clipboard.dangerouslyPasteHTML(
+            0,
+            santizedText,
+            "silent"
+          );
+        }
+      }, 100);
+    }
+  }
+
+  createCode(): void {
+    this.htmlContent = this.quillEditorInstance?.root.outerHTML || "";
+  }
+
+sanitizeHTML(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+ doc.querySelectorAll('table').forEach(table => {
+  const parent = table.parentElement;
+
+  // Check if align=center or parent is a centered div
+  if (table.getAttribute('align') === 'center' || 
+      (parent && parent.tagName === 'DIV' && parent.getAttribute('align') === 'center')) {
+
+    table.style.marginLeft = 'auto';
+    table.style.marginRight = 'auto';
+
+    // Optional: remove deprecated align attributes
+    table.removeAttribute('align');
+    if (parent && parent.getAttribute('align') === 'center') parent.removeAttribute('align');
+  }
+});
+
+    // ❌ Remove quill-table-better's temporary helper elements
+    doc
+      .querySelectorAll('temporary, [class*="ql-table-temporary"]')
+      .forEach((el) => el.remove());
+
+    return doc.body.innerHTML;
+  }
+updateTable(html: string) {
+  console.log("udpated table", this.htmlContent);
+
+  if (this.editor) {
+    const sanitizedHtml = html.replace(/<\/?temporary[^>]*>/g, "");
+
+    console.log(sanitizedHtml);
+
+    // Convert the cleaned HTML to Quill Delta
+    const delta = this.editor.clipboard.convert({
+      html: sanitizedHtml,
+    });
+
+    console.log(delta);
+    console.log(this.editor);
+
+    // this.quillEditorInstance.setContents(delta, "silent");
+    // this.editor.setText("", "silent");
+    // this.editor.clipboard.dangerouslyPasteHTML(0,sanitizedHtml,"silent");
+    this.editor.setText('');
+    this.editor.clipboard.dangerouslyPasteHTML(sanitizedHtml);
+
+  }
+}
 // Method to export Quill content to Word with formatting preserved
 exportToWord(): void {
 const content = this.editor.root.innerHTML; // Get the Quill content as HTML
@@ -528,90 +670,6 @@ if (email) {
 }
 }
 
-// Function to toggle between HTML and Quill editor modes
-toggleHTMLMode() {
-this.htmlMode = !this.htmlMode;  // Toggle between HTML and Quill editor
-
-const editorElement = this.editorContainer.nativeElement;
-
-if (this.htmlMode) {
-  // Switch to HTML mode: Convert the content of the Quill editor to HTML
-  const htmlContent = this.convertToHTML(this.editor.root.innerHTML);
-
-    // Remove previous list markers from HTML to prevent duplicate lists
-    const sanitizedHtml = this.removeDuplicateLists(htmlContent);
-
-  // Replace the Quill editor with a textarea for editing raw HTML
-  this.editorContainer.nativeElement.innerHTML = `
-    <textarea id="html-editor" style="width: 100%; height: 100%; background-color: black; color: white; border: none; resize: none;">${htmlContent}</textarea>
-  `;
-
-  // Update the background color for the HTML editor
-  editorElement.style.backgroundColor = 'black';
-  editorElement.style.color = 'white';
-
-  // Listen for changes in the textarea and update Quill's content accordingly
-  const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
-  htmlEditor.addEventListener('input', () => {
-    // Update Quill's content whenever the HTML editor changes
-    this.editor.root.innerHTML = htmlEditor.value;
-  });
-} else {
-  // Switch back to Quill editor mode
-  const htmlEditor = document.getElementById('html-editor') as HTMLTextAreaElement;
-
-  if (htmlEditor) {
-    const newHtml = htmlEditor.value;  // Get the HTML content from the textarea
-    editorElement.innerHTML = '';  // Clear the editor container
-
-
-// Remove previous Quill toolbar after short delay to ensure removal
-setTimeout(() => {
-const existingToolbar = document.querySelector('.ql-toolbar.ql-snow');
-if (existingToolbar) {
-  existingToolbar.remove();  // Remove the previous toolbar
-  console.log('Previous toolbar removed');
-}
-}, 100);
-
-    // Restore the Quill editor with the updated HTML content
-    this.editor = new Quill(this.editorContainer.nativeElement, {
-      theme: 'snow',
-      modules: {
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],  // Formatting options
-                    [{ 'list': 'ordered'}, { 'list': 'bullet' }], // List formatting
-                    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-                    ['clean'],                                         // remove formatting button
-                    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-
-                    ['link'], // Add link button
-                    [{ 'align': [] }], // Alignment options
-                    [{ 'color': [] }, { 'background': [] }],
-
-                    ['image'],  // Code-block button included
-                    [{ 'size': ['small', 'medium', 'large', 'huge'] }], // Predefined sizes
-                               ['html']  // We will create this button
-                  ],
-                    
-      },
-      formats: [
-        'font', 'size', 'bold', 'italic', 'underline', 'strike', 'list','header','clean','indent','script', 'align', 'link', 'image', 'color', 'background','code-block','blockquote'
-      ]
-    });
-
-    // Update the Quill content with the latest HTML content
-    this.editor.clipboard.dangerouslyPasteHTML(newHtml);
-
-    // Reset the background color and text color
-    editorElement.style.backgroundColor = 'white';
-    editorElement.style.color = 'black';
-    setTimeout(() => this.addTooltips(), 200);
-
-  }
-}
-}
 insertHorizontalRule() {
   const selection = this.editor.getSelection();
   if (selection) {

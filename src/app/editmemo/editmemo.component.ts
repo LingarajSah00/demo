@@ -163,9 +163,25 @@ textSnippets = [
   }, 100); // or 200ms if needed
   };
   
-  sanitizeHTML(html: string): string {
+sanitizeHTML(html: string): string {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
+
+ doc.querySelectorAll('table').forEach(table => {
+  const parent = table.parentElement;
+
+  // Check if align=center or parent is a centered div
+  if (table.getAttribute('align') === 'center' || 
+      (parent && parent.tagName === 'DIV' && parent.getAttribute('align') === 'center')) {
+
+    table.style.marginLeft = 'auto';
+    table.style.marginRight = 'auto';
+
+    // Optional: remove deprecated align attributes
+    table.removeAttribute('align');
+    if (parent && parent.getAttribute('align') === 'center') parent.removeAttribute('align');
+  }
+});
 
     // ❌ Remove quill-table-better's temporary helper elements
     doc
@@ -223,7 +239,6 @@ updateTable(html: string) {
       this.editor.insertEmbed(selection.index, 'hr', true);
       console.log('Inserted <hr> at index:', selection.index);
       console.log('Editor HTML:', this.editor.root.innerHTML);
-      this.editor.root.innerHTML += '<hr>';
 
     } else {
       console.warn('No selection in editor.');

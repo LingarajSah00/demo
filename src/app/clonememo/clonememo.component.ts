@@ -14,7 +14,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';  // Import slide toggle module
-import { FormsModule } from '@angular/forms';  // Import FormsModule here
+import {  FormControl, FormsModule, ReactiveFormsModule  } from '@angular/forms';  // Import FormsModule here
 import { EdituserdialogComponent } from '../edituserdialog/edituserdialog.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'; // Import CUSTOM_ELEMENTS_SCHEMA if needed
 import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -24,7 +24,15 @@ import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
+import QuillTableBetter from "quill-table-better";
+import { QuillModule } from "ngx-quill";
 
+Quill.register(
+  {
+    "modules/table-better": QuillTableBetter,
+  },
+  true
+);
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import * as docx from 'docx';  // Import docx module
@@ -38,11 +46,13 @@ import { DownloadwordpdfdialogComponent } from '../downloadwordpdfdialog/downloa
     MatPaginatorModule, // For pagination
     MatInputModule,
     MatDialogModule,
+    QuillModule,
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
     MatSnackBarModule,
     MatSlideToggleModule,
+    ReactiveFormsModule,
     FormsModule  ,CKEditorModule,MatTooltipModule  ,FormsModule,AngularEditorModule,HttpClientModule ,MatSelectModule,CommonModule ],
   templateUrl: './clonememo.component.html',
   styleUrl: './clonememo.component.css'
@@ -55,6 +65,49 @@ selectedText: string = '';
 editableText: string = 'Memo -To Store Compliance New Hire Welcome';  // The text that will be shown
 
 isEditing: boolean = false;  // Flag to check if the text is in edit mode
+
+
+// Predefined text snippets for dropdown and drag-and-drop
+htmlMode: boolean = false;  // Track if the editor is in HTML mode
+ quillEditorInstance: Quill | null = null;
+  showCode = false;
+  htmlContent = "";
+  contentCtrl = new FormControl("");
+  modules = {
+    toolbar: {
+      container: [
+        [{ header: 1 }, { header: 2 }],
+        ["bold", "italic", "underline", "strike"],
+        ["link", "image"],
+        [{ list: "bullet" }],
+        [{ indent: "-1" }, { indent: "+1" }],
+        [{ direction: "rtl" }],
+        [{ size: ["small", false, "large", "huge"] }],
+        [{ color: [] }, { background: [] }],
+        [{ font: [] }],
+        [{ align: [] }],
+        ["table-better"],
+      ],
+    },
+    table: false,
+    "table-better": {
+      language: "en_US",
+      menus: [
+        "column",
+        "row",
+        "merge",
+        "table",
+        "cell",
+        "wrap",
+        "copy",
+        "delete",
+      ],
+      toolbarTable: true,
+    },
+    keyboard: {
+      bindings: QuillTableBetter.keyboardBindings,
+    },
+  };
   // Enable edit mode when the edit icon is clicked
   enableEdit(): void {
     this.isEditing = true;
@@ -78,7 +131,6 @@ textSnippets = [
   '<employeeList1>',
   '<employeeList1>'
 ];
-  htmlContent: string = '';  // Editor content
   config = {
     editable: true,
     spellcheck: true,
@@ -128,6 +180,21 @@ textSnippets = [
     }
  
 
+  onContentChanged(event: any) {
+    this.htmlContent = event.html;
+  }
+
+  EditorCreated = (quill: Quill) => {
+    this.quillEditorInstance = quill;
+    this.editor = quill; // <--- Make sure this line exists
+ setTimeout(() => {
+    if (this.htmlContent) {
+      const sanitizedText = this.sanitizeHTML(this.htmlContent);
+      this.editor.setContents([{ insert: '\n' }], 'silent');
+      this.editor.clipboard.dangerouslyPasteHTML(0, sanitizedText, 'silent');
+    }
+  }, 100); // or 200ms if needed
+  };
   exportToWord(): void {
     const content = this.editor.root.innerHTML; // Quill content as HTML
   
@@ -278,6 +345,82 @@ textSnippets = [
     });
   }
   
+  toggleHTMLMode1(): void {
+    this.htmlMode = !this.htmlMode;
+    if (!this.htmlMode) {
+      console.log("ORIGINAL", this.htmlContent);
+      // this.contentCtrl.setValue("");
+
+      const santizedText = this.sanitizeHTML(this.htmlContent);
+      console.log("SANITIZED", santizedText);
+      setTimeout(() => {
+        if (this.quillEditorInstance && this.htmlContent) {
+          this.quillEditorInstance.setContents([{ insert: "\n" }], "silent"); // clear
+          this.quillEditorInstance.clipboard.dangerouslyPasteHTML(
+            0,
+            santizedText,
+            "silent"
+          );
+        }
+      }, 100);
+    }
+  }
+
+  createCode(): void {
+    this.htmlContent = this.quillEditorInstance?.root.outerHTML || "";
+  }
+
+sanitizeHTML(html: string): string {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+
+ doc.querySelectorAll('table').forEach(table => {
+  const parent = table.parentElement;
+
+  // Check if align=center or parent is a centered div
+  if (table.getAttribute('align') === 'center' || 
+      (parent && parent.tagName === 'DIV' && parent.getAttribute('align') === 'center')) {
+
+    table.style.marginLeft = 'auto';
+    table.style.marginRight = 'auto';
+
+    // Optional: remove deprecated align attributes
+    table.removeAttribute('align');
+    if (parent && parent.getAttribute('align') === 'center') parent.removeAttribute('align');
+  }
+});
+
+    // ❌ Remove quill-table-better's temporary helper elements
+    doc
+      .querySelectorAll('temporary, [class*="ql-table-temporary"]')
+      .forEach((el) => el.remove());
+
+    return doc.body.innerHTML;
+  }
+updateTable(html: string) {
+  console.log("udpated table", this.htmlContent);
+
+  if (this.editor) {
+    const sanitizedHtml = html.replace(/<\/?temporary[^>]*>/g, "");
+
+    console.log(sanitizedHtml);
+
+    // Convert the cleaned HTML to Quill Delta
+    const delta = this.editor.clipboard.convert({
+      html: sanitizedHtml,
+    });
+
+    console.log(delta);
+    console.log(this.editor);
+
+    // this.quillEditorInstance.setContents(delta, "silent");
+    // this.editor.setText("", "silent");
+    // this.editor.clipboard.dangerouslyPasteHTML(0,sanitizedHtml,"silent");
+    this.editor.setText('');
+    this.editor.clipboard.dangerouslyPasteHTML(sanitizedHtml);
+
+  }
+}
 
 
 // Handle the dragstart event for the selected snippet

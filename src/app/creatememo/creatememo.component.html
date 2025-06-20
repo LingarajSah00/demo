@@ -26,7 +26,7 @@
       <div class="fixed-button-group">
         <button mat-button (click)="exportToWord()" class="export-btn">Export to Word</button>
   
-        <button mat-icon-button (click)="toggleHTMLMode()" class="right-button1" >
+        <button mat-icon-button (click)="toggleHTMLMode1()" class="right-button1" >
           <mat-icon>{{ htmlMode ? 'edit'  : 'code'}}</mat-icon> <!-- Change icon based on htmlMode -->
         </button>
         <button (click)="openEmailDialog()"  class="send-email-btn">
@@ -35,9 +35,7 @@
         <button mat-icon-button (click)="insertHorizontalRule()" matTooltip="Insert Horizontal Line">
           <mat-icon>horizontal_rule</mat-icon>
         </button>
-        <button mat-icon-button (click)="insertTable()" id="insert-table-button" matTooltip="Insert Table">
-          <mat-icon>grid_on</mat-icon>
-        </button>
+       
       </div>
       <!-- Quill Editor Container -->
       <div class="dropdown-container">
@@ -57,10 +55,34 @@
           {{ selectedText }}
       </div>
     </div>
-      <div #editorContainer id="editor" 
-      style="height: 700px; width: 100%;" 
-      (drop)="onDrop($event)" 
-      (dragover)="onDragOver($event)">
+   <div (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+    <!-- HTML Mode: Show textarea -->
+    <textarea
+      *ngIf="htmlMode"
+      [(ngModel)]="htmlContent"
+      style="
+        width: 100%;
+        height: 700px;
+        background-color: black;
+        color: white;
+        border: none;
+        resize: none;
+      "
+    ></textarea>
+
+    <!-- Quill Editor Mode -->
+    <quill-editor
+      *ngIf="!htmlMode"
+      (onEditorCreated)="EditorCreated($event)"
+        (onContentChanged)="onContentChanged($event)"
+
+      (input)="createCode()"
+      [formControl]="contentCtrl"
+      [modules]="modules"
+      [theme]="'snow'"
+       style="width: 100%; max-width: 1250px;" 
+    >
+    </quill-editor>
   </div> 
   
   </mat-dialog-content>

@@ -34,11 +34,35 @@
         {{ selectedText }}
     </div>
   </div>
-    <div #editorContainer id="editor" 
-    style="height: 700px; width: 100%;" 
-    (drop)="onDrop($event)" 
-    (dragover)="onDragOver($event)">
-</div> 
+  <div (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+    <!-- HTML Mode: Show textarea -->
+    <textarea
+      *ngIf="htmlMode"
+      [(ngModel)]="htmlContent"
+      style="
+        width: 100%;
+        height: 700px;
+        background-color: black;
+        color: white;
+        border: none;
+        resize: none;
+      "
+    ></textarea>
+
+    <!-- Quill Editor Mode -->
+    <quill-editor
+      *ngIf="!htmlMode"
+      (onEditorCreated)="EditorCreated($event)"
+        (onContentChanged)="onContentChanged($event)"
+
+      (input)="createCode()"
+      [formControl]="contentCtrl"
+      [modules]="modules"
+      [theme]="'snow'"
+       style="width: 100%; max-width: 1250px;" 
+    >
+    </quill-editor>
+ </div> 
 
 </mat-dialog-content>
   
