@@ -30,6 +30,10 @@ export const routes: Routes = [
             loadComponent: () => import('./notificationtemplate/notificationtemplate.component').then(m => m.NotificationtemplateComponent),
           },
           {
+            path: 'diagnostic',
+            loadComponent: () => import('./diagnostic/diagnostic.component').then(m => m.DiagnosticComponent),
+          },
+          {
             path: 'pastdueescalation',
             loadComponent: () => import('./pastdueescalation/pastdueescalation.component').then(m => m.PastdueescalationComponent),
           },

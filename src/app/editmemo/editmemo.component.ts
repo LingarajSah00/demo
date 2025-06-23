@@ -24,6 +24,7 @@ import { CKEditorComponent } from '@ckeditor/ckeditor5-angular';
 import { AngularEditorModule } from '@kolkov/angular-editor';  // Import the module
 import { HttpClientModule } from '@angular/common/http'; // <-- Import HttpClientModule
 import Quill from 'quill';
+import { Table, TableRow, TableCell, WidthType, Paragraph } from "docx";
 
 import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
@@ -356,12 +357,11 @@ convertTextNodeToWordTextRun(node: Text): docx.TextRun {
   });
 }
 
-// Convert HTML element to a TextRun, considering formatting tags like <b>, <i>, <u>, <br>, <a> (for hyperlinks), and text color
 convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
-  const text = element.innerText || ''; // Get the text without HTML tags
-  let textRunOptions: any = { text: text }; // Default options
+  const text = element.textContent || '';
+  let textRunOptions: any = { text };
 
-  // Apply styles based on the element's tag
+  // Apply formatting based on tag
   switch (element.tagName.toLowerCase()) {
     case 'b':
     case 'strong':
@@ -372,34 +372,32 @@ convertHtmlElementToWordTextRun(element: HTMLElement): docx.TextRun {
       textRunOptions.italic = true;
       break;
     case 'u':
-      textRunOptions.underline = true;
+      textRunOptions.underline = {};
       break;
     case 'a':
-      // Handle hyperlink (e.g., <a href="https://example.com">Text</a>)
-      textRunOptions.hyperlink = element.getAttribute('href') || '';
+      const link = element.getAttribute('href');
+      if (link) {
+        textRunOptions.text = text;
+        textRunOptions.style = 'Hyperlink';
+      }
       break;
     case 'br':
-      // For <br> tags, create a TextRun with a line break
-      return new docx.TextRun('\n'); // New line for Word document
-    case 'p':
-      // For <p> tags (paragraphs), they will be handled by the parent convertHtmlElementToWordParagraph method
-      return new docx.TextRun(text);
-    default:
-      break;
+      return new docx.TextRun('\n');
   }
 
-  // Check if the element has inline styles (like text color)
-  const color = element.style.color;
+  // ✅ Get computed style (covers inline + CSS classes)
+  const computedStyle = window.getComputedStyle(element);
+  const color = computedStyle.color;
   if (color) {
-    const hexColor = color.startsWith('rgb') 
-    ? this.rgbToHex(color) 
-    : this.namedColorToHex(color);
-        textRunOptions.color = hexColor; // Apply color to the text
+    const hex = color.startsWith('rgb')
+      ? this.rgbToHex(color)
+      : this.namedColorToHex(color);
+    textRunOptions.color = hex.replace('#', '');
   }
 
-  // Return the TextRun with the applied formatting
   return new docx.TextRun(textRunOptions);
 }
+
 
 rgbToHex(rgb: string): string {
   const result = /^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/.exec(rgb);
@@ -434,13 +432,33 @@ namedColorToHex(colorName: string): string {
 }
 
 
-convertQuillToWordContent(content: string): docx.Paragraph[] {
+
+convertQuillToWordContent(content: string): (docx.Paragraph | docx.Table)[] {
   const parser = new DOMParser();
   const doc = parser.parseFromString(content, 'text/html');
-  const elements = Array.from(doc.body.children); // Get all elements inside the Quill content
+  const elements = Array.from(doc.body.children);
 
-  return elements.map((element: Element) => this.convertHtmlElementToWordParagraph(element as HTMLElement));
+  const blocks: (docx.Paragraph | docx.Table)[] = elements.map((el: Element) => {
+    if (el.tagName.toLowerCase() === 'table') {
+      const rows = Array.from(el.querySelectorAll('tr')).map(tr => {
+        const cells = Array.from(tr.children).map(cell =>
+          new TableCell({
+            width: { size: 100 / tr.children.length, type: WidthType.PERCENTAGE },
+            children: [new Paragraph(cell.textContent || '')],
+          })
+        );
+        return new TableRow({ children: cells });
+      });
+
+      return new Table({ rows });
+    } else {
+      return this.convertHtmlElementToWordParagraph(el as HTMLElement);
+    }
+  });
+
+  return blocks; // ✅ Return the mixed array directly
 }
+
 
   // Save changes to the editor content
   saveChanges() {

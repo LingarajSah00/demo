@@ -71,6 +71,16 @@
         <a mat-list-item *ngIf="canCreateUser()" routerLink="/dashboard/manualrun" routerLinkActive="active">
           <mat-icon>error_outline</mat-icon>Manual Run
         </a>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-icon mat-expansion-panel-header>insert_chart</mat-icon>
+            <mat-panel-title>Diagnostic</mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-nav-list>
+            <a mat-list-item routerLink="/dashboard/diagnostic">Employee Diagnostic</a>
+          </mat-nav-list>
+        </mat-expansion-panel>
       </mat-nav-list>
     </mat-sidenav>
   
