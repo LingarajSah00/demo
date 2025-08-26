@@ -35,7 +35,7 @@
     "jquery": "^3.7.1",
     "jquery-ui-dist": "^1.13.3",
     "material-icons": "^1.13.14",
-    "ngx-quill": "^27.0.2",
+    "ngx-quill": "^28.0.0",
     "quill-table-better": "^1.1.6",
     "quill-delta": "^5.1.0",
     "rxjs": "~7.8.0",
