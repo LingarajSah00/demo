@@ -1,0 +1,10 @@
+{
+  "extends": ["config:base"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["*"],
+      "groupName": "all-dependencies",
+      "schedule": ["every weekend"]
+    }
+  ]
+}
