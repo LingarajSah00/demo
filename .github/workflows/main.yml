@@ -17,7 +17,7 @@ jobs:
         node-version: [18.x]  # You can add more versions here if needed.
 
     steps:
-    - uses: actions/checkout@v4  # Checkout the repository code
+    - uses: actions/checkout@v5  # Checkout the repository code
 
     # Cache node_modules to speed up builds
     - name: Cache node modules
